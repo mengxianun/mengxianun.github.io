@@ -3,46 +3,55 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://mengxianun.github.io/</loc>
+    <loc>/</loc>
+    <lastmod>2020-05-13T17:56:03+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/docker/</loc>
+    <lastmod>2020-05-13T17:56:03+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/</loc>
+    <lastmod>2020-05-13T17:56:03+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/hugo-github-pages/</loc>
     <lastmod>2020-05-13T15:45:43+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://mengxianun.github.io/posts/hugo-github-pages/</loc>
-    <lastmod>2020-05-13T15:45:43+08:00</lastmod>
+    <loc>/authors/</loc>
   </url>
   
   <url>
-    <loc>https://mengxianun.github.io/post/</loc>
-    <lastmod>2020-05-13T15:45:43+08:00</lastmod>
+    <loc>/categories/</loc>
   </url>
   
   <url>
-    <loc>https://mengxianun.github.io/authors/</loc>
+    <loc>/author/nelson-bighetti/</loc>
   </url>
   
   <url>
-    <loc>https://mengxianun.github.io/categories/</loc>
+    <loc>/post/</loc>
   </url>
   
   <url>
-    <loc>https://mengxianun.github.io/author/nelson-bighetti/</loc>
+    <loc>/publication_types/</loc>
   </url>
   
   <url>
-    <loc>https://mengxianun.github.io/publication_types/</loc>
+    <loc>/publication/</loc>
   </url>
   
   <url>
-    <loc>https://mengxianun.github.io/publication/</loc>
+    <loc>/talk/</loc>
   </url>
   
   <url>
-    <loc>https://mengxianun.github.io/talk/</loc>
-  </url>
-  
-  <url>
-    <loc>https://mengxianun.github.io/tags/</loc>
+    <loc>/tags/</loc>
   </url>
   
 </urlset>

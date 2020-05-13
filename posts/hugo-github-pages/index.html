@@ -27,10 +27,10 @@
   
     
   
-  <meta name="description" content="">
+  <meta name="description" content="安装 1 在github上创建仓库&lt;USERNAME&gt">
 
   
-  <link rel="alternate" hreflang="en-us" href="https://mengxianun.github.io/posts/hugo-github-pages/">
+  <link rel="alternate" hreflang="en-us" href="/posts/hugo-github-pages/">
 
   
 
@@ -217,7 +217,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="https://mengxianun.github.io/posts/hugo-github-pages/">
+  <link rel="canonical" href="/posts/hugo-github-pages/">
 
   
   
@@ -233,10 +233,10 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Academic">
-  <meta property="og:url" content="https://mengxianun.github.io/posts/hugo-github-pages/">
+  <meta property="og:url" content="/posts/hugo-github-pages/">
   <meta property="og:title" content="Hugo Github Pages | Academic">
-  <meta property="og:description" content=""><meta property="og:image" content="https://mengxianun.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
-  <meta property="twitter:image" content="https://mengxianun.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
+  <meta property="og:description" content="安装 1 在github上创建仓库&lt;USERNAME&gt"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
       <meta property="article:published_time" content="2020-05-13T15:45:43&#43;08:00">
@@ -379,16 +379,9 @@
         
         
         
-          
-          
-          
-            
-          
-          
-        
 
         <li class="nav-item">
-          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          <a class="nav-link  active" href="/posts"><span>Posts</span></a>
         </li>
 
         
@@ -601,7 +594,67 @@
   <div class="article-container">
 
     <div class="article-style">
-      
+      <h3 id="安装">安装</h3>
+<p>1 在github上创建仓库&lt;USERNAME&gt;.github.io</p>
+<p>2 
+<a href="https://github.com/sourcethemes/academic-kickstart#fork-destination-box" target="_blank" rel="noopener"><strong>fork</strong></a> <em>Academic Kickstart</em> 仓库，并clone到本地（替换你的用户名）。</p>
+<pre><code>git clone https://github.com/&lt;USERNAME&gt;/academic-kickstart.git My_Website
+cd My_Website
+git submodule update --init --recursive
+git submodule add -f -b master https://github.com/&lt;USERNAME&gt;/&lt;USERNAME&gt;.github.io.git public
+</code></pre>
+<p>3 将所有内容添加到本地 git 存储库，并将其推送到 GitHub 上的远程存储库:</p>
+<pre><code>git add .
+git commit -m &quot;Initial commit&quot;
+git push -u origin master
+</code></pre>
+<p>4 通过运行 Hugo 重新生成网站的 HTML 代码，并将 public 子模块上传到 GitHub:</p>
+<pre><code>hugo
+cd public
+git add .
+git commit -m &quot;Build website&quot;
+git push origin master
+cd ..
+</code></pre>
+<p>5 通过浏览器访问 https://<USERNAME>.github.io</p>
+<h3 id="添加内容">添加内容</h3>
+<p>1 创建文件</p>
+<pre><code>hugo new posts/my-first-post.md
+</code></pre>
+<p>2 部署脚本 deploy.sh</p>
+<pre><code>#!/bin/sh
+
+# If a command fails then the deploy stops
+set -e
+
+printf &quot;\033[0;32mDeploying updates to GitHub...\033[0m\n&quot;
+
+# Build the project.
+hugo # if using a theme, replace with `hugo -t &lt;YOURTHEME&gt;`
+
+# Go To Public folder
+cd public
+
+# Add changes to git.
+git add .
+
+# Commit changes.
+msg=&quot;rebuilding site $(date)&quot;
+if [ -n &quot;$*&quot; ]; then
+	msg=&quot;$*&quot;
+fi
+git commit -m &quot;$msg&quot;
+
+# Push source and build repos.
+git push origin master
+</code></pre>
+<p>3 更新网站</p>
+<pre><code>./deploy.sh &quot;Your optional commit message&quot;
+</code></pre>
+<p>参考：</p>
+<p><a href="https://georgecushen.com/create-your-website-with-hugo/">https://georgecushen.com/create-your-website-with-hugo/</a></p>
+<p><a href="https://sourcethemes.com/academic/docs/deployment/">https://sourcethemes.com/academic/docs/deployment/</a></p>
+
     </div>
 
     
@@ -623,7 +676,7 @@
       
       
       <li>
-        <a href="https://twitter.com/intent/tweet?url=https://mengxianun.github.io/posts/hugo-github-pages/&amp;text=Hugo%20Github%20Pages" target="_blank" rel="noopener" class="share-btn-twitter">
+        <a href="https://twitter.com/intent/tweet?url=/posts/hugo-github-pages/&amp;text=Hugo%20Github%20Pages" target="_blank" rel="noopener" class="share-btn-twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -636,7 +689,7 @@
       
       
       <li>
-        <a href="https://www.facebook.com/sharer.php?u=https://mengxianun.github.io/posts/hugo-github-pages/&amp;t=Hugo%20Github%20Pages" target="_blank" rel="noopener" class="share-btn-facebook">
+        <a href="https://www.facebook.com/sharer.php?u=/posts/hugo-github-pages/&amp;t=Hugo%20Github%20Pages" target="_blank" rel="noopener" class="share-btn-facebook">
           <i class="fab fa-facebook"></i>
         </a>
       </li>
@@ -649,7 +702,7 @@
       
       
       <li>
-        <a href="mailto:?subject=Hugo%20Github%20Pages&amp;body=https://mengxianun.github.io/posts/hugo-github-pages/" target="_blank" rel="noopener" class="share-btn-email">
+        <a href="mailto:?subject=Hugo%20Github%20Pages&amp;body=/posts/hugo-github-pages/" target="_blank" rel="noopener" class="share-btn-email">
           <i class="fas fa-envelope"></i>
         </a>
       </li>
@@ -662,7 +715,7 @@
       
       
       <li>
-        <a href="https://www.linkedin.com/shareArticle?url=https://mengxianun.github.io/posts/hugo-github-pages/&amp;title=Hugo%20Github%20Pages" target="_blank" rel="noopener" class="share-btn-linkedin">
+        <a href="https://www.linkedin.com/shareArticle?url=/posts/hugo-github-pages/&amp;title=Hugo%20Github%20Pages" target="_blank" rel="noopener" class="share-btn-linkedin">
           <i class="fab fa-linkedin-in"></i>
         </a>
       </li>
@@ -675,7 +728,7 @@
       
       
       <li>
-        <a href="https://web.whatsapp.com/send?text=Hugo%20Github%20Pages%20https://mengxianun.github.io/posts/hugo-github-pages/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+        <a href="https://web.whatsapp.com/send?text=Hugo%20Github%20Pages%20/posts/hugo-github-pages/" target="_blank" rel="noopener" class="share-btn-whatsapp">
           <i class="fab fa-whatsapp"></i>
         </a>
       </li>
@@ -688,7 +741,7 @@
       
       
       <li>
-        <a href="https://service.weibo.com/share/share.php?url=https://mengxianun.github.io/posts/hugo-github-pages/&amp;title=Hugo%20Github%20Pages" target="_blank" rel="noopener" class="share-btn-weibo">
+        <a href="https://service.weibo.com/share/share.php?url=/posts/hugo-github-pages/&amp;title=Hugo%20Github%20Pages" target="_blank" rel="noopener" class="share-btn-weibo">
           <i class="fab fa-weibo"></i>
         </a>
       </li>
@@ -729,7 +782,7 @@
       
 
       <div class="media-body">
-        <h5 class="card-title"><a href="https://mengxianun.github.io/">Nelson Bighetti</a></h5>
+        <h5 class="card-title"><a href="/">Nelson Bighetti</a></h5>
         <h6 class="card-subtitle">Professor of Artificial Intelligence</h6>
         <p class="card-text">My research interests include distributed robotics, mobile computing and programmable matter.</p>
         <ul class="network-icon" aria-hidden="true">

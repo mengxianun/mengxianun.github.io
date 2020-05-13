@@ -2,23 +2,15 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts | Academic</title>
-    <link>https://mengxianun.github.io/post/</link>
-      <atom:link href="https://mengxianun.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <link>/post/</link>
+      <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 13 May 2020 15:45:43 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language>
     <image>
-      <url>https://mengxianun.github.io/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Posts</title>
-      <link>https://mengxianun.github.io/post/</link>
+      <link>/post/</link>
     </image>
-    
-    <item>
-      <title>Hugo Github Pages</title>
-      <link>https://mengxianun.github.io/posts/hugo-github-pages/</link>
-      <pubDate>Wed, 13 May 2020 15:45:43 +0800</pubDate>
-      <guid>https://mengxianun.github.io/posts/hugo-github-pages/</guid>
-      <description></description>
-    </item>
     
   </channel>
 </rss>
