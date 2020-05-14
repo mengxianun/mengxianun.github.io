@@ -17,7 +17,7 @@
       <link>/posts/docker/</link>
       <pubDate>Wed, 13 May 2020 17:56:03 +0800</pubDate>
       <guid>/posts/docker/</guid>
-      <description>&lt;h3 id=&#34;安装&#34;&gt;安装&lt;/h3&gt;
+      <description>&lt;h3 id=&#34;安装centos&#34;&gt;安装(CentOS)&lt;/h3&gt;
 &lt;p&gt;1 更新Yum&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;sudo yum update
 &lt;/code&gt;&lt;/pre&gt;
@@ -28,6 +28,8 @@
 &lt;pre&gt;&lt;code&gt;sudo systemctl start docker
 sudo systemctl enable docker
 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;参考：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://geekflare.com/docker-installation-guide/&#34;&gt;https://geekflare.com/docker-installation-guide/&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
