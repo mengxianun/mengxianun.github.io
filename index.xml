@@ -5,12 +5,55 @@
     <link>/</link>
       <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <description>Academic</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 13 May 2020 17:56:03 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Fri, 15 May 2020 17:37:27 +0800</lastBuildDate>
     <image>
       <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Academic</title>
       <link>/</link>
     </image>
+    
+    <item>
+      <title>Helm安装MySQL</title>
+      <link>/posts/helm%E5%AE%89%E8%A3%85mysql/</link>
+      <pubDate>Fri, 15 May 2020 17:37:27 +0800</pubDate>
+      <guid>/posts/helm%E5%AE%89%E8%A3%85mysql/</guid>
+      <description>&lt;p&gt;helm 安装MySQL&lt;/p&gt;
+&lt;p&gt;1 创建storageClass&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: mysql-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;2 创建PersistentVolume&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-storage
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: mysql-storage
+  local:
+    path: /db/mysql
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - node1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;3 安装MySQL，设置storageClassName属性&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;helm install my-mysql --set persistence.storageClass=mysql-storage stable/mysql
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>Docker</title>
