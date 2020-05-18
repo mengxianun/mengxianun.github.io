@@ -26,7 +26,7 @@ metadata:
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;2 创建PersistentVolume&lt;/p&gt;
+&lt;p&gt;2 创建PersistentVolume，使用本地存储&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -47,9 +47,10 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - node1
+          - node3
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;3 安装MySQL，设置storageClassName属性&lt;/p&gt;
+&lt;p&gt;3 在指定节点上（node3）创建存储目录，/db/mysql&lt;/p&gt;
+&lt;p&gt;4 安装MySQL，设置storageClassName属性&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;helm install my-mysql --set persistence.storageClass=mysql-storage stable/mysql
 &lt;/code&gt;&lt;/pre&gt;
 </description>
