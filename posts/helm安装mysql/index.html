@@ -27,7 +27,7 @@
   
     
   
-  <meta name="description" content="helm 安装MySQL 1 创建storageClass apiVersion: storage.k8s.io/v1 kind: StorageClass metadata: name: mysql-storage">
+  <meta name="description" content="helm 安装MySQL，使用本地存储的方式。 本文介绍如何使用 helm 安装">
 
   
   <link rel="alternate" hreflang="en-us" href="/posts/helm%E5%AE%89%E8%A3%85mysql/">
@@ -235,7 +235,7 @@
   <meta property="og:site_name" content="Academic">
   <meta property="og:url" content="/posts/helm%E5%AE%89%E8%A3%85mysql/">
   <meta property="og:title" content="Helm安装MySQL | Academic">
-  <meta property="og:description" content="helm 安装MySQL 1 创建storageClass apiVersion: storage.k8s.io/v1 kind: StorageClass metadata: name: mysql-storage"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="og:description" content="helm 安装MySQL，使用本地存储的方式。 本文介绍如何使用 helm 安装"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
@@ -594,27 +594,35 @@
   <div class="article-container">
 
     <div class="article-style">
-      <p>helm 安装MySQL</p>
-<p>1 创建storageClass</p>
+      <p>helm 安装MySQL，使用本地存储的方式。</p>
+<p>本文介绍如何使用 helm 安装 MySQL，使用本地存储的方式。</p>
+<h4 id="1-创建storageclass">1 创建StorageClass</h4>
 <pre><code>apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: mysql-storage
+  name: local-storage-mysql
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
 </code></pre>
-<p>2 创建PersistentVolume，使用本地存储</p>
+<p>这里绑定模式选择 WaitForFirstConsumer</p>
+<p>默认情况下，Immediate 模式指示在创建 PersistentVolumeClaim 之后发生卷绑定和动态配置。 对于拓扑受限且不能从集群中的所有节点全局访问的存储后端，persistentvolume 将在不知道 Pod 的调度需求的情况下进行绑定或提供。 这可能会导致不可调度的Pod。</p>
+<p>集群管理员可以通过指定 WaitForFirstConsumer 模式来解决这个问题，该模式将延迟 PersistentVolume 的绑定和配置，直到创建使用 PersistentVolumeClaim 的 Pod。 Persistentvolumes 将根据 Pod 的调度约束所指定的拓扑结构进行选择或配给。 这些因素包括但不限于资源需求、节点选择器、Pod关联性和反关联性、污染和耐受性。</p>
+<p>Local 通过预先创建的 PersistentVolume 绑定支持 WaitForFirstConsumer。</p>
+<p>参考：</p>
+<p><a href="https://kubernetes.io/docs/concepts/storage/storage-classes/#volume-binding-mode">https://kubernetes.io/docs/concepts/storage/storage-classes/#volume-binding-mode</a></p>
+<p><a href="https://kubernetes.io/docs/concepts/storage/volumes/#local">https://kubernetes.io/docs/concepts/storage/volumes/#local</a></p>
+<h4 id="2-创建persistentvolume">2 创建PersistentVolume</h4>
 <pre><code>apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: mysql-storage
+  name: local-storage-mysql
 spec:
   capacity:
     storage: 10Gi
   accessModes:
   - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: mysql-storage
+  storageClassName: local-storage-mysql
   local:
     path: /db/mysql
   nodeAffinity:
@@ -626,10 +634,13 @@ spec:
           values:
           - node3
 </code></pre>
-<p>3 在指定节点上（node3）创建存储目录，/db/mysql</p>
-<p>4 安装MySQL，设置storageClassName属性</p>
-<pre><code>helm install my-mysql --set persistence.storageClass=mysql-storage stable/mysql
+<p>使用本地卷时需要 PersistentVolume nodeAffinity。 它使 Kubernetes 调度程序能够将使用本地卷的 Pods 正确调度到正确的节点。</p>
+<h4 id="3-在指定节点上创建存储目录">3 在指定节点上创建存储目录</h4>
+<p>这里需要在节点 node3 上手动创建存储目录 /db/mysql，Kubernetes不会自动创建它。</p>
+<h4 id="4-安装mysql">4 安装MySQL</h4>
+<pre><code>helm install my-mysql --set persistence.storageClass=local-storage-mysql stable/mysql
 </code></pre>
+<p>这里设置 storageClassName 属性为上面创建的 StorageClass，其他可设置属性参看官方说明 <a href="https://github.com/helm/charts/tree/master/stable/mysql#configuration">https://github.com/helm/charts/tree/master/stable/mysql#configuration</a></p>
 
     </div>
 
