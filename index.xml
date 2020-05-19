@@ -210,6 +210,9 @@ persistence:
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
+&lt;h4 id=&#34;5-查看kafka版本&#34;&gt;5 查看Kafka版本&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;kubectl exec kafka-dev-0 -- ls /usr/share/java/kafka | grep kafka
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
