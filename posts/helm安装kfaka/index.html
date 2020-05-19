@@ -27,10 +27,10 @@
   
     
   
-  <meta name="description" content="Professor of Artificial Intelligence">
+  <meta name="description" content="本文介绍如何使用 helm 安装 Kafka，使用本地存储的方式。 1 创建">
 
   
-  <link rel="alternate" hreflang="en-us" href="/404.html">
+  <link rel="alternate" hreflang="en-us" href="/posts/helm%E5%AE%89%E8%A3%85kfaka/">
 
   
 
@@ -217,7 +217,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="/404.html">
+  <link rel="canonical" href="/posts/helm%E5%AE%89%E8%A3%85kfaka/">
 
   
   
@@ -233,29 +233,34 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Academic">
-  <meta property="og:url" content="/404.html">
-  <meta property="og:title" content="404 Page not found | Academic">
-  <meta property="og:description" content="Professor of Artificial Intelligence"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="og:url" content="/posts/helm%E5%AE%89%E8%A3%85kfaka/">
+  <meta property="og:title" content="Helm安装Kfaka | Academic">
+  <meta property="og:description" content="本文介绍如何使用 helm 安装 Kafka，使用本地存储的方式。 1 创建"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
+      <meta property="article:published_time" content="2020-05-19T11:15:58&#43;08:00">
+    
+    <meta property="article:modified_time" content="2020-05-19T11:15:58&#43;08:00">
   
 
   
 
 
 
-
   
 
 
   
 
 
+  
 
 
 
-  <title>404 Page not found | Academic</title>
+
+
+  <title>Helm安装Kfaka | Academic</title>
 
 </head>
 
@@ -376,7 +381,7 @@
         
 
         <li class="nav-item">
-          <a class="nav-link " href="/posts"><span>Posts</span></a>
+          <a class="nav-link  active" href="/posts"><span>Posts</span></a>
         </li>
 
         
@@ -509,39 +514,399 @@
 </nav>
 
 
-  <div class="universal-wrapper pt-3">
-
-  <h1>Page not found</h1>
-
-  
-  
-  <form class="d-flex align-items-center mb-3">
-    <input name="q" type="search" class="form-control" placeholder="Search..." autocomplete="off">
-  </form>
-  
+  <article class="article">
 
   
 
-  <p>Perhaps you were looking for one of these?</p>
+
+
+
+
+
+
+
+
+
+
+
+  
 
   
   
   
-  <h2>Latest</h2>
-  <ul>
+<div class="article-container pt-3">
+  <h1>Helm安装Kfaka</h1>
+
+  
+
+  
     
-      <li><a href="/posts/helm%E5%AE%89%E8%A3%85kfaka/">Helm安装Kfaka</a></li>
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
     
-      <li><a href="/posts/helm%E5%AE%89%E8%A3%85mysql/">Helm安装MySQL</a></li>
     
-      <li><a href="/posts/docker/">Docker</a></li>
+      
     
-      <li><a href="/posts/hugo-github-pages/">Hugo Github Pages</a></li>
-    
-  </ul>
+    May 19, 2020
+  </span>
+  
+
+  
+
+  
+
+  
+  
+  
+
+  
   
 
 </div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>本文介绍如何使用 helm 安装 Kafka，使用本地存储的方式。</p>
+<h4 id="1-创建storageclass">1 创建StorageClass</h4>
+<pre><code>apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-storage-kafka
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+</code></pre>
+<p>这里绑定模式选择 WaitForFirstConsumer</p>
+<p>默认情况下，Immediate 模式指示在创建 PersistentVolumeClaim 之后发生卷绑定和动态配置。 对于拓扑受限且不能从集群中的所有节点全局访问的存储后端，persistentvolume 将在不知道 Pod 的调度需求的情况下进行绑定或提供。 这可能会导致不可调度的Pod。</p>
+<p>集群管理员可以通过指定 WaitForFirstConsumer 模式来解决这个问题，该模式将延迟 PersistentVolume 的绑定和配置，直到创建使用 PersistentVolumeClaim 的 Pod。 Persistentvolumes 将根据 Pod 的调度约束所指定的拓扑结构进行选择或配给。 这些因素包括但不限于资源需求、节点选择器、Pod关联性和反关联性、污染和耐受性。</p>
+<p>Local 通过预先创建的 PersistentVolume 绑定支持 WaitForFirstConsumer。</p>
+<p>参考：</p>
+<p><a href="https://kubernetes.io/docs/concepts/storage/storage-classes/#volume-binding-mode">https://kubernetes.io/docs/concepts/storage/storage-classes/#volume-binding-mode</a></p>
+<p><a href="https://kubernetes.io/docs/concepts/storage/volumes/#local">https://kubernetes.io/docs/concepts/storage/volumes/#local</a></p>
+<h4 id="2-创建persistentvolume">2 创建PersistentVolume</h4>
+<pre><code>apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-storage-kafka-0
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage-kafka
+  local:
+    path: /localdata/kafka/data-0
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - node3
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-storage-kafka-1
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage-kafka
+  local:
+    path: /localdata/kafka/data-1
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - node3
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-storage-kafka-2
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage-kafka
+  local:
+    path: /localdata/kafka/data-2
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - node3
+</code></pre>
+<p>使用本地卷时需要 PersistentVolume nodeAffinity。 它使 Kubernetes 调度程序能够将使用本地卷的 Pods 正确调度到正确的节点。</p>
+<h4 id="3-在指定节点上创建存储目录">3 在指定节点上创建存储目录</h4>
+<p>这里需要在节点 node3 上手动创建存储目录 /localdata/kafka/data-0,/localdata/kafka/data-1,/localdata/kafka/data-2，Kubernetes不会自动创建它。</p>
+<h4 id="4-安装">4 安装</h4>
+<pre><code>helm install kafka-dev --set external.enabled=true --set persistence.storageClass=local-storage-kafka incubator/kafka
+</code></pre>
+<p>这里设置 storageClassName 属性为上面创建的 StorageClass，并开启外部访问external.enabled，其他可设置属性参看官方说明 <a href="https://github.com/helm/charts/tree/master/incubator/kafka">https://github.com/helm/charts/tree/master/incubator/kafka</a></p>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/posts/helm%E5%AE%89%E8%A3%85kfaka/&amp;text=Helm%e5%ae%89%e8%a3%85Kfaka" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/posts/helm%E5%AE%89%E8%A3%85kfaka/&amp;t=Helm%e5%ae%89%e8%a3%85Kfaka" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Helm%e5%ae%89%e8%a3%85Kfaka&amp;body=/posts/helm%E5%AE%89%E8%A3%85kfaka/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/posts/helm%E5%AE%89%E8%A3%85kfaka/&amp;title=Helm%e5%ae%89%e8%a3%85Kfaka" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Helm%e5%ae%89%e8%a3%85Kfaka%20/posts/helm%E5%AE%89%E8%A3%85kfaka/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/posts/helm%E5%AE%89%E8%A3%85kfaka/&amp;title=Helm%e5%ae%89%e8%a3%85Kfaka" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+  
+    
+    
+    
+      
+    
+    
+    
+    <div class="media author-card content-widget-hr">
+      
+        
+        <img class="avatar mr-3 avatar-circle" src="/author/nelson-bighetti/avatar_hu52a603635ecebd45650b162dadabb4e5_12861_270x270_fill_q90_lanczos_center.jpg" alt="Nelson Bighetti">
+      
+
+      <div class="media-body">
+        <h5 class="card-title"><a href="/">Nelson Bighetti</a></h5>
+        <h6 class="card-subtitle">Professor of Artificial Intelligence</h6>
+        <p class="card-text">My research interests include distributed robotics, mobile computing and programmable matter.</p>
+        <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/GeorgeCushen" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/gcushen" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+      </div>
+    </div>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
 
       
 
