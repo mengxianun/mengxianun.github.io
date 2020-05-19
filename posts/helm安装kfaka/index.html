@@ -777,10 +777,11 @@ configurationOverrides:
     PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
 persistence:
   storageClass: local-storage
-  
 </code></pre>
-<p>这里开启外部访问，配置IP地址（第5行），集群任意节点均可，同时配置storageClass。其他更多配置看官方文档 <a href="https://github.com/helm/charts/tree/master/incubator/kafka">https://github.com/helm/charts/tree/master/incubator/kafka</a></p>
 </li>
+</ul>
+<p>这里开启外部访问，配置IP地址（第5行），集群任意节点均可，同时配置storageClass。其他更多配置看官方文档 <a href="https://github.com/helm/charts/tree/master/incubator/kafka">https://github.com/helm/charts/tree/master/incubator/kafka</a></p>
+<ul>
 <li>
 <p>安装</p>
 <pre><code>helm install kafka-dev -f kafka-values.yaml incubator/kafka
