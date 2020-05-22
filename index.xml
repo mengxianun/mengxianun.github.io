@@ -5,12 +5,22 @@
     <link>/</link>
       <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <description>Academic</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 19 May 2020 11:15:58 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Fri, 22 May 2020 12:38:34 +0800</lastBuildDate>
     <image>
       <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Academic</title>
       <link>/</link>
     </image>
+    
+    <item>
+      <title>SpringBoot整合elasticsearch和redis的问题</title>
+      <link>/posts/springboot%E6%95%B4%E5%90%88elasticsearch%E5%92%8Credis%E7%9A%84%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Fri, 22 May 2020 12:38:34 +0800</pubDate>
+      <guid>/posts/springboot%E6%95%B4%E5%90%88elasticsearch%E5%92%8Credis%E7%9A%84%E9%97%AE%E9%A2%98/</guid>
+      <description>&lt;p&gt;问题描述：availableProcessors is already set to [8], rejecting [8]&lt;/p&gt;
+&lt;p&gt;解决：https://blog.csdn.net/busishenren/article/details/90478928&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Helm安装Kfaka</title>
