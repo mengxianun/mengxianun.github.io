@@ -5,12 +5,180 @@
     <link>/</link>
       <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <description>Academic</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Fri, 22 May 2020 12:38:34 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 09 Jun 2020 18:36:00 +0800</lastBuildDate>
     <image>
       <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Academic</title>
       <link>/</link>
     </image>
+    
+    <item>
+      <title>Kubernetes安装</title>
+      <link>/posts/kubernetes/kubernetes%E5%AE%89%E8%A3%85/</link>
+      <pubDate>Tue, 09 Jun 2020 18:36:00 +0800</pubDate>
+      <guid>/posts/kubernetes/kubernetes%E5%AE%89%E8%A3%85/</guid>
+      <description>&lt;p&gt;kubeadm 安装 kubernets 集群&lt;/p&gt;
+&lt;h4 id=&#34;下载程序包翻墙&#34;&gt;下载程序包(翻墙)&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;# 下载程序
+yum install -y --downloadonly kubelet kubeadm kubectl --disableexcludes=kubernetes
+# 下载镜像
+kubeadm config images pull
+docker pull quay.io/coreos/flannel:v0.12.0-amd64
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;注：下载的程序为最新版本&lt;/p&gt;
+&lt;h4 id=&#34;准备工作&#34;&gt;准备工作&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;开启防火墙端口&lt;/p&gt;
+&lt;p&gt;需要开启的端口&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Master node(s):
+   
+TCP     6443*       Kubernetes API Server
+TCP     2379-2380   etcd server client API
+UDP     8472        flannel only
+TCP     10250       Kubelet API
+TCP     10251       kube-scheduler
+TCP     10252       kube-controller-manager
+TCP     10255       Read-Only Kubelet API
+   
+Worker nodes (minions):
+   
+UDP     8472        flannel only
+TCP     10250       Kubelet API
+TCP     10255       Read-Only Kubelet API
+TCP     30000-32767 NodePort Services
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# 主节点
+firewall-cmd --permanent --add-port=6443/tcp
+firewall-cmd --permanent --add-port=2379-2380/tcp
+firewall-cmd --permanent --add-port=10250/tcp
+firewall-cmd --permanent --add-port=10251/tcp
+firewall-cmd --permanent --add-port=10252/tcp
+firewall-cmd --permanent --add-port=10255/tcp
+firewall-cmd --permanent --add-port=8472/udp
+firewall-cmd --add-masquerade --permanent
+# only if you want NodePorts exposed on control plane IP as well
+firewall-cmd --permanent --add-port=30000-32767/tcp
+systemctl restart firewalld
+   
+# 从节点
+firewall-cmd --permanent --add-port=10250/tcp
+firewall-cmd --permanent --add-port=10255/tcp
+firewall-cmd --permanent --add-port=8472/udp
+firewall-cmd --permanent --add-port=30000-32767/tcp
+firewall-cmd --add-masquerade --permanent
+systemctl restart firewalld
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;设置hostname&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;安装docker&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;设置必需的sysctl参数&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;禁用swap&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;安装kubernetes程序包&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;开启kubelet&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;加载kubernetes镜像&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Minikube安装</title>
+      <link>/posts/minikube%E5%AE%89%E8%A3%85/</link>
+      <pubDate>Mon, 08 Jun 2020 17:52:45 +0800</pubDate>
+      <guid>/posts/minikube%E5%AE%89%E8%A3%85/</guid>
+      <description>&lt;p&gt;Linux 安装minikube&lt;/p&gt;
+&lt;h4 id=&#34;1-安装docker&#34;&gt;1 安装docker&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;$ curl -fsSL https://get.docker.com/ | sh
+$ sudo systemctl start docker
+$ sudo systemctl enable docker
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;2-创建用户&#34;&gt;2 创建用户&lt;/h4&gt;
+&lt;p&gt;minikube 需要非root用户运行&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;adduser developer
+passwd developer
+usermod -aG sudo developer
+# 如果上面命令出现 usermod: group &#39;sudo&#39; does not exist, 运行以下命令
+usermod -aG wheel developer
+su - developer
+sudo usermod -aG docker $USER
+- 重新登录
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;3-安装kubectl&#34;&gt;3 安装kubectl&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;$ curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+$ chmod +x ./kubectl
+$ sudo mv ./kubectl /usr/local/bin/kubectl
+$ kubectl version --client
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;4-安装minikube&#34;&gt;4 安装minikube&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;$ curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
+  &amp;amp;&amp;amp; chmod +x minikube
+$ sudo mkdir -p /usr/local/bin/
+$ sudo install minikube /usr/local/bin/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;5-启动minikube&#34;&gt;5 启动minikube&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;# 需要翻墙
+minikube start --driver=docker
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;6-验证安装&#34;&gt;6 验证安装&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;minikube status
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;显示如下&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;minikube
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Goofys挂载minio为本地路径</title>
+      <link>/posts/goofys%E6%8C%82%E8%BD%BDminio%E4%B8%BA%E6%9C%AC%E5%9C%B0%E8%B7%AF%E5%BE%84/</link>
+      <pubDate>Mon, 08 Jun 2020 14:59:38 +0800</pubDate>
+      <guid>/posts/goofys%E6%8C%82%E8%BD%BDminio%E4%B8%BA%E6%9C%AC%E5%9C%B0%E8%B7%AF%E5%BE%84/</guid>
+      <description>&lt;p&gt;goofys挂载minio为本地路径&lt;/p&gt;
+&lt;h4 id=&#34;1-安装fuse&#34;&gt;1 安装fuse&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;yum -y install fuse
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;2-安装goofys&#34;&gt;2 安装goofys&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;wget https://github.com/kahing/goofys/releases/latest/download/goofys -O /bin/goofys &amp;amp;&amp;amp; chmod +x /bin/goofys
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;3-配置认证信息&#34;&gt;3 配置认证信息&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;$ cat ~/.aws/credentials
+[default]
+aws_access_key_id = AKID1234567890
+aws_secret_access_key = MY-SECRET-KEY
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;4-使用&#34;&gt;4 使用&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;$ $GOPATH/bin/goofys &amp;lt;bucket&amp;gt; &amp;lt;mountpoint&amp;gt;
+$ $GOPATH/bin/goofys &amp;lt;bucket:prefix&amp;gt; &amp;lt;mountpoint&amp;gt;
+# 例
+goofys --endpoint http://localhost:9000 bucket /mnt
+# 前端运行
+goofys -f --endpoint http://localhost:9000 bucket /mnt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;5-开机自动挂载&#34;&gt;5 开机自动挂载&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;# 配置 /etc/fstab, 添加如下信息
+goofys#bucket /mnt/mountpoint fuse _netdev,allow_other,--file-mode=0666,--dir-mode=0777,--endpoint=http://localhost:9000 0 0
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>SpringBoot整合elasticsearch和redis的问题</title>
@@ -232,6 +400,7 @@ persistence:
 &lt;ol&gt;
 &lt;li&gt;values.yaml 中的 persistence.size 属性大于 PV 中 storage 大小&lt;/li&gt;
 &lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;在PVC绑定PV时通常根据两个条件来绑定，一个是存储的大小，另一个就是访问模式。&lt;/strong&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 </description>
