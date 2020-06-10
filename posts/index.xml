@@ -72,26 +72,100 @@ systemctl restart firewalld
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;设置hostname&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 节点1
+# 设置hostname
+sudo hostnamectl set-hostname node1
+# 修改/etc/hosts, 添加以下信息
+192.168.201.120 node1
+192.168.201.121 node2
+192.168.201.122 node3
+   
+# 节点2
+# 设置hostname
+sudo hostnamectl set-hostname node2
+# 修改/etc/hosts, 添加以下信息
+192.168.201.120 node1
+192.168.201.121 node2
+192.168.201.122 node3
+   
+# 节点3
+# 设置hostname
+sudo hostnamectl set-hostname node3
+# 修改/etc/hosts, 添加以下信息
+192.168.201.120 node1
+192.168.201.121 node2
+192.168.201.122 node3
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;安装docker&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;curl -fsSL https://get.docker.com/ | sh
+sudo systemctl start docker
+sudo systemctl enable docker
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;设置必需的sysctl参数&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sysctl net.bridge.bridge-nf-call-iptables=1
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;禁用swap&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo swapoff -a
+sudo sed -i &#39;/ swap / s/^\(.*\)$/#\1/g&#39; /etc/fstab
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;安装kubernetes程序包&lt;/p&gt;
+&lt;p&gt;安装kubernetes程序包(rpm)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cri-tools
+kubeadm
+kubectl
+kubelet
+kubernetes-cni
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;开启kubelet&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;systemctl enable kubelet &amp;amp;&amp;amp; systemctl start kubelet
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;加载kubernetes镜像&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 加载单个镜像
+docker load &amp;lt; **.tar
+# 一次加载目录下所有镜像
+for i in `ls`; do docker load &amp;lt; $i; done
+&lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
+&lt;h4 id=&#34;部署&#34;&gt;部署&lt;/h4&gt;
+&lt;h5 id=&#34;主节点&#34;&gt;主节点&lt;/h5&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;初始化&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# flannel
+kubeadm init --pod-network-cidr=10.244.0.0/16
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;设置网络&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h5 id=&#34;从节点&#34;&gt;从节点&lt;/h5&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;加入集群&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 此命令从主节点init命令输出获得
+kubeadm join 192.168.201.120:6443 --token z8clj6.i8u6s0deqsncftaz --discovery-token-ca-cert-hash sha256:a0cf54fda227bb64d6af37479ed055aad31e55df287566d3793825705355f3d8
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h5 id=&#34;检查状态ready&#34;&gt;检查状态(Ready)&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;# 主节点执行
+kubectl get nodes
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

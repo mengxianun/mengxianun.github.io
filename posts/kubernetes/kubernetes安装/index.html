@@ -649,26 +649,100 @@ systemctl restart firewalld
 </li>
 <li>
 <p>设置hostname</p>
+<pre><code># 节点1
+# 设置hostname
+sudo hostnamectl set-hostname node1
+# 修改/etc/hosts, 添加以下信息
+192.168.201.120 node1
+192.168.201.121 node2
+192.168.201.122 node3
+   
+# 节点2
+# 设置hostname
+sudo hostnamectl set-hostname node2
+# 修改/etc/hosts, 添加以下信息
+192.168.201.120 node1
+192.168.201.121 node2
+192.168.201.122 node3
+   
+# 节点3
+# 设置hostname
+sudo hostnamectl set-hostname node3
+# 修改/etc/hosts, 添加以下信息
+192.168.201.120 node1
+192.168.201.121 node2
+192.168.201.122 node3
+</code></pre>
 </li>
 <li>
 <p>安装docker</p>
+<pre><code>curl -fsSL https://get.docker.com/ | sh
+sudo systemctl start docker
+sudo systemctl enable docker
+</code></pre>
 </li>
 <li>
 <p>设置必需的sysctl参数</p>
+<pre><code>sysctl net.bridge.bridge-nf-call-iptables=1
+</code></pre>
 </li>
 <li>
 <p>禁用swap</p>
+<pre><code>sudo swapoff -a
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+</code></pre>
 </li>
 <li>
-<p>安装kubernetes程序包</p>
+<p>安装kubernetes程序包(rpm)</p>
+<pre><code>cri-tools
+kubeadm
+kubectl
+kubelet
+kubernetes-cni
+</code></pre>
 </li>
 <li>
 <p>开启kubelet</p>
+<pre><code>systemctl enable kubelet &amp;&amp; systemctl start kubelet
+</code></pre>
 </li>
 <li>
 <p>加载kubernetes镜像</p>
+<pre><code># 加载单个镜像
+docker load &lt; **.tar
+# 一次加载目录下所有镜像
+for i in `ls`; do docker load &lt; $i; done
+</code></pre>
 </li>
 </ol>
+<h4 id="部署">部署</h4>
+<h5 id="主节点">主节点</h5>
+<ol>
+<li>
+<p>初始化</p>
+<pre><code># flannel
+kubeadm init --pod-network-cidr=10.244.0.0/16
+</code></pre>
+</li>
+<li>
+<p>设置网络</p>
+<pre><code>kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+</code></pre>
+</li>
+</ol>
+<h5 id="从节点">从节点</h5>
+<ol>
+<li>
+<p>加入集群</p>
+<pre><code># 此命令从主节点init命令输出获得
+kubeadm join 192.168.201.120:6443 --token z8clj6.i8u6s0deqsncftaz --discovery-token-ca-cert-hash sha256:a0cf54fda227bb64d6af37479ed055aad31e55df287566d3793825705355f3d8
+</code></pre>
+</li>
+</ol>
+<h5 id="检查状态ready">检查状态(Ready)</h5>
+<pre><code># 主节点执行
+kubectl get nodes
+</code></pre>
 
     </div>
 
