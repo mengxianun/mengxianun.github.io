@@ -18,14 +18,6 @@
       <pubDate>Tue, 09 Jun 2020 18:36:00 +0800</pubDate>
       <guid>/posts/kubernetes/kubernetes%E5%AE%89%E8%A3%85/</guid>
       <description>&lt;p&gt;kubeadm 安装 kubernets 集群&lt;/p&gt;
-&lt;h4 id=&#34;下载程序包翻墙&#34;&gt;下载程序包(翻墙)&lt;/h4&gt;
-&lt;pre&gt;&lt;code&gt;# 下载程序
-yum install -y --downloadonly kubelet kubeadm kubectl --disableexcludes=kubernetes
-# 下载镜像
-kubeadm config images pull
-docker pull quay.io/coreos/flannel:v0.12.0-amd64
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;注：下载的程序为最新版本&lt;/p&gt;
 &lt;h4 id=&#34;准备工作&#34;&gt;准备工作&lt;/h4&gt;
 &lt;ol&gt;
 &lt;li&gt;
@@ -99,9 +91,17 @@ sudo hostnamectl set-hostname node3
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;安装docker&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;curl -fsSL https://get.docker.com/ | sh
-sudo systemctl start docker
-sudo systemctl enable docker
+&lt;pre&gt;&lt;code&gt;# 安装docker仓库
+yum install -y yum-utils
+yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+# 安装docker 19.03 版本
+yum install -y docker-ce-19.03.11 docker-ce-cli-19.03.11 containerd.io
+# 安装最新版本
+#yum install -y docker-ce docker-ce-cli containerd.io
+# 启动docker
+systemctl enable docker &amp;amp;&amp;amp; systemctl start docker
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;
@@ -115,29 +115,41 @@ sudo systemctl enable docker
 sudo sed -i &#39;/ swap / s/^\(.*\)$/#\1/g&#39; /etc/fstab
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;安装kubernetes程序包(rpm)&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;cri-tools
-kubeadm
-kubectl
-kubelet
-kubernetes-cni
+&lt;/ol&gt;
+&lt;h4 id=&#34;kubernetes-程序安装&#34;&gt;Kubernetes 程序安装&lt;/h4&gt;
+&lt;h5 id=&#34;在线安装方式&#34;&gt;在线安装方式&lt;/h5&gt;
+&lt;h6 id=&#34;kubeletkubeadmkubectl&#34;&gt;kubelet/kubeadm/kubectl&lt;/h6&gt;
+&lt;pre&gt;&lt;code&gt;yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+# 开启kubelet
+systemctl enable kubelet &amp;amp;&amp;amp; systemctl start kubelet
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;开启kubelet&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;systemctl enable kubelet &amp;amp;&amp;amp; systemctl start kubelet
+&lt;h6 id=&#34;镜像&#34;&gt;镜像&lt;/h6&gt;
+&lt;pre&gt;&lt;code&gt;# 预先拉去镜像
+kubeadm config images pull
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;加载kubernetes镜像&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# 加载单个镜像
-docker load &amp;lt; **.tar
-# 一次加载目录下所有镜像
+&lt;h5 id=&#34;离线安装方式&#34;&gt;离线安装方式&lt;/h5&gt;
+&lt;h6 id=&#34;下载程序包翻墙&#34;&gt;下载程序包(翻墙)&lt;/h6&gt;
+&lt;pre&gt;&lt;code&gt;# 下载程序
+yum install -y --downloadonly kubelet kubeadm kubectl --disableexcludes=kubernetes
+# 下载镜像
+kubeadm config images pull
+docker pull quay.io/coreos/flannel:v0.12.0-amd64
+# 将镜像保存为tar文件
+docker save ...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h6 id=&#34;kubeletkubeadmkubectl-1&#34;&gt;kubelet/kubeadm/kubectl&lt;/h6&gt;
+&lt;pre&gt;&lt;code&gt;# 将程序包拷贝到服务器上
+# 进入rpm文件路径
+yum -y install *.rpm
+# 开启kubelet
+systemctl enable kubelet &amp;amp;&amp;amp; systemctl start kubelet
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h6 id=&#34;镜像-1&#34;&gt;镜像&lt;/h6&gt;
+&lt;pre&gt;&lt;code&gt;# 将kubernetes相关镜像拷贝到服务器上
+# 进入镜像文件目录, 加载所有镜像
 for i in `ls`; do docker load &amp;lt; $i; done
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;离线文件下载地址(1.18版本)&lt;/p&gt;
 &lt;h4 id=&#34;部署&#34;&gt;部署&lt;/h4&gt;
 &lt;h5 id=&#34;主节点&#34;&gt;主节点&lt;/h5&gt;
 &lt;ol&gt;
@@ -146,6 +158,26 @@ for i in `ls`; do docker load &amp;lt; $i; done
 &lt;pre&gt;&lt;code&gt;# flannel
 kubeadm init --pod-network-cidr=10.244.0.0/16
 &lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;配置环境变量&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;root&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# /etc/profile 添加以下内容
+export KUBECONFIG=/etc/kubernetes/admin.conf
+# 立即生效
+source /etc/profile
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;常规用户&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;设置网络&lt;/p&gt;
@@ -165,6 +197,16 @@ kubeadm join 192.168.201.120:6443 --token z8clj6.i8u6s0deqsncftaz --discovery-to
 &lt;h5 id=&#34;检查状态ready&#34;&gt;检查状态(Ready)&lt;/h5&gt;
 &lt;pre&gt;&lt;code&gt;# 主节点执行
 kubectl get nodes
+# 输出如下
+NAME    STATUS     ROLES    AGE   VERSION
+node1   Ready      master   21m   v1.18.3
+node2   NotReady   &amp;lt;none&amp;gt;   37s   v1.18.3
+node3   NotReady   &amp;lt;none&amp;gt;   36s   v1.18.3
+# 等待一会, 全部Ready
+NAME    STATUS   ROLES    AGE     VERSION
+node1   Ready    master   22m     v1.18.3
+node2   Ready    &amp;lt;none&amp;gt;   2m25s   v1.18.3
+node3   Ready    &amp;lt;none&amp;gt;   2m24s   v1.18.3
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>

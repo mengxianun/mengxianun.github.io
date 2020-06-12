@@ -27,7 +27,7 @@
   
     
   
-  <meta name="description" content="kubeadm 安装 kubernets 集群 下载程序包(翻墙) # 下载程序 yum install -y --downloadonly kubelet kubeadm kubectl --disableexcludes=kubernetes # 下">
+  <meta name="description" content="kubeadm 安装 kubernets 集群 准备工作 开启防火墙端口 需要开启的端口 Master node(s): TCP 6443* Kubernetes API">
 
   
   <link rel="alternate" hreflang="en-us" href="/posts/kubernetes/kubernetes%E5%AE%89%E8%A3%85/">
@@ -235,7 +235,7 @@
   <meta property="og:site_name" content="Academic">
   <meta property="og:url" content="/posts/kubernetes/kubernetes%E5%AE%89%E8%A3%85/">
   <meta property="og:title" content="Kubernetes安装 | Academic">
-  <meta property="og:description" content="kubeadm 安装 kubernets 集群 下载程序包(翻墙) # 下载程序 yum install -y --downloadonly kubelet kubeadm kubectl --disableexcludes=kubernetes # 下"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="og:description" content="kubeadm 安装 kubernets 集群 准备工作 开启防火墙端口 需要开启的端口 Master node(s): TCP 6443* Kubernetes API"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
@@ -595,14 +595,6 @@
 
     <div class="article-style">
       <p>kubeadm 安装 kubernets 集群</p>
-<h4 id="下载程序包翻墙">下载程序包(翻墙)</h4>
-<pre><code># 下载程序
-yum install -y --downloadonly kubelet kubeadm kubectl --disableexcludes=kubernetes
-# 下载镜像
-kubeadm config images pull
-docker pull quay.io/coreos/flannel:v0.12.0-amd64
-</code></pre>
-<p>注：下载的程序为最新版本</p>
 <h4 id="准备工作">准备工作</h4>
 <ol>
 <li>
@@ -676,9 +668,17 @@ sudo hostnamectl set-hostname node3
 </li>
 <li>
 <p>安装docker</p>
-<pre><code>curl -fsSL https://get.docker.com/ | sh
-sudo systemctl start docker
-sudo systemctl enable docker
+<pre><code># 安装docker仓库
+yum install -y yum-utils
+yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+# 安装docker 19.03 版本
+yum install -y docker-ce-19.03.11 docker-ce-cli-19.03.11 containerd.io
+# 安装最新版本
+#yum install -y docker-ce docker-ce-cli containerd.io
+# 启动docker
+systemctl enable docker &amp;&amp; systemctl start docker
 </code></pre>
 </li>
 <li>
@@ -692,29 +692,41 @@ sudo systemctl enable docker
 sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 </code></pre>
 </li>
-<li>
-<p>安装kubernetes程序包(rpm)</p>
-<pre><code>cri-tools
-kubeadm
-kubectl
-kubelet
-kubernetes-cni
+</ol>
+<h4 id="kubernetes-程序安装">Kubernetes 程序安装</h4>
+<h5 id="在线安装方式">在线安装方式</h5>
+<h6 id="kubeletkubeadmkubectl">kubelet/kubeadm/kubectl</h6>
+<pre><code>yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+# 开启kubelet
+systemctl enable kubelet &amp;&amp; systemctl start kubelet
 </code></pre>
-</li>
-<li>
-<p>开启kubelet</p>
-<pre><code>systemctl enable kubelet &amp;&amp; systemctl start kubelet
+<h6 id="镜像">镜像</h6>
+<pre><code># 预先拉去镜像
+kubeadm config images pull
 </code></pre>
-</li>
-<li>
-<p>加载kubernetes镜像</p>
-<pre><code># 加载单个镜像
-docker load &lt; **.tar
-# 一次加载目录下所有镜像
+<h5 id="离线安装方式">离线安装方式</h5>
+<h6 id="下载程序包翻墙">下载程序包(翻墙)</h6>
+<pre><code># 下载程序
+yum install -y --downloadonly kubelet kubeadm kubectl --disableexcludes=kubernetes
+# 下载镜像
+kubeadm config images pull
+docker pull quay.io/coreos/flannel:v0.12.0-amd64
+# 将镜像保存为tar文件
+docker save ...
+</code></pre>
+<h6 id="kubeletkubeadmkubectl-1">kubelet/kubeadm/kubectl</h6>
+<pre><code># 将程序包拷贝到服务器上
+# 进入rpm文件路径
+yum -y install *.rpm
+# 开启kubelet
+systemctl enable kubelet &amp;&amp; systemctl start kubelet
+</code></pre>
+<h6 id="镜像-1">镜像</h6>
+<pre><code># 将kubernetes相关镜像拷贝到服务器上
+# 进入镜像文件目录, 加载所有镜像
 for i in `ls`; do docker load &lt; $i; done
 </code></pre>
-</li>
-</ol>
+<p>离线文件下载地址(1.18版本)</p>
 <h4 id="部署">部署</h4>
 <h5 id="主节点">主节点</h5>
 <ol>
@@ -723,6 +735,26 @@ for i in `ls`; do docker load &lt; $i; done
 <pre><code># flannel
 kubeadm init --pod-network-cidr=10.244.0.0/16
 </code></pre>
+</li>
+<li>
+<p>配置环境变量</p>
+<ul>
+<li>
+<p>root</p>
+<pre><code># /etc/profile 添加以下内容
+export KUBECONFIG=/etc/kubernetes/admin.conf
+# 立即生效
+source /etc/profile
+</code></pre>
+</li>
+<li>
+<p>常规用户</p>
+<pre><code>mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+</code></pre>
+</li>
+</ul>
 </li>
 <li>
 <p>设置网络</p>
@@ -742,6 +774,16 @@ kubeadm join 192.168.201.120:6443 --token z8clj6.i8u6s0deqsncftaz --discovery-to
 <h5 id="检查状态ready">检查状态(Ready)</h5>
 <pre><code># 主节点执行
 kubectl get nodes
+# 输出如下
+NAME    STATUS     ROLES    AGE   VERSION
+node1   Ready      master   21m   v1.18.3
+node2   NotReady   &lt;none&gt;   37s   v1.18.3
+node3   NotReady   &lt;none&gt;   36s   v1.18.3
+# 等待一会, 全部Ready
+NAME    STATUS   ROLES    AGE     VERSION
+node1   Ready    master   22m     v1.18.3
+node2   Ready    &lt;none&gt;   2m25s   v1.18.3
+node3   Ready    &lt;none&gt;   2m24s   v1.18.3
 </code></pre>
 
     </div>
