@@ -5,12 +5,272 @@
     <link>/</link>
       <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <description>Academic</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 09 Jun 2020 18:36:00 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Fri, 12 Jun 2020 13:48:12 +0800</lastBuildDate>
     <image>
       <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Academic</title>
       <link>/</link>
     </image>
+    
+    <item>
+      <title>Kubernetes安装minio</title>
+      <link>/posts/minio/kubernetes%E5%AE%89%E8%A3%85minio/</link>
+      <pubDate>Fri, 12 Jun 2020 13:48:12 +0800</pubDate>
+      <guid>/posts/minio/kubernetes%E5%AE%89%E8%A3%85minio/</guid>
+      <description>&lt;p&gt;通过 helm 在 kubernetes 上安装 minio&lt;/p&gt;
+&lt;h4 id=&#34;前提&#34;&gt;前提&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;3台服务器，CentOS7 系统&lt;/li&gt;
+&lt;li&gt;已安装Kubernetes环境&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;安装helm3&#34;&gt;安装helm3&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;下载安装包 &lt;a href=&#34;https://github.com/helm/helm/releases&#34;&gt;https://github.com/helm/helm/releases&lt;/a&gt;，选择 Linux amd64 版本&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;安装&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;tar -zxvf helm-v3.0.0-linux-amd64.tar.gz
+mv linux-amd64/helm /usr/local/bin/helm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;添加仓库&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;安装kubeapps&#34;&gt;安装kubeapps&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;安装&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;helm repo add bitnami https://charts.bitnami.com/bitnami
+kubectl create namespace kubeapps
+helm install kubeapps --namespace kubeapps bitnami/kubeapps --set useHelm3=true
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;创建 Kubernetes API token&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;kubectl create serviceaccount kubeapps-operator
+kubectl create clusterrolebinding kubeapps-operator --clusterrole=cluster-admin --serviceaccount=default:kubeapps-operator
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;查看 token&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;kubectl get secret $(kubectl get serviceaccount kubeapps-operator -o jsonpath=&#39;{range .secrets[*]}{.name}{&amp;quot;\n&amp;quot;}{end}&#39; | grep kubeapps-operator-token) -o jsonpath=&#39;{.data.token}&#39; -o go-template=&#39;{{.data.token | base64decode}}&#39; &amp;amp;&amp;amp; echo
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;开启 Dashboard&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;kubectl port-forward -n kubeapps --address 0.0.0.0 svc/kubeapps 8080:80
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;创建minio-pv&#34;&gt;创建minio PV&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;创建 StorageClass&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-storage-minio
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;创建 minio 需要的 PV&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;这里在 k8s的2个 worker 节点上创建了4个pv，因为minio分布式最少需要4个节点，所里这里在2个worker节点上分别创建了2个存储目录。&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-storage-minio-0
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage-minio
+  local:
+    path: /localdata/minio/data-0
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - node2
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-storage-minio-1
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage-minio
+  local:
+    path: /localdata/minio/data-1
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - node2
+---
+   
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-storage-minio-2
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage-minio
+  local:
+    path: /localdata/minio/data-2
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - node3
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-storage-minio-3
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage-minio
+  local:
+    path: /localdata/minio/data-3
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - node3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;手动创建PV目录&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# node2
+mkdir -p /localdata/minio/data-0
+mkdir -p /localdata/minio/data-1
+   
+# node3
+mkdir -p /localdata/minio/data-2
+mkdir -p /localdata/minio/data-3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;kubeapps-部署-minio&#34;&gt;kubeapps 部署 minio&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;搜索 Chart，选择 bitnami 仓库的 Chart&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;kubeapps-catalog-minio.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;部署&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;kubeapps-minio-deploy.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;安装&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;kubeapps-minio-submit-1.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;修改Values的一些属性&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;属性&lt;/th&gt;
+&lt;th&gt;原始值&lt;/th&gt;
+&lt;th&gt;新值&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;mode&lt;/td&gt;
+&lt;td&gt;standalone&lt;/td&gt;
+&lt;td&gt;distributed&lt;/td&gt;
+&lt;td&gt;集群模式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;resources.requests&lt;/td&gt;
+&lt;td&gt;{}&lt;/td&gt;
+&lt;td&gt;requests:&lt;br/&gt;    cpu: 250m&lt;br/&gt;    memory: 256Mi&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;persistence.size&lt;/td&gt;
+&lt;td&gt;8Gi&lt;/td&gt;
+&lt;td&gt;1Gi&lt;/td&gt;
+&lt;td&gt;该值修改为 minio PV 的一半，如果设置成一样大，有可能出现自动创建的 PVC 无法绑定的情况。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;persistence.storageClass&lt;/td&gt;
+&lt;td&gt;&amp;ldquo;-&amp;rdquo;&lt;/td&gt;
+&lt;td&gt;local-storage-minio&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;networkPolicy.enabled&lt;/td&gt;
+&lt;td&gt;false&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;networkPolicy.allowExternal&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;td&gt;false&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;具体参数请参考官方文档：https://github.com/bitnami/charts/tree/master/bitnami/minio&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;点击下方的 Submit 按钮提交&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;kubeapps-minio-submit-2.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;等待部署完成，即4个Pod都Ready的时候&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;kubeapps-minio-detail.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;开启minio WebUI&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;kubectl port-forward --address 0.0.0.0 svc/minio 9000:9000
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;访问&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;minio-webui.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;账号密码可以通过minio 详情页面查看&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;kubeapps-minio-key-secret.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
     
     <item>
       <title>Kubernetes安装</title>

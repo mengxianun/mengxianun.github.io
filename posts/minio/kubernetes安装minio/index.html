@@ -27,10 +27,10 @@
   
     
   
-  <meta name="description" content="Professor of Artificial Intelligence">
+  <meta name="description" content="通过 helm 在 kubernetes 上安装 minio 前提 3台服务器，CentOS7 系统 已安装K">
 
   
-  <link rel="alternate" hreflang="en-us" href="/404.html">
+  <link rel="alternate" hreflang="en-us" href="/posts/minio/kubernetes%E5%AE%89%E8%A3%85minio/">
 
   
 
@@ -217,7 +217,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="/404.html">
+  <link rel="canonical" href="/posts/minio/kubernetes%E5%AE%89%E8%A3%85minio/">
 
   
   
@@ -233,29 +233,34 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Academic">
-  <meta property="og:url" content="/404.html">
-  <meta property="og:title" content="404 Page not found | Academic">
-  <meta property="og:description" content="Professor of Artificial Intelligence"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="og:url" content="/posts/minio/kubernetes%E5%AE%89%E8%A3%85minio/">
+  <meta property="og:title" content="Kubernetes安装minio | Academic">
+  <meta property="og:description" content="通过 helm 在 kubernetes 上安装 minio 前提 3台服务器，CentOS7 系统 已安装K"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
+      <meta property="article:published_time" content="2020-06-12T13:48:12&#43;08:00">
+    
+    <meta property="article:modified_time" content="2020-06-12T13:48:12&#43;08:00">
   
 
   
 
 
 
-
   
 
 
   
 
 
+  
 
 
 
-  <title>404 Page not found | Academic</title>
+
+
+  <title>Kubernetes安装minio | Academic</title>
 
 </head>
 
@@ -376,7 +381,7 @@
         
 
         <li class="nav-item">
-          <a class="nav-link " href="/posts"><span>Posts</span></a>
+          <a class="nav-link  active" href="/posts"><span>Posts</span></a>
         </li>
 
         
@@ -509,49 +514,561 @@
 </nav>
 
 
-  <div class="universal-wrapper pt-3">
-
-  <h1>Page not found</h1>
-
-  
-  
-  <form class="d-flex align-items-center mb-3">
-    <input name="q" type="search" class="form-control" placeholder="Search..." autocomplete="off">
-  </form>
-  
+  <article class="article">
 
   
 
-  <p>Perhaps you were looking for one of these?</p>
+
+
+
+
+
+
+
+
+
+
+
+  
 
   
   
   
-  <h2>Latest</h2>
-  <ul>
+<div class="article-container pt-3">
+  <h1>Kubernetes安装minio</h1>
+
+  
+
+  
     
-      <li><a href="/posts/minio/kubernetes%E5%AE%89%E8%A3%85minio/">Kubernetes安装minio</a></li>
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
     
-      <li><a href="/posts/kubernetes/kubernetes%E5%AE%89%E8%A3%85/">Kubernetes安装</a></li>
     
-      <li><a href="/posts/minikube%E5%AE%89%E8%A3%85/">Minikube安装</a></li>
+      
     
-      <li><a href="/posts/goofys%E6%8C%82%E8%BD%BDminio%E4%B8%BA%E6%9C%AC%E5%9C%B0%E8%B7%AF%E5%BE%84/">Goofys挂载minio为本地路径</a></li>
-    
-      <li><a href="/posts/springboot%E6%95%B4%E5%90%88elasticsearch%E5%92%8Credis%E7%9A%84%E9%97%AE%E9%A2%98/">SpringBoot整合elasticsearch和redis的问题</a></li>
-    
-      <li><a href="/posts/helm%E5%AE%89%E8%A3%85kfaka/">Helm安装Kfaka</a></li>
-    
-      <li><a href="/posts/helm%E5%AE%89%E8%A3%85mysql/">Helm安装MySQL</a></li>
-    
-      <li><a href="/posts/docker/">Docker</a></li>
-    
-      <li><a href="/posts/hugo-github-pages/">Hugo Github Pages</a></li>
-    
-  </ul>
+    Jun 12, 2020
+  </span>
+  
+
+  
+
+  
+
+  
+  
+  
+
+  
   
 
 </div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>通过 helm 在 kubernetes 上安装 minio</p>
+<h4 id="前提">前提</h4>
+<ul>
+<li>3台服务器，CentOS7 系统</li>
+<li>已安装Kubernetes环境</li>
+</ul>
+<h4 id="安装helm3">安装helm3</h4>
+<ol>
+<li>
+<p>下载安装包 <a href="https://github.com/helm/helm/releases">https://github.com/helm/helm/releases</a>，选择 Linux amd64 版本</p>
+</li>
+<li>
+<p>安装</p>
+<pre><code>tar -zxvf helm-v3.0.0-linux-amd64.tar.gz
+mv linux-amd64/helm /usr/local/bin/helm
+</code></pre>
+</li>
+<li>
+<p>添加仓库</p>
+<pre><code>helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+</code></pre>
+</li>
+</ol>
+<h4 id="安装kubeapps">安装kubeapps</h4>
+<ol>
+<li>
+<p>安装</p>
+<pre><code>helm repo add bitnami https://charts.bitnami.com/bitnami
+kubectl create namespace kubeapps
+helm install kubeapps --namespace kubeapps bitnami/kubeapps --set useHelm3=true
+</code></pre>
+</li>
+<li>
+<p>创建 Kubernetes API token</p>
+<pre><code>kubectl create serviceaccount kubeapps-operator
+kubectl create clusterrolebinding kubeapps-operator --clusterrole=cluster-admin --serviceaccount=default:kubeapps-operator
+</code></pre>
+</li>
+<li>
+<p>查看 token</p>
+<pre><code>kubectl get secret $(kubectl get serviceaccount kubeapps-operator -o jsonpath='{range .secrets[*]}{.name}{&quot;\n&quot;}{end}' | grep kubeapps-operator-token) -o jsonpath='{.data.token}' -o go-template='{{.data.token | base64decode}}' &amp;&amp; echo
+</code></pre>
+</li>
+<li>
+<p>开启 Dashboard</p>
+<pre><code>kubectl port-forward -n kubeapps --address 0.0.0.0 svc/kubeapps 8080:80
+</code></pre>
+</li>
+</ol>
+<h4 id="创建minio-pv">创建minio PV</h4>
+<ol>
+<li>
+<p>创建 StorageClass</p>
+<pre><code>apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-storage-minio
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+</code></pre>
+</li>
+<li>
+<p>创建 minio 需要的 PV</p>
+<p><strong>这里在 k8s的2个 worker 节点上创建了4个pv，因为minio分布式最少需要4个节点，所里这里在2个worker节点上分别创建了2个存储目录。</strong></p>
+<pre><code>apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-storage-minio-0
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage-minio
+  local:
+    path: /localdata/minio/data-0
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - node2
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-storage-minio-1
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage-minio
+  local:
+    path: /localdata/minio/data-1
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - node2
+---
+   
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-storage-minio-2
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage-minio
+  local:
+    path: /localdata/minio/data-2
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - node3
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-storage-minio-3
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage-minio
+  local:
+    path: /localdata/minio/data-3
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - node3
+</code></pre>
+</li>
+<li>
+<p>手动创建PV目录</p>
+<pre><code># node2
+mkdir -p /localdata/minio/data-0
+mkdir -p /localdata/minio/data-1
+   
+# node3
+mkdir -p /localdata/minio/data-2
+mkdir -p /localdata/minio/data-3
+</code></pre>
+</li>
+</ol>
+<h4 id="kubeapps-部署-minio">kubeapps 部署 minio</h4>
+<ol>
+<li>
+<p>搜索 Chart，选择 bitnami 仓库的 Chart</p>
+<p><img src="kubeapps-catalog-minio.png" alt=""></p>
+</li>
+<li>
+<p>部署</p>
+<p><img src="kubeapps-minio-deploy.png" alt=""></p>
+</li>
+<li>
+<p>安装</p>
+<p><img src="kubeapps-minio-submit-1.png" alt=""></p>
+</li>
+<li>
+<p>修改Values的一些属性</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>原始值</th>
+<th>新值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mode</td>
+<td>standalone</td>
+<td>distributed</td>
+<td>集群模式</td>
+</tr>
+<tr>
+<td>resources.requests</td>
+<td>{}</td>
+<td>requests:<br/>    cpu: 250m<br/>    memory: 256Mi</td>
+<td></td>
+</tr>
+<tr>
+<td>persistence.size</td>
+<td>8Gi</td>
+<td>1Gi</td>
+<td>该值修改为 minio PV 的一半，如果设置成一样大，有可能出现自动创建的 PVC 无法绑定的情况。</td>
+</tr>
+<tr>
+<td>persistence.storageClass</td>
+<td>&ldquo;-&rdquo;</td>
+<td>local-storage-minio</td>
+<td></td>
+</tr>
+<tr>
+<td>networkPolicy.enabled</td>
+<td>false</td>
+<td>true</td>
+<td></td>
+</tr>
+<tr>
+<td>networkPolicy.allowExternal</td>
+<td>true</td>
+<td>false</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>具体参数请参考官方文档：https://github.com/bitnami/charts/tree/master/bitnami/minio</p>
+</li>
+<li>
+<p>点击下方的 Submit 按钮提交</p>
+<p><img src="kubeapps-minio-submit-2.png" alt=""></p>
+</li>
+<li>
+<p>等待部署完成，即4个Pod都Ready的时候</p>
+<p><img src="kubeapps-minio-detail.png" alt=""></p>
+</li>
+<li>
+<p>开启minio WebUI</p>
+<pre><code>kubectl port-forward --address 0.0.0.0 svc/minio 9000:9000
+</code></pre>
+</li>
+<li>
+<p>访问</p>
+<p><img src="minio-webui.png" alt=""></p>
+<p>账号密码可以通过minio 详情页面查看</p>
+<p><img src="kubeapps-minio-key-secret.png" alt=""></p>
+</li>
+</ol>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/posts/minio/kubernetes%E5%AE%89%E8%A3%85minio/&amp;text=Kubernetes%e5%ae%89%e8%a3%85minio" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/posts/minio/kubernetes%E5%AE%89%E8%A3%85minio/&amp;t=Kubernetes%e5%ae%89%e8%a3%85minio" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Kubernetes%e5%ae%89%e8%a3%85minio&amp;body=/posts/minio/kubernetes%E5%AE%89%E8%A3%85minio/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/posts/minio/kubernetes%E5%AE%89%E8%A3%85minio/&amp;title=Kubernetes%e5%ae%89%e8%a3%85minio" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Kubernetes%e5%ae%89%e8%a3%85minio%20/posts/minio/kubernetes%E5%AE%89%E8%A3%85minio/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/posts/minio/kubernetes%E5%AE%89%E8%A3%85minio/&amp;title=Kubernetes%e5%ae%89%e8%a3%85minio" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+  
+    
+    
+    
+      
+    
+    
+    
+    <div class="media author-card content-widget-hr">
+      
+        
+        <img class="avatar mr-3 avatar-circle" src="/author/nelson-bighetti/avatar_hu52a603635ecebd45650b162dadabb4e5_12861_270x270_fill_q90_lanczos_center.jpg" alt="Nelson Bighetti">
+      
+
+      <div class="media-body">
+        <h5 class="card-title"><a href="/">Nelson Bighetti</a></h5>
+        <h6 class="card-subtitle">Professor of Artificial Intelligence</h6>
+        <p class="card-text">My research interests include distributed robotics, mobile computing and programmable matter.</p>
+        <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/GeorgeCushen" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/gcushen" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+      </div>
+    </div>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
 
       
 
