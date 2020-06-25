@@ -785,6 +785,17 @@ node1   Ready    master   22m     v1.18.3
 node2   Ready    &lt;none&gt;   2m25s   v1.18.3
 node3   Ready    &lt;none&gt;   2m24s   v1.18.3
 </code></pre>
+<h4 id="问题">问题</h4>
+<ol>
+<li>
+<p>kubernetes 没有启动，手动启动api-server docker容器后出现错误消息：Error response from daemon: cannot join network of a non running container: 56de51eee0b8e0a327c927889e198b84f65cccd8645a092823350c7c10e530af</p>
+<p>可能原因：</p>
+<ol>
+<li>服务器时间不对，重新同步下时间（data -s &ldquo;&quot;）</li>
+</ol>
+</li>
+<li></li>
+</ol>
 
     </div>
 

@@ -631,7 +631,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /localdata/kafka/data-0
+    path: /localstorage/kafka/data-0
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -653,7 +653,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /localdata/kafka/data-1
+    path: /localstorage/kafka/data-1
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -675,7 +675,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /localdata/kafka/data-2
+    path: /localstorage/kafka/data-2
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -685,9 +685,9 @@ spec:
           values:
           - node3
 </code></pre>
-<pre><code>mkdir -p /localdata/kafka/data-0
-mkdir -p /localdata/kafka/data-1
-mkdir -p /localdata/kafka/data-2
+<pre><code>mkdir -p /localstorage/kafka/data-0
+mkdir -p /localstorage/kafka/data-1
+mkdir -p /localstorage/kafka/data-2
 </code></pre>
 <ul>
 <li>创建Zookeeper的PV</li>
@@ -704,7 +704,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /localdata/zookeeper/data-0
+    path: /localstorage/zookeeper/data-0
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -726,7 +726,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /localdata/zookeeper/data-1
+    path: /localstorage/zookeeper/data-1
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -748,7 +748,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /localdata/zookeeper/data-2
+    path: /localstorage/zookeeper/data-2
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -758,9 +758,9 @@ spec:
           values:
           - node3
 </code></pre>
-<pre><code>mkdir -p /localdata/zookeeper/data-0
-mkdir -p /localdata/zookeeper/data-1
-mkdir -p /localdata/zookeeper/data-2
+<pre><code>mkdir -p /localstorage/zookeeper/data-0
+mkdir -p /localstorage/zookeeper/data-1
+mkdir -p /localstorage/zookeeper/data-2
 </code></pre>
 <p>这里需要在节点上手动创建下存储目录 ，Kubernetes不会自动创建它。</p>
 <p>使用本地卷时需要 PersistentVolume nodeAffinity。 它使 Kubernetes 调度程序能够将使用本地卷的 Pods 正确调度到正确的节点。</p>
@@ -801,6 +801,14 @@ persistence:
 </ol>
 <p><strong>在PVC绑定PV时通常根据两个条件来绑定，一个是存储的大小，另一个就是访问模式。</strong></p>
 </li>
+<li>
+<p>zookeeper Cannot open channel to 1 at election</p>
+<p>可能原因：</p>
+<ol>
+<li>启动zookeeper的时候，上一次启动的数据没有删除（挂载PV目录）</li>
+</ol>
+</li>
+<li></li>
 </ol>
 
     </div>

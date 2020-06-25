@@ -5,12 +5,70 @@
     <link>/</link>
       <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <description>Academic</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Fri, 12 Jun 2020 13:48:12 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Thu, 25 Jun 2020 09:08:48 +0800</lastBuildDate>
     <image>
       <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Academic</title>
       <link>/</link>
     </image>
+    
+    <item>
+      <title>Linux后台守护进程运行脚本</title>
+      <link>/posts/linux%E5%90%8E%E5%8F%B0%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B%E8%BF%90%E8%A1%8C%E8%84%9A%E6%9C%AC/</link>
+      <pubDate>Thu, 25 Jun 2020 09:08:48 +0800</pubDate>
+      <guid>/posts/linux%E5%90%8E%E5%8F%B0%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B%E8%BF%90%E8%A1%8C%E8%84%9A%E6%9C%AC/</guid>
+      <description>&lt;p&gt;linux 后台守护进程运行脚本&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;setsid myscript.sh &amp;gt;/dev/null 2&amp;gt;&amp;amp;1 &amp;lt; /dev/null &amp;amp;
+# 输出到日志文件
+setsid myscript.sh &amp;gt;/path/to/logfile 2&amp;gt;&amp;amp;1 &amp;lt; /dev/null &amp;amp;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;参考：https://stackoverflow.com/questions/19233529/run-bash-script-as-daemon&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Goofys挂载minio为本地路径</title>
+      <link>/posts/minio/goofys%E6%8C%82%E8%BD%BDminio%E4%B8%BA%E6%9C%AC%E5%9C%B0%E8%B7%AF%E5%BE%84/</link>
+      <pubDate>Fri, 12 Jun 2020 14:38:16 +0800</pubDate>
+      <guid>/posts/minio/goofys%E6%8C%82%E8%BD%BDminio%E4%B8%BA%E6%9C%AC%E5%9C%B0%E8%B7%AF%E5%BE%84/</guid>
+      <description>&lt;p&gt;goofys 挂载 minio 为本地路径&lt;/p&gt;
+&lt;h4 id=&#34;goofys&#34;&gt;goofys&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;安装&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;wget https://github.com/kahing/goofys/releases/latest/download/goofys -P /usr/local/bin/
+chmod +x /usr/local/bin/goofys
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;配置认证信息&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ cat ~/.aws/credentials
+[default]
+aws_access_key_id = AKID1234567890
+aws_secret_access_key = MY-SECRET-KEY
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;挂载minio&#34;&gt;挂载minio&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;挂载&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;goofys &amp;lt;bucket&amp;gt; &amp;lt;mountpoint&amp;gt;
+goofys &amp;lt;bucket:prefix&amp;gt; &amp;lt;mountpoint&amp;gt; # if you only want to mount objects under a prefix
+   
+# 示例
+goofys --endpoint http://10.111.54.230:9000 test /minio-local-data
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;开机自动挂载&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 修改 /etc/fstab, 添加如下内容
+goofys#bucket /mnt/mountpoint fuse _netdev,allow_other,--file-mode=0666,--dir-mode=0777 0 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
     
     <item>
       <title>Kubernetes安装minio</title>
@@ -468,6 +526,17 @@ node1   Ready    master   22m     v1.18.3
 node2   Ready    &amp;lt;none&amp;gt;   2m25s   v1.18.3
 node3   Ready    &amp;lt;none&amp;gt;   2m24s   v1.18.3
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;问题&#34;&gt;问题&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;kubernetes 没有启动，手动启动api-server docker容器后出现错误消息：Error response from daemon: cannot join network of a non running container: 56de51eee0b8e0a327c927889e198b84f65cccd8645a092823350c7c10e530af&lt;/p&gt;
+&lt;p&gt;可能原因：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;服务器时间不对，重新同步下时间（data -s &amp;ldquo;&amp;quot;）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ol&gt;
 </description>
     </item>
     
@@ -608,7 +677,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /localdata/kafka/data-0
+    path: /localstorage/kafka/data-0
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -630,7 +699,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /localdata/kafka/data-1
+    path: /localstorage/kafka/data-1
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -652,7 +721,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /localdata/kafka/data-2
+    path: /localstorage/kafka/data-2
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -662,9 +731,9 @@ spec:
           values:
           - node3
 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;mkdir -p /localdata/kafka/data-0
-mkdir -p /localdata/kafka/data-1
-mkdir -p /localdata/kafka/data-2
+&lt;pre&gt;&lt;code&gt;mkdir -p /localstorage/kafka/data-0
+mkdir -p /localstorage/kafka/data-1
+mkdir -p /localstorage/kafka/data-2
 &lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
 &lt;li&gt;创建Zookeeper的PV&lt;/li&gt;
@@ -681,7 +750,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /localdata/zookeeper/data-0
+    path: /localstorage/zookeeper/data-0
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -703,7 +772,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /localdata/zookeeper/data-1
+    path: /localstorage/zookeeper/data-1
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -725,7 +794,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /localdata/zookeeper/data-2
+    path: /localstorage/zookeeper/data-2
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -735,9 +804,9 @@ spec:
           values:
           - node3
 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;mkdir -p /localdata/zookeeper/data-0
-mkdir -p /localdata/zookeeper/data-1
-mkdir -p /localdata/zookeeper/data-2
+&lt;pre&gt;&lt;code&gt;mkdir -p /localstorage/zookeeper/data-0
+mkdir -p /localstorage/zookeeper/data-1
+mkdir -p /localstorage/zookeeper/data-2
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;这里需要在节点上手动创建下存储目录 ，Kubernetes不会自动创建它。&lt;/p&gt;
 &lt;p&gt;使用本地卷时需要 PersistentVolume nodeAffinity。 它使 Kubernetes 调度程序能够将使用本地卷的 Pods 正确调度到正确的节点。&lt;/p&gt;
@@ -778,6 +847,14 @@ persistence:
 &lt;/ol&gt;
 &lt;p&gt;&lt;strong&gt;在PVC绑定PV时通常根据两个条件来绑定，一个是存储的大小，另一个就是访问模式。&lt;/strong&gt;&lt;/p&gt;
 &lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;zookeeper Cannot open channel to 1 at election&lt;/p&gt;
+&lt;p&gt;可能原因：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;启动zookeeper的时候，上一次启动的数据没有删除（挂载PV目录）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
 &lt;/ol&gt;
 </description>
     </item>

@@ -4,16 +4,26 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2020-06-12T13:48:12+08:00</lastmod>
+    <lastmod>2020-06-25T09:08:48+08:00</lastmod>
   </url>
   
   <url>
-    <loc>/posts/minio/kubernetes%E5%AE%89%E8%A3%85minio/</loc>
-    <lastmod>2020-06-12T13:48:12+08:00</lastmod>
+    <loc>/posts/linux%E5%90%8E%E5%8F%B0%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B%E8%BF%90%E8%A1%8C%E8%84%9A%E6%9C%AC/</loc>
+    <lastmod>2020-06-25T09:08:48+08:00</lastmod>
   </url>
   
   <url>
     <loc>/posts/</loc>
+    <lastmod>2020-06-25T09:08:48+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/minio/goofys%E6%8C%82%E8%BD%BDminio%E4%B8%BA%E6%9C%AC%E5%9C%B0%E8%B7%AF%E5%BE%84/</loc>
+    <lastmod>2020-06-12T14:38:16+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/minio/kubernetes%E5%AE%89%E8%A3%85minio/</loc>
     <lastmod>2020-06-12T13:48:12+08:00</lastmod>
   </url>
   
