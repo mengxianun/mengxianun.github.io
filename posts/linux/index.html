@@ -27,10 +27,10 @@
   
     
   
-  <meta name="description" content="Professor of Artificial Intelligence">
+  <meta name="description" content="Linux - CentOS hostname 设置 hostname sudo hostnamectl set-hostname newname 修改 /etc/hosts cat &gt;&gt; /etc/hosts &lt;&lt; EOF 192.168.1.100 domain1 192.168.1.101 domain2 EOF 重启netw">
 
   
-  <link rel="alternate" hreflang="en-us" href="/404.html">
+  <link rel="alternate" hreflang="en-us" href="/posts/linux/">
 
   
 
@@ -217,7 +217,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="/404.html">
+  <link rel="canonical" href="/posts/linux/">
 
   
   
@@ -233,29 +233,34 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Academic">
-  <meta property="og:url" content="/404.html">
-  <meta property="og:title" content="404 Page not found | Academic">
-  <meta property="og:description" content="Professor of Artificial Intelligence"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="og:url" content="/posts/linux/">
+  <meta property="og:title" content="Linux | Academic">
+  <meta property="og:description" content="Linux - CentOS hostname 设置 hostname sudo hostnamectl set-hostname newname 修改 /etc/hosts cat &gt;&gt; /etc/hosts &lt;&lt; EOF 192.168.1.100 domain1 192.168.1.101 domain2 EOF 重启netw"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
+      <meta property="article:published_time" content="2020-09-23T16:08:58&#43;08:00">
+    
+    <meta property="article:modified_time" content="2020-09-23T16:08:58&#43;08:00">
   
 
   
 
 
 
-
   
 
 
   
 
 
+  
 
 
 
-  <title>404 Page not found | Academic</title>
+
+
+  <title>Linux | Academic</title>
 
 </head>
 
@@ -376,7 +381,7 @@
         
 
         <li class="nav-item">
-          <a class="nav-link " href="/posts"><span>Posts</span></a>
+          <a class="nav-link  active" href="/posts"><span>Posts</span></a>
         </li>
 
         
@@ -509,51 +514,632 @@
 </nav>
 
 
-  <div class="universal-wrapper pt-3">
-
-  <h1>Page not found</h1>
-
-  
-  
-  <form class="d-flex align-items-center mb-3">
-    <input name="q" type="search" class="form-control" placeholder="Search..." autocomplete="off">
-  </form>
-  
+  <article class="article">
 
   
 
-  <p>Perhaps you were looking for one of these?</p>
+
+
+
+
+
+
+
+
+
+
+
+  
 
   
   
   
-  <h2>Latest</h2>
-  <ul>
+<div class="article-container pt-3">
+  <h1>Linux</h1>
+
+  
+
+  
     
-      <li><a href="/posts/linux/">Linux</a></li>
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
     
-      <li><a href="/posts/redis%E5%AE%89%E8%A3%85/">Redis安装</a></li>
     
-      <li><a href="/posts/minio/goofys%E6%8C%82%E8%BD%BDminio%E4%B8%BA%E6%9C%AC%E5%9C%B0%E8%B7%AF%E5%BE%84/">Goofys挂载minio为本地路径</a></li>
+      
     
-      <li><a href="/posts/minio/kubernetes%E5%AE%89%E8%A3%85minio/">Kubernetes安装minio</a></li>
-    
-      <li><a href="/posts/kubernetes/kubernetes%E5%AE%89%E8%A3%85/">Kubernetes安装</a></li>
-    
-      <li><a href="/posts/minikube%E5%AE%89%E8%A3%85/">Minikube安装</a></li>
-    
-      <li><a href="/posts/goofys%E6%8C%82%E8%BD%BDminio%E4%B8%BA%E6%9C%AC%E5%9C%B0%E8%B7%AF%E5%BE%84/">Goofys挂载minio为本地路径</a></li>
-    
-      <li><a href="/posts/springboot%E6%95%B4%E5%90%88elasticsearch%E5%92%8Credis%E7%9A%84%E9%97%AE%E9%A2%98/">SpringBoot整合elasticsearch和redis的问题</a></li>
-    
-      <li><a href="/posts/helm%E5%AE%89%E8%A3%85kfaka/">Helm安装Kfaka</a></li>
-    
-      <li><a href="/posts/helm%E5%AE%89%E8%A3%85mysql/">Helm安装MySQL</a></li>
-    
-  </ul>
+    Sep 23, 2020
+  </span>
+  
+
+  
+
+  
+
+  
+  
+  
+
+  
   
 
 </div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>Linux - CentOS</p>
+<h4 id="hostname">hostname</h4>
+<ol>
+<li>
+<p>设置 hostname</p>
+<pre><code>sudo hostnamectl set-hostname newname
+</code></pre>
+</li>
+<li>
+<p>修改 /etc/hosts</p>
+<pre><code>cat &gt;&gt; /etc/hosts &lt;&lt; EOF
+192.168.1.100    domain1
+192.168.1.101    domain2
+EOF
+</code></pre>
+</li>
+<li>
+<p>重启networking</p>
+<pre><code>sudo systemctl restart network
+</code></pre>
+</li>
+</ol>
+<h4 id="跟踪脚本">跟踪脚本</h4>
+<pre><code>bash -x *.sh
+</code></pre>
+<h4 id="挂载光盘为本地源">挂载光盘为本地源</h4>
+<ol>
+<li>
+<p>挂载光盘</p>
+<pre><code>mount /dev/cdrom /mnt/cdrom
+</code></pre>
+</li>
+<li>
+<p>配置本地源文件CentOS-Media.repo</p>
+<pre><code>baseurl修改第二个路径为上步的挂载点(/mnt/cdrom)
+enabled=1
+</code></pre>
+</li>
+<li>
+<p>禁用默认的yum网络源</p>
+<pre><code>将yum 网络源配置文件改名为CentOS-Base.repo.bak,否则会先在网络源中寻找适合的包,改名之后直接从本地源读取.
+</code></pre>
+</li>
+</ol>
+<h4 id="硬盘挂载及扩容">硬盘挂载及扩容</h4>
+<h5 id="新硬盘挂载">新硬盘挂载</h5>
+<p><em>参考：http://www.linuxidc.com/Linux/2012-07/65294.htm</em></p>
+<ol>
+<li>
+<p>查看硬盘分区情况</p>
+<pre><code>sudo fdisk -l
+</code></pre>
+</li>
+<li>
+<p>新硬盘分区</p>
+<pre><code>sudo fdisk /dev/sda
+Command (m for help)
+n：增加新分区
+e：扩展分区
+Partition number(1-4)：默认1,只分一个区
+cylinder：默认
+分区大小：默认
+p：显示分区表
+w：保存分区表
+</code></pre>
+</li>
+<li>
+<p>查看分区</p>
+</li>
+<li>
+<p>格式化</p>
+<pre><code>sudo mkfs -t ext4 /dev/sda
+</code></pre>
+</li>
+<li>
+<p>挂载目录</p>
+<pre><code>sudo mount -t ext4 /dev/sda /mnt/sda
+</code></pre>
+</li>
+<li>
+<p>查看</p>
+<pre><code>df -h
+</code></pre>
+</li>
+<li>
+<p>开机自动挂载(编辑/etc/fstab)</p>
+<pre><code>在最后一行加入
+/dev/sda1 /mnt/sda1 ext4 defaults 1 2
+或者
+UUID=37eaa526-5d96-4237-8468-603df5216ce9 /mnt/sda ext4 defaults 0 3
+**UUID可以通过使用blkid命令来查看(sudo blkid /dev/sda)
+**０表示不备份；１表示要将整个&lt;file system&gt;中的内容备份。此处建议设置为０。
+**０表示不检查；挂载点为分区／（根分区）必须设置为１，其他的挂载点不能设置为１
+分区      挂载目录 文件格式
+</code></pre>
+</li>
+</ol>
+<h5 id="新硬盘扩容根节点">新硬盘扩容根节点</h5>
+<ol>
+<li>
+<p>查看硬盘分区情况</p>
+<pre><code>sudo fdisk -l
+</code></pre>
+</li>
+<li>
+<p>创建物理卷</p>
+<pre><code>pvcreate /dev/sda
+</code></pre>
+</li>
+<li>
+<p>查看创建好的物理卷</p>
+<pre><code>pvdisplay /dev/sda
+</code></pre>
+</li>
+<li>
+<p>卷组扩容</p>
+<pre><code>vgextend gafis70-vg /dev/sda
+</code></pre>
+</li>
+<li>
+<p>查看扩容之后的卷组信息</p>
+<pre><code>vgdisplay
+</code></pre>
+</li>
+<li>
+<p>逻辑卷扩容</p>
+<pre><code># 指定大小
+lvextend -l +8G /dev/gafis-vg/root
+# 全部
+lvextend -l +100%free /dev/gafis-vg/root
+</code></pre>
+</li>
+<li>
+<p>查看扩容之后的逻辑卷</p>
+<pre><code>lvdisplay /dev/gafis-vg/root
+</code></pre>
+</li>
+<li>
+<p>文件系统扩容</p>
+<pre><code>resize2fs /dev/mapper/gafis--vg-root
+</code></pre>
+</li>
+<li>
+<p>查看</p>
+<pre><code>df -h
+</code></pre>
+</li>
+</ol>
+<h4 id="ssh">ssh</h4>
+<h5 id="免密">免密</h5>
+<ol>
+<li>
+<p>生成密钥</p>
+<pre><code>ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+</code></pre>
+</li>
+<li>
+<p>将公钥追加到认证文件中(本机免密)</p>
+<pre><code>cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys
+</code></pre>
+</li>
+<li>
+<p>将公钥追加到其他机器</p>
+<pre><code>ssh-copy-id root@remote_ip
+</code></pre>
+</li>
+</ol>
+<h5 id="免密2">免密2</h5>
+<ol>
+<li>
+<p>生成密钥</p>
+<pre><code>ssh-keygen -t rsa -C &quot;pass&quot;
+文件名: 回车
+密码: pass
+</code></pre>
+</li>
+<li>
+<p>将公钥追加到其他机器</p>
+<pre><code>ssh-copy-id root@remote_ip
+</code></pre>
+</li>
+<li>
+<p>ssh-agent</p>
+<pre><code>ssh-agent bash
+ssh-add .ssh/id_rsa
+输入密码
+</code></pre>
+</li>
+</ol>
+<h4 id="防火墙">防火墙</h4>
+<p>&ndash; firewalld默认开放ssh服务, 默认规则都添加到zone=public
+参数
+&ndash;zone #作用域
+&ndash;add-port=80/tcp #添加端口，格式为：端口/通讯协议
+&ndash;permanent #永久生效，没有此参数重启后失效</p>
+<ul>
+<li>
+<p>开放http(80)服务</p>
+<pre><code>firewall-cmd --add-service=http
+</code></pre>
+</li>
+<li>
+<p>永久开放http服务</p>
+<pre><code>firewall-cmd --add-service=http --permanent
+</code></pre>
+</li>
+<li>
+<p>永久关闭</p>
+<pre><code>firewall-cmd --remove-service=http --permanent
+</code></pre>
+</li>
+<li>
+<p>重启防火墙生效</p>
+<pre><code>firewall-cmd --reload
+</code></pre>
+</li>
+<li>
+<p>查看</p>
+<pre><code># 所有
+firewall-cmd --list-all
+# 端口
+firewall-cmd --list-ports
+# 服务
+firewall-cmd --list-services
+</code></pre>
+</li>
+<li>
+<p>查询服务启用状态</p>
+<pre><code>firewall-cmd --query-service http
+</code></pre>
+</li>
+<li>
+<p>永久开放端口</p>
+<pre><code>firewall-cmd --add-port=3128/tcp --permanent
+</code></pre>
+</li>
+</ul>
+<h4 id="ulimit最大进程数和最大文件打开数">ulimit（最大进程数和最大文件打开数)</h4>
+<ol>
+<li>
+<p>查看</p>
+<pre><code># 最大文件打开数
+ulimit -n
+# 最大进程数
+ulimit -u
+</code></pre>
+</li>
+<li>
+<p>临时修改（重启后失效）</p>
+<pre><code>ulimit -n 204800
+ulimit -u 204800
+</code></pre>
+</li>
+<li>
+<p>永久修改，修改 /etc/security/limits.conf 文件，在文件末尾添加</p>
+<pre><code>* soft nofile 204800
+* hard nofile 204800
+* soft nproc 204800
+* hard nproc 204800
+    
+*          代表针对所有用户 
+noproc     是代表最大进程数 
+nofile     是代表最大文件打开数
+</code></pre>
+</li>
+</ol>
+<h4 id="vmmax_map_count">vm.max_map_count</h4>
+<ol>
+<li>
+<p>查看</p>
+<pre><code>sysctl -a | grep vm.max_map_count
+</code></pre>
+</li>
+<li>
+<p>临时修改（重启后失效）</p>
+<pre><code>sysctl -w vm.max_map_count=262144
+</code></pre>
+</li>
+<li>
+<p>永久修改，修改 /etc/sysctl.conf 文件，在文件末尾添加</p>
+<pre><code>vm.max_map_count=262144
+</code></pre>
+</li>
+<li>
+<p>永久生效</p>
+<pre><code>sysctl -p
+</code></pre>
+</li>
+</ol>
+<h4 id="后台守护进程">后台守护进程</h4>
+<pre><code>setsid myscript.sh &gt;/dev/null 2&gt;&amp;1 &lt; /dev/null &amp;
+# 输出到日志文件
+setsid myscript.sh &gt;/path/to/logfile 2&gt;&amp;1 &lt; /dev/null &amp;
+</code></pre>
+<h4 id="swap">swap</h4>
+<h5 id="添加swap分区">添加swap分区</h5>
+<pre><code># 添加8G的swap分区
+dd if=/dev/zero of=/home/swap bs=1024 count=8388608
+mkswap /home/swap
+swapon /home/swap
+</code></pre>
+<h5 id="禁用swap">禁用swap</h5>
+<pre><code>sudo swapoff -a
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+</code></pre>
+<h4 id="禁用selinux">禁用SELinux</h4>
+<ol>
+<li>
+<p>查看状态</p>
+<pre><code>sestatus
+</code></pre>
+</li>
+<li>
+<p>临时关闭</p>
+<pre><code>sudo setenforce 0
+</code></pre>
+</li>
+<li>
+<p>永久关闭</p>
+<pre><code>sed -i 's/enforcing/disabled/g' /etc/selinux/config /etc/selinux/config
+</code></pre>
+</li>
+</ol>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/posts/linux/&amp;text=Linux" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/posts/linux/&amp;t=Linux" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Linux&amp;body=/posts/linux/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/posts/linux/&amp;title=Linux" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Linux%20/posts/linux/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/posts/linux/&amp;title=Linux" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+  
+    
+    
+    
+      
+    
+    
+    
+    <div class="media author-card content-widget-hr">
+      
+        
+        <img class="avatar mr-3 avatar-circle" src="/author/nelson-bighetti/avatar_hu52a603635ecebd45650b162dadabb4e5_12861_270x270_fill_q90_lanczos_center.jpg" alt="Nelson Bighetti">
+      
+
+      <div class="media-body">
+        <h5 class="card-title"><a href="/">Nelson Bighetti</a></h5>
+        <h6 class="card-subtitle">Professor of Artificial Intelligence</h6>
+        <p class="card-text">My research interests include distributed robotics, mobile computing and programmable matter.</p>
+        <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/GeorgeCushen" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/gcushen" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+      </div>
+    </div>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
 
       
 

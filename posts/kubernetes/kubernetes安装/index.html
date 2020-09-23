@@ -785,6 +785,17 @@ node1   Ready    master   22m     v1.18.3
 node2   Ready    &lt;none&gt;   2m25s   v1.18.3
 node3   Ready    &lt;none&gt;   2m24s   v1.18.3
 </code></pre>
+<h4 id="维护">维护</h4>
+<ol>
+<li>
+<p>删除Evicted状态Pod</p>
+<pre><code>kubectl get pods | grep Evicted | awk '{print $1}' | xargs kubectl delete pod
+# 指定命名空间
+kubectl get pods -n ns | grep Evicted | awk '{print $1}' | xargs kubectl delete pod -n ns
+</code></pre>
+</li>
+<li></li>
+</ol>
 <h4 id="问题">问题</h4>
 <ol>
 <li>

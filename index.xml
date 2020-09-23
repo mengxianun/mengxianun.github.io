@@ -5,7 +5,7 @@
     <link>/</link>
       <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <description>Academic</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Thu, 25 Jun 2020 09:08:48 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 23 Sep 2020 16:08:58 +0800</lastBuildDate>
     <image>
       <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Academic</title>
@@ -13,16 +13,402 @@
     </image>
     
     <item>
-      <title>Linux后台守护进程运行脚本</title>
-      <link>/posts/linux%E5%90%8E%E5%8F%B0%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B%E8%BF%90%E8%A1%8C%E8%84%9A%E6%9C%AC/</link>
-      <pubDate>Thu, 25 Jun 2020 09:08:48 +0800</pubDate>
-      <guid>/posts/linux%E5%90%8E%E5%8F%B0%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B%E8%BF%90%E8%A1%8C%E8%84%9A%E6%9C%AC/</guid>
-      <description>&lt;p&gt;linux 后台守护进程运行脚本&lt;/p&gt;
+      <title>Linux</title>
+      <link>/posts/linux/</link>
+      <pubDate>Wed, 23 Sep 2020 16:08:58 +0800</pubDate>
+      <guid>/posts/linux/</guid>
+      <description>&lt;p&gt;Linux - CentOS&lt;/p&gt;
+&lt;h4 id=&#34;hostname&#34;&gt;hostname&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;设置 hostname&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo hostnamectl set-hostname newname
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;修改 /etc/hosts&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cat &amp;gt;&amp;gt; /etc/hosts &amp;lt;&amp;lt; EOF
+192.168.1.100    domain1
+192.168.1.101    domain2
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;重启networking&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo systemctl restart network
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;跟踪脚本&#34;&gt;跟踪脚本&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;bash -x *.sh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;挂载光盘为本地源&#34;&gt;挂载光盘为本地源&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;挂载光盘&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mount /dev/cdrom /mnt/cdrom
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;配置本地源文件CentOS-Media.repo&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;baseurl修改第二个路径为上步的挂载点(/mnt/cdrom)
+enabled=1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;禁用默认的yum网络源&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;将yum 网络源配置文件改名为CentOS-Base.repo.bak,否则会先在网络源中寻找适合的包,改名之后直接从本地源读取.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;硬盘挂载及扩容&#34;&gt;硬盘挂载及扩容&lt;/h4&gt;
+&lt;h5 id=&#34;新硬盘挂载&#34;&gt;新硬盘挂载&lt;/h5&gt;
+&lt;p&gt;&lt;em&gt;参考：http://www.linuxidc.com/Linux/2012-07/65294.htm&lt;/em&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;查看硬盘分区情况&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo fdisk -l
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;新硬盘分区&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo fdisk /dev/sda
+Command (m for help)
+n：增加新分区
+e：扩展分区
+Partition number(1-4)：默认1,只分一个区
+cylinder：默认
+分区大小：默认
+p：显示分区表
+w：保存分区表
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;查看分区&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;格式化&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo mkfs -t ext4 /dev/sda
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;挂载目录&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo mount -t ext4 /dev/sda /mnt/sda
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;查看&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;df -h
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;开机自动挂载(编辑/etc/fstab)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;在最后一行加入
+/dev/sda1 /mnt/sda1 ext4 defaults 1 2
+或者
+UUID=37eaa526-5d96-4237-8468-603df5216ce9 /mnt/sda ext4 defaults 0 3
+**UUID可以通过使用blkid命令来查看(sudo blkid /dev/sda)
+**０表示不备份；１表示要将整个&amp;lt;file system&amp;gt;中的内容备份。此处建议设置为０。
+**０表示不检查；挂载点为分区／（根分区）必须设置为１，其他的挂载点不能设置为１
+分区      挂载目录 文件格式
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h5 id=&#34;新硬盘扩容根节点&#34;&gt;新硬盘扩容根节点&lt;/h5&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;查看硬盘分区情况&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo fdisk -l
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;创建物理卷&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;pvcreate /dev/sda
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;查看创建好的物理卷&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;pvdisplay /dev/sda
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;卷组扩容&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;vgextend gafis70-vg /dev/sda
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;查看扩容之后的卷组信息&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;vgdisplay
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;逻辑卷扩容&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 指定大小
+lvextend -l +8G /dev/gafis-vg/root
+# 全部
+lvextend -l +100%free /dev/gafis-vg/root
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;查看扩容之后的逻辑卷&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;lvdisplay /dev/gafis-vg/root
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;文件系统扩容&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;resize2fs /dev/mapper/gafis--vg-root
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;查看&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;df -h
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;ssh&#34;&gt;ssh&lt;/h4&gt;
+&lt;h5 id=&#34;免密&#34;&gt;免密&lt;/h5&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;生成密钥&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ssh-keygen -t rsa -P &#39;&#39; -f ~/.ssh/id_rsa
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;将公钥追加到认证文件中(本机免密)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cat ~/.ssh/id_rsa.pub &amp;gt;&amp;gt; ~/.ssh/authorized_keys
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;将公钥追加到其他机器&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ssh-copy-id root@remote_ip
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h5 id=&#34;免密2&#34;&gt;免密2&lt;/h5&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;生成密钥&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ssh-keygen -t rsa -C &amp;quot;pass&amp;quot;
+文件名: 回车
+密码: pass
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;将公钥追加到其他机器&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ssh-copy-id root@remote_ip
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;ssh-agent&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ssh-agent bash
+ssh-add .ssh/id_rsa
+输入密码
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;防火墙&#34;&gt;防火墙&lt;/h4&gt;
+&lt;p&gt;&amp;ndash; firewalld默认开放ssh服务, 默认规则都添加到zone=public
+参数
+&amp;ndash;zone #作用域
+&amp;ndash;add-port=80/tcp #添加端口，格式为：端口/通讯协议
+&amp;ndash;permanent #永久生效，没有此参数重启后失效&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;开放http(80)服务&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;firewall-cmd --add-service=http
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;永久开放http服务&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;firewall-cmd --add-service=http --permanent
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;永久关闭&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;firewall-cmd --remove-service=http --permanent
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;重启防火墙生效&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;firewall-cmd --reload
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;查看&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 所有
+firewall-cmd --list-all
+# 端口
+firewall-cmd --list-ports
+# 服务
+firewall-cmd --list-services
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;查询服务启用状态&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;firewall-cmd --query-service http
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;永久开放端口&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;firewall-cmd --add-port=3128/tcp --permanent
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;ulimit最大进程数和最大文件打开数&#34;&gt;ulimit（最大进程数和最大文件打开数)&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;查看&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 最大文件打开数
+ulimit -n
+# 最大进程数
+ulimit -u
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;临时修改（重启后失效）&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ulimit -n 204800
+ulimit -u 204800
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;永久修改，修改 /etc/security/limits.conf 文件，在文件末尾添加&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;* soft nofile 204800
+* hard nofile 204800
+* soft nproc 204800
+* hard nproc 204800
+    
+*          代表针对所有用户 
+noproc     是代表最大进程数 
+nofile     是代表最大文件打开数
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;vmmax_map_count&#34;&gt;vm.max_map_count&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;查看&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sysctl -a | grep vm.max_map_count
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;临时修改（重启后失效）&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sysctl -w vm.max_map_count=262144
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;永久修改，修改 /etc/sysctl.conf 文件，在文件末尾添加&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;vm.max_map_count=262144
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;永久生效&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sysctl -p
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;后台守护进程&#34;&gt;后台守护进程&lt;/h4&gt;
 &lt;pre&gt;&lt;code&gt;setsid myscript.sh &amp;gt;/dev/null 2&amp;gt;&amp;amp;1 &amp;lt; /dev/null &amp;amp;
 # 输出到日志文件
 setsid myscript.sh &amp;gt;/path/to/logfile 2&amp;gt;&amp;amp;1 &amp;lt; /dev/null &amp;amp;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;参考：https://stackoverflow.com/questions/19233529/run-bash-script-as-daemon&lt;/p&gt;
+&lt;h4 id=&#34;swap&#34;&gt;swap&lt;/h4&gt;
+&lt;h5 id=&#34;添加swap分区&#34;&gt;添加swap分区&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;# 添加8G的swap分区
+dd if=/dev/zero of=/home/swap bs=1024 count=8388608
+mkswap /home/swap
+swapon /home/swap
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;禁用swap&#34;&gt;禁用swap&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;sudo swapoff -a
+sudo sed -i &#39;/ swap / s/^\(.*\)$/#\1/g&#39; /etc/fstab
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;禁用selinux&#34;&gt;禁用SELinux&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;查看状态&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sestatus
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;临时关闭&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo setenforce 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;永久关闭&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sed -i &#39;s/enforcing/disabled/g&#39; /etc/selinux/config /etc/selinux/config
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Redis安装</title>
+      <link>/posts/redis%E5%AE%89%E8%A3%85/</link>
+      <pubDate>Tue, 01 Sep 2020 17:11:11 +0800</pubDate>
+      <guid>/posts/redis%E5%AE%89%E8%A3%85/</guid>
+      <description>&lt;h4 id=&#34;redis-cluster&#34;&gt;Redis Cluster&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;注：建议6个节点。在没有6个节点的情况下，每个节点可以创建2个实例&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;下载安装包&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;wget http://download.redis.io/releases/redis-5.0.5.tar.gz
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;解压&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;tar zxf redis-5.0.5.tar.gz -C /opt/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;安装&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;yum -y install gcc-c++
+cd /opt/redis-5.0.5/ &amp;amp;&amp;amp; make MALLOC=libc
+./utils/install_server.sh
+# 1 Please select the redis port for this instance: [6379] -- 
+# 2 Please select the redis config file name [/etc/redis/6379.conf] --
+# 3 Please select the redis log file name [/var/log/redis_6379.log] --
+# 4 Please select the data directory for this instance [/var/lib/redis/6379] --
+# 5 Please select the redis executable path [] -- /opt/redis-5.0.5/src/redis-server
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;修改配置 /etc/redis/6379.conf&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 绑定地址
+bind 0.0.0.0
+# 端口
+port 6379
+# 安全密码
+requirepass foobared
+## =========集群相关=========
+cluster-enabled yes
+cluster-config-file nodes-6379.conf
+cluster-node-timeout 15000
+appendonly yes
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;启动&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;systemctl restart redis_6379
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;创建集群&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 3个主节点, 3个副本节点
+redis-cli --cluster create 192.168.201.101:6379 192.168.201.101:6380 192.168.201.102:6379 192.168.201.102:6380 192.168.201.103:6379 192.168.201.103:6380 -a foobared --cluster-replicas 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;创建别名&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 修改 ~/.bashrc，添加如下内容
+alias redis-cli=/opt/redis-5.0.5/src/redis-cli
+alias redis-server=/opt/redis-5.0.5/src/redis-server
+# 生效
+source ~/.bashrc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
 </description>
     </item>
     
@@ -526,6 +912,17 @@ node1   Ready    master   22m     v1.18.3
 node2   Ready    &amp;lt;none&amp;gt;   2m25s   v1.18.3
 node3   Ready    &amp;lt;none&amp;gt;   2m24s   v1.18.3
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;维护&#34;&gt;维护&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;删除Evicted状态Pod&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;kubectl get pods | grep Evicted | awk &#39;{print $1}&#39; | xargs kubectl delete pod
+# 指定命名空间
+kubectl get pods -n ns | grep Evicted | awk &#39;{print $1}&#39; | xargs kubectl delete pod -n ns
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ol&gt;
 &lt;h4 id=&#34;问题&#34;&gt;问题&lt;/h4&gt;
 &lt;ol&gt;
 &lt;li&gt;

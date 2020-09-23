@@ -27,10 +27,10 @@
   
     
   
-  <meta name="description" content="Professor of Artificial Intelligence">
+  <meta name="description" content="Redis Cluster 注：建议6个节点。在没有6个节点的情况下，每个节点可以创">
 
   
-  <link rel="alternate" hreflang="en-us" href="/404.html">
+  <link rel="alternate" hreflang="en-us" href="/posts/redis%E5%AE%89%E8%A3%85/">
 
   
 
@@ -217,7 +217,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="/404.html">
+  <link rel="canonical" href="/posts/redis%E5%AE%89%E8%A3%85/">
 
   
   
@@ -233,29 +233,34 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Academic">
-  <meta property="og:url" content="/404.html">
-  <meta property="og:title" content="404 Page not found | Academic">
-  <meta property="og:description" content="Professor of Artificial Intelligence"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="og:url" content="/posts/redis%E5%AE%89%E8%A3%85/">
+  <meta property="og:title" content="Redis安装 | Academic">
+  <meta property="og:description" content="Redis Cluster 注：建议6个节点。在没有6个节点的情况下，每个节点可以创"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
+      <meta property="article:published_time" content="2020-09-01T17:11:11&#43;08:00">
+    
+    <meta property="article:modified_time" content="2020-09-01T17:11:11&#43;08:00">
   
 
   
 
 
 
-
   
 
 
   
 
 
+  
 
 
 
-  <title>404 Page not found | Academic</title>
+
+
+  <title>Redis安装 | Academic</title>
 
 </head>
 
@@ -376,7 +381,7 @@
         
 
         <li class="nav-item">
-          <a class="nav-link " href="/posts"><span>Posts</span></a>
+          <a class="nav-link  active" href="/posts"><span>Posts</span></a>
         </li>
 
         
@@ -509,51 +514,370 @@
 </nav>
 
 
-  <div class="universal-wrapper pt-3">
-
-  <h1>Page not found</h1>
-
-  
-  
-  <form class="d-flex align-items-center mb-3">
-    <input name="q" type="search" class="form-control" placeholder="Search..." autocomplete="off">
-  </form>
-  
+  <article class="article">
 
   
 
-  <p>Perhaps you were looking for one of these?</p>
+
+
+
+
+
+
+
+
+
+
+
+  
 
   
   
   
-  <h2>Latest</h2>
-  <ul>
+<div class="article-container pt-3">
+  <h1>Redis安装</h1>
+
+  
+
+  
     
-      <li><a href="/posts/linux/">Linux</a></li>
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
     
-      <li><a href="/posts/redis%E5%AE%89%E8%A3%85/">Redis安装</a></li>
     
-      <li><a href="/posts/minio/goofys%E6%8C%82%E8%BD%BDminio%E4%B8%BA%E6%9C%AC%E5%9C%B0%E8%B7%AF%E5%BE%84/">Goofys挂载minio为本地路径</a></li>
+      
     
-      <li><a href="/posts/minio/kubernetes%E5%AE%89%E8%A3%85minio/">Kubernetes安装minio</a></li>
-    
-      <li><a href="/posts/kubernetes/kubernetes%E5%AE%89%E8%A3%85/">Kubernetes安装</a></li>
-    
-      <li><a href="/posts/minikube%E5%AE%89%E8%A3%85/">Minikube安装</a></li>
-    
-      <li><a href="/posts/goofys%E6%8C%82%E8%BD%BDminio%E4%B8%BA%E6%9C%AC%E5%9C%B0%E8%B7%AF%E5%BE%84/">Goofys挂载minio为本地路径</a></li>
-    
-      <li><a href="/posts/springboot%E6%95%B4%E5%90%88elasticsearch%E5%92%8Credis%E7%9A%84%E9%97%AE%E9%A2%98/">SpringBoot整合elasticsearch和redis的问题</a></li>
-    
-      <li><a href="/posts/helm%E5%AE%89%E8%A3%85kfaka/">Helm安装Kfaka</a></li>
-    
-      <li><a href="/posts/helm%E5%AE%89%E8%A3%85mysql/">Helm安装MySQL</a></li>
-    
-  </ul>
+    Sep 1, 2020
+  </span>
+  
+
+  
+
+  
+
+  
+  
+  
+
+  
   
 
 </div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <h4 id="redis-cluster">Redis Cluster</h4>
+<p><strong>注：建议6个节点。在没有6个节点的情况下，每个节点可以创建2个实例</strong></p>
+<ol>
+<li>
+<p>下载安装包</p>
+<pre><code>wget http://download.redis.io/releases/redis-5.0.5.tar.gz
+</code></pre>
+</li>
+<li>
+<p>解压</p>
+<pre><code>tar zxf redis-5.0.5.tar.gz -C /opt/
+</code></pre>
+</li>
+<li>
+<p>安装</p>
+<pre><code>yum -y install gcc-c++
+cd /opt/redis-5.0.5/ &amp;&amp; make MALLOC=libc
+./utils/install_server.sh
+# 1 Please select the redis port for this instance: [6379] -- 
+# 2 Please select the redis config file name [/etc/redis/6379.conf] --
+# 3 Please select the redis log file name [/var/log/redis_6379.log] --
+# 4 Please select the data directory for this instance [/var/lib/redis/6379] --
+# 5 Please select the redis executable path [] -- /opt/redis-5.0.5/src/redis-server
+</code></pre>
+</li>
+<li>
+<p>修改配置 /etc/redis/6379.conf</p>
+<pre><code># 绑定地址
+bind 0.0.0.0
+# 端口
+port 6379
+# 安全密码
+requirepass foobared
+## =========集群相关=========
+cluster-enabled yes
+cluster-config-file nodes-6379.conf
+cluster-node-timeout 15000
+appendonly yes
+</code></pre>
+</li>
+<li>
+<p>启动</p>
+<pre><code>systemctl restart redis_6379
+</code></pre>
+</li>
+<li>
+<p>创建集群</p>
+<pre><code># 3个主节点, 3个副本节点
+redis-cli --cluster create 192.168.201.101:6379 192.168.201.101:6380 192.168.201.102:6379 192.168.201.102:6380 192.168.201.103:6379 192.168.201.103:6380 -a foobared --cluster-replicas 1
+</code></pre>
+</li>
+<li>
+<p>创建别名</p>
+<pre><code># 修改 ~/.bashrc，添加如下内容
+alias redis-cli=/opt/redis-5.0.5/src/redis-cli
+alias redis-server=/opt/redis-5.0.5/src/redis-server
+# 生效
+source ~/.bashrc
+</code></pre>
+</li>
+</ol>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/posts/redis%E5%AE%89%E8%A3%85/&amp;text=Redis%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/posts/redis%E5%AE%89%E8%A3%85/&amp;t=Redis%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Redis%e5%ae%89%e8%a3%85&amp;body=/posts/redis%E5%AE%89%E8%A3%85/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/posts/redis%E5%AE%89%E8%A3%85/&amp;title=Redis%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Redis%e5%ae%89%e8%a3%85%20/posts/redis%E5%AE%89%E8%A3%85/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/posts/redis%E5%AE%89%E8%A3%85/&amp;title=Redis%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+  
+    
+    
+    
+      
+    
+    
+    
+    <div class="media author-card content-widget-hr">
+      
+        
+        <img class="avatar mr-3 avatar-circle" src="/author/nelson-bighetti/avatar_hu52a603635ecebd45650b162dadabb4e5_12861_270x270_fill_q90_lanczos_center.jpg" alt="Nelson Bighetti">
+      
+
+      <div class="media-body">
+        <h5 class="card-title"><a href="/">Nelson Bighetti</a></h5>
+        <h6 class="card-subtitle">Professor of Artificial Intelligence</h6>
+        <p class="card-text">My research interests include distributed robotics, mobile computing and programmable matter.</p>
+        <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/GeorgeCushen" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/gcushen" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+      </div>
+    </div>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
 
       
 
