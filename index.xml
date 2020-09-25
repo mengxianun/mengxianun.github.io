@@ -5,7 +5,7 @@
     <link>/</link>
       <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <description>Academic</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 23 Sep 2020 16:08:58 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Fri, 25 Sep 2020 11:08:58 +0800</lastBuildDate>
     <image>
       <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Academic</title>
@@ -13,11 +13,197 @@
     </image>
     
     <item>
+      <title>MinIO安装</title>
+      <link>/posts/minio%E5%AE%89%E8%A3%85/</link>
+      <pubDate>Fri, 25 Sep 2020 11:08:58 +0800</pubDate>
+      <guid>/posts/minio%E5%AE%89%E8%A3%85/</guid>
+      <description>&lt;p&gt;MinIO&lt;/p&gt;
+&lt;h4 id=&#34;安装&#34;&gt;安装&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;wget https://dl.min.io/server/minio/release/linux-amd64/minio -O /usr/local/bin/minio
+chmod +x /usr/local/bin/minio
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;环境变量&#34;&gt;环境变量&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;export MINIO_ACCESS_KEY=&amp;lt;ACCESS_KEY&amp;gt;
+export MINIO_SECRET_KEY=&amp;lt;SECRET_KEY&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;单节点&#34;&gt;单节点&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;minio server /data
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;分布式&#34;&gt;分布式&lt;/h4&gt;
+&lt;h5 id=&#34;单节点多磁盘&#34;&gt;单节点多磁盘&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;minio server /data{1...4}
+or
+minio server /data1 /data2 /data3 /data4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;多节点多磁盘&#34;&gt;多节点多磁盘&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;minio server http://host{1...n}/export{1...m}
+or
+minio server http://host1/export1 http://host1/export2 http://host2/export1 http://host2/export2 ...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;注：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;所有运行分布式 MinIO 的节点需要具有相同的访问密钥和秘密密钥才能连接。为了实现这一点，建议在执行 MINIO 服务器命令之前，将所有节点上的访问密钥和秘密密钥作为环境变量 MINIO _ access _ key 和 MINIO _ secret _ key 导出。&lt;/li&gt;
+&lt;li&gt;分布式 Minio 使用的磁盘里必须是干净的，里面没有数据。&lt;/li&gt;
+&lt;li&gt;MinIO 创建每组4到16个驱动器的擦除编码集。您提供的驱动器总数必须是这些数字之一的倍数。&lt;/li&gt;
+&lt;li&gt;_ MinIO 选择最大的 EC 设置大小，将其划分为驱动器的总数或给定的节点的总数——确保保持均匀分布，即每个节点参与每个设置的驱动器数相等。&lt;/li&gt;
+&lt;li&gt;建议所有运行分布式 MinIO 设置的节点都是同构的，即相同的操作系统、相同数量的磁盘和相同的网络互连。&lt;/li&gt;
+&lt;li&gt;运行分布式 MinIO 实例的服务器时间差不应超过15分钟。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;服务&#34;&gt;服务&lt;/h4&gt;
+&lt;h5 id=&#34;单节点-1&#34;&gt;单节点&lt;/h5&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;创建用户&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;useradd minio
+passwd minio
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;创建默认配置文件&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ cat &amp;lt;&amp;lt;EOT &amp;gt;&amp;gt; /etc/default/minio
+# Volume to be used for MinIO server.
+MINIO_VOLUMES=&amp;quot;/tmp/minio/&amp;quot;
+# Use if you want to run MinIO on a custom port.
+MINIO_OPTS=&amp;quot;--address :9199&amp;quot;
+# Access Key of the server.
+MINIO_ACCESS_KEY=Server-Access-Key
+# Secret key of the server.
+MINIO_SECRET_KEY=Server-Secret-Key
+   
+EOT
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;下载 service 文件 &lt;a href=&#34;https://raw.githubusercontent.com/minio/minio-service/master/linux-systemd/minio.service&#34;&gt;https://raw.githubusercontent.com/minio/minio-service/master/linux-systemd/minio.service&lt;/a&gt; 到 /etc/systemd/system/，&lt;strong&gt;并替换里面的用户和组&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=MinIO
+Documentation=https://docs.min.io
+Wants=network-online.target
+After=network-online.target
+AssertFileIsExecutable=/usr/local/bin/minio
+   
+[Service]
+WorkingDirectory=/usr/local/
+   
+User=minio-user
+Group=minio-user
+   
+EnvironmentFile=/etc/default/minio
+ExecStartPre=/bin/bash -c &amp;quot;if [ -z \&amp;quot;${MINIO_VOLUMES}\&amp;quot; ]; then echo \&amp;quot;Variable MINIO_VOLUMES not set in /etc/default/minio\&amp;quot;; exit 1; fi&amp;quot;
+   
+ExecStart=/usr/local/bin/minio server $MINIO_OPTS $MINIO_VOLUMES
+   
+# Let systemd restart this service always
+Restart=always
+   
+# Specifies the maximum file descriptor number that can be opened by this process
+LimitNOFILE=65536
+   
+# Disable timeout logic and wait until process is stopped
+TimeoutStopSec=infinity
+SendSIGKILL=no
+   
+[Install]
+WantedBy=multi-user.target
+   
+# Built for ${project.name}-${project.version} (${project.name})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;启动&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;systemctl daemon-reload
+systemctl start minio
+systemctl enable minio
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h5 id=&#34;分布式-1&#34;&gt;分布式&lt;/h5&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;创建用户&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;useradd minio
+passwd minio
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;创建存储目录&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mkdir /export
+sudo chown -R minio /export &amp;amp;&amp;amp; sudo chmod u+rxw /export
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;创建默认配置文件&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ cat &amp;lt;&amp;lt;EOT &amp;gt;&amp;gt; /etc/default/minio
+# Remote volumes to be used for MinIO server.
+MINIO_VOLUMES=http://node{1...6}/export{1...32}
+# Use if you want to run MinIO on a custom port.
+MINIO_OPTS=&amp;quot;--address :9199&amp;quot;
+# Access Key of the server.
+MINIO_ACCESS_KEY=Server-Access-Key
+# Secret key of the server.
+MINIO_SECRET_KEY=Server-Secret-Key
+   
+EOT
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;下载 service 文件 &lt;a href=&#34;https://raw.githubusercontent.com/minio/minio-service/master/linux-systemd/distributed/minio.service&#34;&gt;https://raw.githubusercontent.com/minio/minio-service/master/linux-systemd/distributed/minio.service&lt;/a&gt; 到 /etc/systemd/system/，&lt;strong&gt;并替换里面的用户和组&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=MinIO
+Documentation=https://docs.min.io
+Wants=network-online.target
+After=network-online.target
+AssertFileIsExecutable=/usr/local/bin/minio
+   
+[Service]
+WorkingDirectory=/usr/local
+   
+User=minio-user
+Group=minio-user
+   
+EnvironmentFile=-/etc/default/minio
+ExecStartPre=/bin/bash -c &amp;quot;if [ -z \&amp;quot;${MINIO_VOLUMES}\&amp;quot; ]; then echo \&amp;quot;Variable MINIO_VOLUMES not set in /etc/default/minio\&amp;quot;; exit 1; fi&amp;quot;
+ExecStartPre=/bin/bash -c &amp;quot;if [ -z \&amp;quot;${MINIO_ACCESS_KEY}\&amp;quot; ]; then echo \&amp;quot;Variable MINIO_ACCESS_KEY not set in /etc/default/minio\&amp;quot;; exit 1; fi&amp;quot;
+ExecStartPre=/bin/bash -c &amp;quot;if [ -z \&amp;quot;${MINIO_SECRET_KEY}\&amp;quot; ]; then echo \&amp;quot;Variable MINIO_SECRET_KEY not set in /etc/default/minio\&amp;quot;; exit 1; fi&amp;quot;
+   
+ExecStart=/usr/local/bin/minio server $MINIO_OPTS $MINIO_VOLUMES
+   
+# Let systemd restart this service always
+Restart=always
+   
+# Specifies the maximum file descriptor number that can be opened by this process
+LimitNOFILE=65536
+   
+# Disable timeout logic and wait until process is stopped
+TimeoutStopSec=infinity
+SendSIGKILL=no
+   
+[Install]
+WantedBy=multi-user.target
+   
+# Built for ${project.name}-${project.version} (${project.name})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;启动&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;systemctl daemon-reload
+systemctl start minio
+systemctl enable minio
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Linux</title>
       <link>/posts/linux/</link>
       <pubDate>Wed, 23 Sep 2020 16:08:58 +0800</pubDate>
       <guid>/posts/linux/</guid>
       <description>&lt;p&gt;Linux - CentOS&lt;/p&gt;
+&lt;h4 id=&#34;查看系统版本&#34;&gt;查看系统版本&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;cat /etc/redhat-release
+&lt;/code&gt;&lt;/pre&gt;
 &lt;h4 id=&#34;hostname&#34;&gt;hostname&lt;/h4&gt;
 &lt;ol&gt;
 &lt;li&gt;
