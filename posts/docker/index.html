@@ -607,6 +607,15 @@ sudo systemctl enable docker
 </code></pre>
 <p>参考：</p>
 <p><a href="https://geekflare.com/docker-installation-guide/">https://geekflare.com/docker-installation-guide/</a></p>
+<h4 id="删除所有none镜像">删除所有none镜像</h4>
+<pre><code>docker rmi $(docker images | awk '/^&lt;none&gt;/ { print $3 }')
+</code></pre>
+<h3 id="dockerfile">Dockerfile</h3>
+<h4 id="时区">时区</h4>
+<pre><code>FROM alpine:3.6
+RUN apk add --no-cache tzdata
+ENV TZ Asia/Shanghai
+</code></pre>
 
     </div>
 

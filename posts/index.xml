@@ -192,6 +192,72 @@ systemctl enable minio
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
+&lt;h4 id=&#34;客户端&#34;&gt;客户端&lt;/h4&gt;
+&lt;h5 id=&#34;安装-1&#34;&gt;安装&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;wget https://dl.min.io/client/mc/release/linux-amd64/mc -O /usr/local/bin/mc
+chmod +x /usr/local/bin/mc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;常用命令&#34;&gt;常用命令&lt;/h5&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ls&lt;/td&gt;
+&lt;td&gt;list buckets and objects&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h4 id=&#34;挂载minio为本地路径&#34;&gt;挂载minio为本地路径&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;安装goofys&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;yum install -y fuse
+wget https://github.com/kahing/goofys/releases/latest/download/goofys -P /usr/local/bin/
+chmod +x /usr/local/bin/goofys
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;配置认证信息&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ mkdir ~/.aws
+$ cat &amp;lt;&amp;lt;EOT &amp;gt; ~/.aws/credentials
+[default]
+aws_access_key_id=Server-Access-Key
+aws_secret_access_key=Server-Secret-Key
+EOT
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;挂载&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;goofys &amp;lt;bucket&amp;gt; &amp;lt;mountpoint&amp;gt;
+goofys &amp;lt;bucket:prefix&amp;gt; &amp;lt;mountpoint&amp;gt; # if you only want to mount objects under a prefix
+   
+# 示例
+goofys --endpoint http://10.111.54.230:9000 test /minio-local-data
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;开机自动挂载&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 修改 /etc/fstab, 添加如下内容
+goofys#bucket /mnt/mountpoint fuse _netdev,allow_other,--file-mode=0666,--dir-mode=0777 0 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h5 id=&#34;卸载&#34;&gt;卸载&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;fusermount -u /path/to/mountpoint
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
@@ -526,6 +592,9 @@ sudo sed -i &#39;/ swap / s/^\(.*\)$/#\1/g&#39; /etc/fstab
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
+&lt;h4 id=&#34;监控文件夹&#34;&gt;监控文件夹&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;watch -n 0.1 ls &amp;lt;your_folder&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
@@ -1514,6 +1583,15 @@ sudo systemctl enable docker
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;参考：&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://geekflare.com/docker-installation-guide/&#34;&gt;https://geekflare.com/docker-installation-guide/&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&#34;删除所有none镜像&#34;&gt;删除所有none镜像&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;docker rmi $(docker images | awk &#39;/^&amp;lt;none&amp;gt;/ { print $3 }&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;dockerfile&#34;&gt;Dockerfile&lt;/h3&gt;
+&lt;h4 id=&#34;时区&#34;&gt;时区&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;FROM alpine:3.6
+RUN apk add --no-cache tzdata
+ENV TZ Asia/Shanghai
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

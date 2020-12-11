@@ -769,6 +769,72 @@ systemctl enable minio
 </code></pre>
 </li>
 </ol>
+<h4 id="客户端">客户端</h4>
+<h5 id="安装-1">安装</h5>
+<pre><code>wget https://dl.min.io/client/mc/release/linux-amd64/mc -O /usr/local/bin/mc
+chmod +x /usr/local/bin/mc
+</code></pre>
+<h5 id="常用命令">常用命令</h5>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ls</td>
+<td>list buckets and objects</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="挂载minio为本地路径">挂载minio为本地路径</h4>
+<ol>
+<li>
+<p>安装goofys</p>
+<pre><code>yum install -y fuse
+wget https://github.com/kahing/goofys/releases/latest/download/goofys -P /usr/local/bin/
+chmod +x /usr/local/bin/goofys
+</code></pre>
+</li>
+<li>
+<p>配置认证信息</p>
+<pre><code>$ mkdir ~/.aws
+$ cat &lt;&lt;EOT &gt; ~/.aws/credentials
+[default]
+aws_access_key_id=Server-Access-Key
+aws_secret_access_key=Server-Secret-Key
+EOT
+</code></pre>
+</li>
+<li>
+<p>挂载</p>
+<pre><code>goofys &lt;bucket&gt; &lt;mountpoint&gt;
+goofys &lt;bucket:prefix&gt; &lt;mountpoint&gt; # if you only want to mount objects under a prefix
+   
+# 示例
+goofys --endpoint http://10.111.54.230:9000 test /minio-local-data
+</code></pre>
+</li>
+<li>
+<p>开机自动挂载</p>
+<pre><code># 修改 /etc/fstab, 添加如下内容
+goofys#bucket /mnt/mountpoint fuse _netdev,allow_other,--file-mode=0666,--dir-mode=0777 0 0
+</code></pre>
+</li>
+</ol>
+<h5 id="卸载">卸载</h5>
+<pre><code>fusermount -u /path/to/mountpoint
+</code></pre>
 
     </div>
 
