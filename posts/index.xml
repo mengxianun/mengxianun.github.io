@@ -1231,7 +1231,7 @@ clusterrolebinding.rbac.authorization.k8s.io/admin-user created
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;sign in&lt;/p&gt;
+&lt;p&gt;登录&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;h4 id=&#34;维护&#34;&gt;维护&lt;/h4&gt;
