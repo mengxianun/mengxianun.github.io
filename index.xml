@@ -5,12 +5,154 @@
     <link>/</link>
       <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <description>Academic</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Fri, 25 Sep 2020 11:08:58 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Mon, 18 Jan 2021 11:33:05 +0800</lastBuildDate>
     <image>
       <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Academic</title>
       <link>/</link>
     </image>
+    
+    <item>
+      <title>ELK</title>
+      <link>/posts/elk/</link>
+      <pubDate>Mon, 18 Jan 2021 11:33:05 +0800</pubDate>
+      <guid>/posts/elk/</guid>
+      <description>&lt;p&gt;ELK&lt;/p&gt;
+&lt;h3 id=&#34;docker-compose方式部署&#34;&gt;Docker Compose方式部署&lt;/h3&gt;
+&lt;p&gt;采集docker容器日志&lt;/p&gt;
+&lt;h4 id=&#34;目录结构&#34;&gt;目录结构&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;.
+├── docker-compose.yml
+├── filebeat.yml
+└── pipeline
+    └── logstash.conf
+
+1 directory, 3 files
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;docker-composeyml&#34;&gt;docker-compose.yml&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;version: &#39;3.3&#39;
+services:
+
+  elasticsearch:
+    hostname: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:$ELASTIC_VERSION
+    environment:
+      - TZ=Asia/Shanghai
+      - bootstrap.memory_lock=true
+      - &amp;quot;ES_JAVA_OPTS=-Xms512m -Xmx512m&amp;quot;
+      - discovery.type=single-node
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - stack
+
+  kibana:
+    hostname: kibana
+    image: docker.elastic.co/kibana/kibana:$ELASTIC_VERSION
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - elasticsearch
+    ports:
+      - 5601:5601
+    networks:
+      - stack
+
+  logstash:
+    hostname: logstash
+    image: docker.elastic.co/logstash/logstash:$ELASTIC_VERSION
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./pipeline/:/usr/share/logstash/pipeline/
+    ports:
+      - 5044:5044
+    depends_on:
+      - elasticsearch
+    networks:
+      - stack
+
+  filebeat:
+    hostname: filebeat
+    image: docker.elastic.co/beats/filebeat:${ELASTIC_VERSION}
+    environment:
+      - TZ=Asia/Shanghai
+    user: root
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command: filebeat -e
+    depends_on:
+      - elasticsearch
+      - kibana
+    restart: on-failure
+    networks:
+      - stack
+
+volumes:
+  esdata1:
+    driver: local
+networks:
+  stack:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;filebeatyml&#34;&gt;filebeat.yml&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;filebeat.autodiscover:
+  providers:
+    - type: docker
+      templates:
+        - condition:
+            contains:
+              docker.container.labels.com.docker.compose.project.working_dir: metasearch
+          config:
+            - type: container
+              paths:
+                - /var/lib/docker/containers/${data.docker.container.id}/*.log
+              multiline.pattern: &#39;^([0-9]{4}-[0-9]{2}-[0-9]{2})&#39;
+              multiline.negate: true
+              multiline.match: after
+
+output.logstash:
+  hosts: [&amp;quot;logstash:5044&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;logstashconf&#34;&gt;logstash.conf&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;input {
+  beats {
+    port =&amp;gt; 5044
+  }
+}
+
+filter {
+  grok {
+    match =&amp;gt; {
+      &amp;quot;message&amp;quot; =&amp;gt; [
+        &amp;quot;(?m)%{TIMESTAMP_ISO8601:timestamp}%{SPACE}%{LOGLEVEL:level} %{NUMBER} --- \[\s*%{DATA:thread}\] [A-Za-z0-9.]*\.(?&amp;lt;class&amp;gt;[A-Za-z0-9#_$]+)\s*:\s+%{GREEDYDATA:logmessage}&amp;quot;,
+        &amp;quot;(?m)%{TIMESTAMP_ISO8601:timestamp}%{SPACE}%{LOGLEVEL:level} \[%{DATA:thread}\][A-Za-z0-9.]*\.(?&amp;lt;class&amp;gt;[A-Za-z0-9#_$]+)\.(?&amp;lt;method&amp;gt;[A-Za-z0-9#_$&amp;lt;&amp;gt;]+):%{NUMBER:line} -%{GREEDYDATA:logmessage}&amp;quot;
+      ]
+    }
+  }
+  date {
+    match =&amp;gt; [&amp;quot;timestamp&amp;quot;, &amp;quot;ISO8601&amp;quot;, &amp;quot;yyyy-MM-dd HH:mm:ss.SSS&amp;quot;]
+  }
+  mutate {
+    remove_field =&amp;gt; [&amp;quot;docker&amp;quot;, &amp;quot;container&amp;quot;, &amp;quot;agent&amp;quot;, &amp;quot;ecs&amp;quot;, &amp;quot;stream&amp;quot;]
+    add_field =&amp;gt; {
+      &amp;quot;service&amp;quot; =&amp;gt; &amp;quot;%{[docker][container][labels][com_docker_compose_service]}&amp;quot;
+    }
+  }
+}
+
+output {
+  elasticsearch {
+    hosts =&amp;gt; [&amp;quot;http://elasticsearch:9200&amp;quot;]
+    index =&amp;gt; &amp;quot;metasearch-log-%{+YYYY.MM.dd}&amp;quot; 
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>MinIO安装</title>
