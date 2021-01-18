@@ -990,7 +990,7 @@ mkdir -p /localdata/minio/data-3
     </item>
     
     <item>
-      <title>Kubernetes安装</title>
+      <title>Kubernetes</title>
       <link>/posts/kubernetes/kubernetes/</link>
       <pubDate>Tue, 09 Jun 2020 18:36:00 +0800</pubDate>
       <guid>/posts/kubernetes/kubernetes/</guid>
