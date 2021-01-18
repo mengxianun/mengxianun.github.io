@@ -27,7 +27,7 @@
   
     
   
-  <meta name="description" content="安装(CentOS) 1 更新Yum sudo yum update 2 添加docker仓库">
+  <meta name="description" content="Docker(CentOS) 安装(开发环境) ## 1 更新Yum sudo yum update ## 2 添加docker仓">
 
   
   <link rel="alternate" hreflang="en-us" href="/posts/docker/">
@@ -235,7 +235,7 @@
   <meta property="og:site_name" content="Academic">
   <meta property="og:url" content="/posts/docker/">
   <meta property="og:title" content="Docker | Academic">
-  <meta property="og:description" content="安装(CentOS) 1 更新Yum sudo yum update 2 添加docker仓库"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="og:description" content="Docker(CentOS) 安装(开发环境) ## 1 更新Yum sudo yum update ## 2 添加docker仓"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
@@ -594,19 +594,29 @@
   <div class="article-container">
 
     <div class="article-style">
-      <h3 id="安装centos">安装(CentOS)</h3>
-<p>1 更新Yum</p>
-<pre><code>sudo yum update
-</code></pre>
-<p>2 添加docker仓库并安装docker</p>
-<pre><code>curl -fsSL https://get.docker.com/ | sh
-</code></pre>
-<p>3 启动docker</p>
-<pre><code>sudo systemctl start docker
+      <h3 id="dockercentos">Docker(CentOS)</h3>
+<h4 id="安装开发环境">安装(开发环境)</h4>
+<pre><code>## 1 更新Yum
+sudo yum update
+## 2 添加docker仓库并安装docker
+curl -fsSL https://get.docker.com/ | sh
+## 3 启动docker
+sudo systemctl start docker
 sudo systemctl enable docker
 </code></pre>
 <p>参考：</p>
 <p><a href="https://geekflare.com/docker-installation-guide/">https://geekflare.com/docker-installation-guide/</a></p>
+<h4 id="修改存储位置">修改存储位置</h4>
+<pre><code>## 1 创建文件 /etc/docker/daemon.json, 内容如下
+{
+  &quot;data-root&quot;: &quot;/mnt/newlocation&quot;
+}
+## 2 重启docker
+sudo systemctl restart docker
+</code></pre>
+<h4 id="删除冗余数据">删除冗余数据</h4>
+<pre><code>docker system prune -a
+</code></pre>
 <h4 id="删除所有none镜像">删除所有none镜像</h4>
 <pre><code>docker rmi $(docker images | awk '/^&lt;none&gt;/ { print $3 }')
 </code></pre>
@@ -616,6 +626,16 @@ sudo systemctl enable docker
 RUN apk add --no-cache tzdata
 ENV TZ Asia/Shanghai
 </code></pre>
+<h4 id="examples">examples</h4>
+<h5 id="spring-boot">Spring Boot</h5>
+<pre><code>FROM openjdk:8-jre-alpine
+RUN apk add --no-cache tzdata
+ENV TZ Asia/Shanghai
+WORKDIR /app
+COPY springboot.jar /app
+ENTRYPOINT [&quot;java&quot;, &quot;-jar&quot;, &quot;springboot.jar&quot;]
+</code></pre>
+<h3 id="docker-compose">Docker Compose</h3>
 
     </div>
 

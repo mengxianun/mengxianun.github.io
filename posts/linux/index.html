@@ -862,6 +862,14 @@ noproc     是代表最大进程数
 nofile     是代表最大文件打开数
 </code></pre>
 </li>
+<li>
+<p>简化</p>
+<pre><code>echo &quot;*   soft    nofile  65535&quot; &gt;&gt; /etc/security/limits.conf
+echo &quot;*   hard    nofile  65535&quot; &gt;&gt; /etc/security/limits.conf
+echo &quot;*   soft    nproc  65535&quot; &gt;&gt; /etc/security/limits.conf
+echo &quot;*   hard    nproc  65535&quot; &gt;&gt; /etc/security/limits.conf
+</code></pre>
+</li>
 </ol>
 <h4 id="vmmax_map_count">vm.max_map_count</h4>
 <ol>
@@ -887,9 +895,9 @@ nofile     是代表最大文件打开数
 </li>
 </ol>
 <h4 id="后台守护进程">后台守护进程</h4>
-<pre><code>setsid myscript.sh &gt;/dev/null 2&gt;&amp;1 &lt; /dev/null &amp;
+<pre><code>setsid myscript.sh &gt;/dev/null 2&gt;&amp;1 &amp;
 # 输出到日志文件
-setsid myscript.sh &gt;/path/to/logfile 2&gt;&amp;1 &lt; /dev/null &amp;
+setsid myscript.sh &gt;/path/to/logfile 2&gt;&amp;1 &amp;
 </code></pre>
 <h4 id="swap">swap</h4>
 <h5 id="添加swap分区">添加swap分区</h5>
@@ -922,6 +930,16 @@ sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 </ol>
 <h4 id="监控文件夹">监控文件夹</h4>
 <pre><code>watch -n 0.1 ls &lt;your_folder&gt;
+</code></pre>
+<h4 id="查看cpu个数">查看CPU个数</h4>
+<pre><code>## 方法1
+grep -c ^processor /proc/cpuinfo
+## 方法2
+nproc
+## 方法3
+getconf _NPROCESSORS_ONLN
+## 方法4
+lscpu | grep 'CPU(s):' | head -1 | awk '{print $2}'
 </code></pre>
 
     </div>
