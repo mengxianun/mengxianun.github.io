@@ -606,6 +606,9 @@ sudo systemctl enable docker
 </code></pre>
 <p>参考：</p>
 <p><a href="https://geekflare.com/docker-installation-guide/">https://geekflare.com/docker-installation-guide/</a></p>
+<h4 id="卸载">卸载</h4>
+<pre><code>sudo yum remove -y docker-ce docker-ce-cli
+</code></pre>
 <h4 id="修改存储位置">修改存储位置</h4>
 <pre><code>## 1 创建文件 /etc/docker/daemon.json, 内容如下
 {
@@ -619,6 +622,9 @@ sudo systemctl restart docker
 </code></pre>
 <h4 id="删除所有none镜像">删除所有none镜像</h4>
 <pre><code>docker rmi $(docker images | awk '/^&lt;none&gt;/ { print $3 }')
+</code></pre>
+<h4 id="删除所有容器">删除所有容器</h4>
+<pre><code>docker stop $(docker ps -q) &amp; docker rm $(docker ps -aq)
 </code></pre>
 <h3 id="dockerfile">Dockerfile</h3>
 <h4 id="时区">时区</h4>
@@ -636,6 +642,7 @@ COPY springboot.jar /app
 ENTRYPOINT [&quot;java&quot;, &quot;-jar&quot;, &quot;springboot.jar&quot;]
 </code></pre>
 <h3 id="docker-compose">Docker Compose</h3>
+<h4 id="web">Web</h4>
 
     </div>
 
