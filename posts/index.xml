@@ -1833,7 +1833,7 @@ COPY springboot.jar /app
 ENTRYPOINT [&amp;quot;java&amp;quot;, &amp;quot;-jar&amp;quot;, &amp;quot;springboot.jar&amp;quot;]
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id=&#34;docker-compose&#34;&gt;Docker Compose&lt;/h3&gt;
-&lt;h4 id=&#34;web-应用&#34;&gt;Web 应用&lt;/h4&gt;
+&lt;h4 id=&#34;web&#34;&gt;Web&lt;/h4&gt;
 </description>
     </item>
     
