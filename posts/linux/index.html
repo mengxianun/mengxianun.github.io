@@ -941,6 +941,10 @@ getconf _NPROCESSORS_ONLN
 ## 方法4
 lscpu | grep 'CPU(s):' | head -1 | awk '{print $2}'
 </code></pre>
+<h4 id="代理上网">代理上网</h4>
+<pre><code>## /etc/profile
+export http_proxy=&quot;http://proxy_username:proxy_password@proxy_ip:proxy_port&quot;
+</code></pre>
 
     </div>
 
