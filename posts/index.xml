@@ -1392,16 +1392,18 @@ kubectl get pods -n ns | grep Evicted | awk &#39;{print $1}&#39; | xargs kubectl
 &lt;li&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h4 id=&#34;问题&#34;&gt;问题&lt;/h4&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;kubernetes 没有启动，手动启动api-server docker容器后出现错误消息：Error response from daemon: cannot join network of a non running container: 56de51eee0b8e0a327c927889e198b84f65cccd8645a092823350c7c10e530af&lt;/p&gt;
-&lt;p&gt;可能原因：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;服务器时间不对，重新同步下时间（data -s &amp;ldquo;&amp;quot;）&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;/li&gt;
-&lt;/ol&gt;
+&lt;h5 id=&#34;kubernetes-没有启动手动启动api-server-docker容器后出现错误消息error-response-from-daemon-cannot-join-network-of-a-non-running-container-56de51eee0b8e0a327c927889e198b84f65cccd8645a092823350c7c10e530af&#34;&gt;kubernetes 没有启动，手动启动api-server docker容器后出现错误消息：Error response from daemon: cannot join network of a non running container: 56de51eee0b8e0a327c927889e198b84f65cccd8645a092823350c7c10e530af&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;## 原因1
+服务器时间不对，重新同步下时间（data -s &amp;quot;&amp;quot;）
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;plugin-flannel-does-not-support-config-version-&#34;&gt;[plugin flannel does not support config version &amp;quot;&amp;rdquo;&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;## /etc/cni/net.d/10-flannel.conflist, 添加如下内容
+{
+  &amp;quot;cniVersion&amp;quot;: &amp;quot;0.3.1&amp;quot;,
+  &amp;quot;name&amp;quot;: &amp;quot;cbr0&amp;quot;,
+  ...
+}
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
@@ -1795,6 +1797,9 @@ sudo systemctl enable docker
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;参考：&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://geekflare.com/docker-installation-guide/&#34;&gt;https://geekflare.com/docker-installation-guide/&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&#34;卸载&#34;&gt;卸载&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;sudo yum remove -y docker-ce docker-ce-cli
+&lt;/code&gt;&lt;/pre&gt;
 &lt;h4 id=&#34;修改存储位置&#34;&gt;修改存储位置&lt;/h4&gt;
 &lt;pre&gt;&lt;code&gt;## 1 创建文件 /etc/docker/daemon.json, 内容如下
 {
@@ -1808,6 +1813,9 @@ sudo systemctl restart docker
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h4 id=&#34;删除所有none镜像&#34;&gt;删除所有none镜像&lt;/h4&gt;
 &lt;pre&gt;&lt;code&gt;docker rmi $(docker images | awk &#39;/^&amp;lt;none&amp;gt;/ { print $3 }&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;删除所有容器&#34;&gt;删除所有容器&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;docker stop $(docker ps -q) &amp;amp; docker rm $(docker ps -aq)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id=&#34;dockerfile&#34;&gt;Dockerfile&lt;/h3&gt;
 &lt;h4 id=&#34;时区&#34;&gt;时区&lt;/h4&gt;
@@ -1825,6 +1833,24 @@ COPY springboot.jar /app
 ENTRYPOINT [&amp;quot;java&amp;quot;, &amp;quot;-jar&amp;quot;, &amp;quot;springboot.jar&amp;quot;]
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id=&#34;docker-compose&#34;&gt;Docker Compose&lt;/h3&gt;
+&lt;h4 id=&#34;mysql&#34;&gt;MySQL&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;version: &#39;3.3&#39;
+services:
+
+  db:
+    image: mysql:5.7
+    restart: always
+    ports:
+      - &#39;3306:3306&#39;
+    environment:
+      MYSQL_ROOT_PASSWORD: 1qazXSW@
+    volumes:
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
