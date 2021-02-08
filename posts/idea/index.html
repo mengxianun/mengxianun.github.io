@@ -27,10 +27,10 @@
   
     
   
-  <meta name="description" content="Docker(CentOS) 安装(开发环境) ## 1 更新Yum sudo yum update ## 2 添加docker仓">
+  <meta name="description" content="IDEA 配置 问题 控制台乱码 Help-&gt;Edit Custom VM Options&hellip;，添">
 
   
-  <link rel="alternate" hreflang="en-us" href="/posts/docker/">
+  <link rel="alternate" hreflang="en-us" href="/posts/idea/">
 
   
 
@@ -217,7 +217,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="/posts/docker/">
+  <link rel="canonical" href="/posts/idea/">
 
   
   
@@ -233,15 +233,15 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Academic">
-  <meta property="og:url" content="/posts/docker/">
-  <meta property="og:title" content="Docker | Academic">
-  <meta property="og:description" content="Docker(CentOS) 安装(开发环境) ## 1 更新Yum sudo yum update ## 2 添加docker仓"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="og:url" content="/posts/idea/">
+  <meta property="og:title" content="IDEA | Academic">
+  <meta property="og:description" content="IDEA 配置 问题 控制台乱码 Help-&gt;Edit Custom VM Options&hellip;，添"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
-      <meta property="article:published_time" content="2020-05-13T17:56:03&#43;08:00">
+      <meta property="article:published_time" content="2021-02-08T17:15:34&#43;08:00">
     
-    <meta property="article:modified_time" content="2020-05-13T17:56:03&#43;08:00">
+    <meta property="article:modified_time" content="2021-02-08T17:15:34&#43;08:00">
   
 
   
@@ -260,7 +260,7 @@
 
 
 
-  <title>Docker | Academic</title>
+  <title>IDEA | Academic</title>
 
 </head>
 
@@ -535,7 +535,7 @@
   
   
 <div class="article-container pt-3">
-  <h1>Docker</h1>
+  <h1>IDEA</h1>
 
   
 
@@ -554,7 +554,7 @@
     
       
     
-    May 13, 2020
+    Feb 8, 2021
   </span>
   
 
@@ -594,72 +594,11 @@
   <div class="article-container">
 
     <div class="article-style">
-      <h3 id="dockercentos">Docker(CentOS)</h3>
-<h4 id="安装开发环境">安装(开发环境)</h4>
-<pre><code>## 1 更新Yum
-sudo yum update
-## 2 添加docker仓库并安装docker
-curl -fsSL https://get.docker.com/ | sh
-## 3 启动docker
-sudo systemctl start docker
-sudo systemctl enable docker
-</code></pre>
-<p>参考：</p>
-<p><a href="https://geekflare.com/docker-installation-guide/">https://geekflare.com/docker-installation-guide/</a></p>
-<h4 id="卸载">卸载</h4>
-<pre><code>sudo yum remove -y docker-ce docker-ce-cli
-</code></pre>
-<h4 id="修改存储位置">修改存储位置</h4>
-<pre><code>## 1 创建文件 /etc/docker/daemon.json, 内容如下
-{
-  &quot;data-root&quot;: &quot;/mnt/newlocation&quot;
-}
-## 2 重启docker
-sudo systemctl restart docker
-</code></pre>
-<h4 id="删除冗余数据">删除冗余数据</h4>
-<pre><code>docker system prune -a
-</code></pre>
-<h4 id="删除所有none镜像">删除所有none镜像</h4>
-<pre><code>docker rmi $(docker images | awk '/^&lt;none&gt;/ { print $3 }')
-</code></pre>
-<h4 id="删除所有容器">删除所有容器</h4>
-<pre><code>docker stop $(docker ps -q) &amp; docker rm $(docker ps -aq)
-</code></pre>
-<h3 id="dockerfile">Dockerfile</h3>
-<h4 id="时区">时区</h4>
-<pre><code>FROM alpine:3.6
-RUN apk add --no-cache tzdata
-ENV TZ Asia/Shanghai
-</code></pre>
-<h4 id="examples">examples</h4>
-<h5 id="spring-boot">Spring Boot</h5>
-<pre><code>FROM openjdk:8-jre-alpine
-RUN apk add --no-cache tzdata
-ENV TZ Asia/Shanghai
-WORKDIR /app
-COPY springboot.jar /app
-ENTRYPOINT [&quot;java&quot;, &quot;-jar&quot;, &quot;springboot.jar&quot;]
-</code></pre>
-<h3 id="docker-compose">Docker Compose</h3>
-<h4 id="mysql">MySQL</h4>
-<pre><code>version: '3.3'
-services:
-
-  db:
-    image: mysql:5.7
-    restart: always
-    ports:
-      - '3306:3306'
-    environment:
-      MYSQL_ROOT_PASSWORD: 1qazXSW@
-    volumes:
-      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - db-data:/var/lib/mysql
-
-volumes:
-  db-data:
-</code></pre>
+      <p>IDEA</p>
+<h3 id="配置">配置</h3>
+<h3 id="问题">问题</h3>
+<h4 id="控制台乱码">控制台乱码</h4>
+<p>Help-&gt;Edit Custom VM Options&hellip;，添加-Dfile.encoding=UTF-8</p>
 
     </div>
 
@@ -682,7 +621,7 @@ volumes:
       
       
       <li>
-        <a href="https://twitter.com/intent/tweet?url=/posts/docker/&amp;text=Docker" target="_blank" rel="noopener" class="share-btn-twitter">
+        <a href="https://twitter.com/intent/tweet?url=/posts/idea/&amp;text=IDEA" target="_blank" rel="noopener" class="share-btn-twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -695,7 +634,7 @@ volumes:
       
       
       <li>
-        <a href="https://www.facebook.com/sharer.php?u=/posts/docker/&amp;t=Docker" target="_blank" rel="noopener" class="share-btn-facebook">
+        <a href="https://www.facebook.com/sharer.php?u=/posts/idea/&amp;t=IDEA" target="_blank" rel="noopener" class="share-btn-facebook">
           <i class="fab fa-facebook"></i>
         </a>
       </li>
@@ -708,7 +647,7 @@ volumes:
       
       
       <li>
-        <a href="mailto:?subject=Docker&amp;body=/posts/docker/" target="_blank" rel="noopener" class="share-btn-email">
+        <a href="mailto:?subject=IDEA&amp;body=/posts/idea/" target="_blank" rel="noopener" class="share-btn-email">
           <i class="fas fa-envelope"></i>
         </a>
       </li>
@@ -721,7 +660,7 @@ volumes:
       
       
       <li>
-        <a href="https://www.linkedin.com/shareArticle?url=/posts/docker/&amp;title=Docker" target="_blank" rel="noopener" class="share-btn-linkedin">
+        <a href="https://www.linkedin.com/shareArticle?url=/posts/idea/&amp;title=IDEA" target="_blank" rel="noopener" class="share-btn-linkedin">
           <i class="fab fa-linkedin-in"></i>
         </a>
       </li>
@@ -734,7 +673,7 @@ volumes:
       
       
       <li>
-        <a href="https://web.whatsapp.com/send?text=Docker%20/posts/docker/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+        <a href="https://web.whatsapp.com/send?text=IDEA%20/posts/idea/" target="_blank" rel="noopener" class="share-btn-whatsapp">
           <i class="fab fa-whatsapp"></i>
         </a>
       </li>
@@ -747,7 +686,7 @@ volumes:
       
       
       <li>
-        <a href="https://service.weibo.com/share/share.php?url=/posts/docker/&amp;title=Docker" target="_blank" rel="noopener" class="share-btn-weibo">
+        <a href="https://service.weibo.com/share/share.php?url=/posts/idea/&amp;title=IDEA" target="_blank" rel="noopener" class="share-btn-weibo">
           <i class="fab fa-weibo"></i>
         </a>
       </li>

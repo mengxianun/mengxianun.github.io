@@ -27,10 +27,10 @@
   
     
   
-  <meta name="description" content="Docker(CentOS) 安装(开发环境) ## 1 更新Yum sudo yum update ## 2 添加docker仓">
+  <meta name="description" content="MinIO 安装 wget https://dl.min.io/server/minio/release/linux-amd64/minio -O /usr/local/bin/minio chmod &#43;x /usr/local/bin/minio 环境变量 export MINIO_ACCESS_KEY=&lt;ACCESS_KEY&gt; export MINIO_SECRET_KEY=&lt;SECRET_KEY&gt; 单节点 minio server /data 分布式 单节点">
 
   
-  <link rel="alternate" hreflang="en-us" href="/posts/docker/">
+  <link rel="alternate" hreflang="en-us" href="/posts/minio/">
 
   
 
@@ -217,7 +217,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="/posts/docker/">
+  <link rel="canonical" href="/posts/minio/">
 
   
   
@@ -233,15 +233,15 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Academic">
-  <meta property="og:url" content="/posts/docker/">
-  <meta property="og:title" content="Docker | Academic">
-  <meta property="og:description" content="Docker(CentOS) 安装(开发环境) ## 1 更新Yum sudo yum update ## 2 添加docker仓"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="og:url" content="/posts/minio/">
+  <meta property="og:title" content="MinIO安装 | Academic">
+  <meta property="og:description" content="MinIO 安装 wget https://dl.min.io/server/minio/release/linux-amd64/minio -O /usr/local/bin/minio chmod &#43;x /usr/local/bin/minio 环境变量 export MINIO_ACCESS_KEY=&lt;ACCESS_KEY&gt; export MINIO_SECRET_KEY=&lt;SECRET_KEY&gt; 单节点 minio server /data 分布式 单节点"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
-      <meta property="article:published_time" content="2020-05-13T17:56:03&#43;08:00">
+      <meta property="article:published_time" content="2020-09-25T11:08:58&#43;08:00">
     
-    <meta property="article:modified_time" content="2020-05-13T17:56:03&#43;08:00">
+    <meta property="article:modified_time" content="2020-09-25T11:08:58&#43;08:00">
   
 
   
@@ -260,7 +260,7 @@
 
 
 
-  <title>Docker | Academic</title>
+  <title>MinIO安装 | Academic</title>
 
 </head>
 
@@ -535,7 +535,7 @@
   
   
 <div class="article-container pt-3">
-  <h1>Docker</h1>
+  <h1>MinIO安装</h1>
 
   
 
@@ -554,7 +554,7 @@
     
       
     
-    May 13, 2020
+    Sep 25, 2020
   </span>
   
 
@@ -594,71 +594,246 @@
   <div class="article-container">
 
     <div class="article-style">
-      <h3 id="dockercentos">Docker(CentOS)</h3>
-<h4 id="安装开发环境">安装(开发环境)</h4>
-<pre><code>## 1 更新Yum
-sudo yum update
-## 2 添加docker仓库并安装docker
-curl -fsSL https://get.docker.com/ | sh
-## 3 启动docker
-sudo systemctl start docker
-sudo systemctl enable docker
+      <p>MinIO</p>
+<h4 id="安装">安装</h4>
+<pre><code>wget https://dl.min.io/server/minio/release/linux-amd64/minio -O /usr/local/bin/minio
+chmod +x /usr/local/bin/minio
 </code></pre>
-<p>参考：</p>
-<p><a href="https://geekflare.com/docker-installation-guide/">https://geekflare.com/docker-installation-guide/</a></p>
-<h4 id="卸载">卸载</h4>
-<pre><code>sudo yum remove -y docker-ce docker-ce-cli
+<h4 id="环境变量">环境变量</h4>
+<pre><code>export MINIO_ACCESS_KEY=&lt;ACCESS_KEY&gt;
+export MINIO_SECRET_KEY=&lt;SECRET_KEY&gt;
 </code></pre>
-<h4 id="修改存储位置">修改存储位置</h4>
-<pre><code>## 1 创建文件 /etc/docker/daemon.json, 内容如下
-{
-  &quot;data-root&quot;: &quot;/mnt/newlocation&quot;
-}
-## 2 重启docker
-sudo systemctl restart docker
+<h4 id="单节点">单节点</h4>
+<pre><code>minio server /data
 </code></pre>
-<h4 id="删除冗余数据">删除冗余数据</h4>
-<pre><code>docker system prune -a
+<h4 id="分布式">分布式</h4>
+<h5 id="单节点多磁盘">单节点多磁盘</h5>
+<pre><code>minio server /data{1...4}
+or
+minio server /data1 /data2 /data3 /data4
 </code></pre>
-<h4 id="删除所有none镜像">删除所有none镜像</h4>
-<pre><code>docker rmi $(docker images | awk '/^&lt;none&gt;/ { print $3 }')
+<h5 id="多节点多磁盘">多节点多磁盘</h5>
+<pre><code>minio server http://host{1...n}/export{1...m}
+or
+minio server http://host1/export1 http://host1/export2 http://host2/export1 http://host2/export2 ...
 </code></pre>
-<h4 id="删除所有容器">删除所有容器</h4>
-<pre><code>docker stop $(docker ps -q) &amp; docker rm $(docker ps -aq)
+<p>注：</p>
+<ul>
+<li>所有运行分布式 MinIO 的节点需要具有相同的访问密钥和秘密密钥才能连接。为了实现这一点，建议在执行 MINIO 服务器命令之前，将所有节点上的访问密钥和秘密密钥作为环境变量 MINIO _ access _ key 和 MINIO _ secret _ key 导出。</li>
+<li>分布式 Minio 使用的磁盘里必须是干净的，里面没有数据。</li>
+<li>MinIO 创建每组4到16个驱动器的擦除编码集。您提供的驱动器总数必须是这些数字之一的倍数。</li>
+<li>_ MinIO 选择最大的 EC 设置大小，将其划分为驱动器的总数或给定的节点的总数——确保保持均匀分布，即每个节点参与每个设置的驱动器数相等。</li>
+<li>建议所有运行分布式 MinIO 设置的节点都是同构的，即相同的操作系统、相同数量的磁盘和相同的网络互连。</li>
+<li>运行分布式 MinIO 实例的服务器时间差不应超过15分钟。</li>
+</ul>
+<h4 id="服务">服务</h4>
+<h5 id="单节点-1">单节点</h5>
+<ol>
+<li>
+<p>创建用户</p>
+<pre><code>useradd minio
+passwd minio
 </code></pre>
-<h3 id="dockerfile">Dockerfile</h3>
-<h4 id="时区">时区</h4>
-<pre><code>FROM alpine:3.6
-RUN apk add --no-cache tzdata
-ENV TZ Asia/Shanghai
+</li>
+<li>
+<p>创建默认配置文件</p>
+<pre><code>$ cat &lt;&lt;EOT &gt;&gt; /etc/default/minio
+# Volume to be used for MinIO server.
+MINIO_VOLUMES=&quot;/tmp/minio/&quot;
+# Use if you want to run MinIO on a custom port.
+MINIO_OPTS=&quot;--address :9199&quot;
+# Access Key of the server.
+MINIO_ACCESS_KEY=Server-Access-Key
+# Secret key of the server.
+MINIO_SECRET_KEY=Server-Secret-Key
+   
+EOT
 </code></pre>
-<h4 id="examples">examples</h4>
-<h5 id="spring-boot">Spring Boot</h5>
-<pre><code>FROM openjdk:8-jre-alpine
-RUN apk add --no-cache tzdata
-ENV TZ Asia/Shanghai
-WORKDIR /app
-COPY springboot.jar /app
-ENTRYPOINT [&quot;java&quot;, &quot;-jar&quot;, &quot;springboot.jar&quot;]
+</li>
+<li>
+<p>下载 service 文件 <a href="https://raw.githubusercontent.com/minio/minio-service/master/linux-systemd/minio.service">https://raw.githubusercontent.com/minio/minio-service/master/linux-systemd/minio.service</a> 到 /etc/systemd/system/，<strong>并替换里面的用户和组</strong></p>
+<pre><code>[Unit]
+Description=MinIO
+Documentation=https://docs.min.io
+Wants=network-online.target
+After=network-online.target
+AssertFileIsExecutable=/usr/local/bin/minio
+   
+[Service]
+WorkingDirectory=/usr/local/
+   
+User=minio-user
+Group=minio-user
+   
+EnvironmentFile=/etc/default/minio
+ExecStartPre=/bin/bash -c &quot;if [ -z \&quot;${MINIO_VOLUMES}\&quot; ]; then echo \&quot;Variable MINIO_VOLUMES not set in /etc/default/minio\&quot;; exit 1; fi&quot;
+   
+ExecStart=/usr/local/bin/minio server $MINIO_OPTS $MINIO_VOLUMES
+   
+# Let systemd restart this service always
+Restart=always
+   
+# Specifies the maximum file descriptor number that can be opened by this process
+LimitNOFILE=65536
+   
+# Disable timeout logic and wait until process is stopped
+TimeoutStopSec=infinity
+SendSIGKILL=no
+   
+[Install]
+WantedBy=multi-user.target
+   
+# Built for ${project.name}-${project.version} (${project.name})
 </code></pre>
-<h3 id="docker-compose">Docker Compose</h3>
-<h4 id="mysql">MySQL</h4>
-<pre><code>version: '3.3'
-services:
-
-  db:
-    image: mysql:5.7
-    restart: always
-    ports:
-      - '3306:3306'
-    environment:
-      MYSQL_ROOT_PASSWORD: 1qazXSW@
-    volumes:
-      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - db-data:/var/lib/mysql
-
-volumes:
-  db-data:
+</li>
+<li>
+<p>启动</p>
+<pre><code>systemctl daemon-reload
+systemctl start minio
+systemctl enable minio
+</code></pre>
+</li>
+</ol>
+<h5 id="分布式-1">分布式</h5>
+<ol>
+<li>
+<p>创建用户</p>
+<pre><code>useradd minio
+passwd minio
+</code></pre>
+</li>
+<li>
+<p>创建存储目录</p>
+<pre><code>mkdir /export
+sudo chown -R minio /export &amp;&amp; sudo chmod u+rxw /export
+</code></pre>
+</li>
+<li>
+<p>创建默认配置文件</p>
+<pre><code>$ cat &lt;&lt;EOT &gt;&gt; /etc/default/minio
+# Remote volumes to be used for MinIO server.
+MINIO_VOLUMES=http://node{1...6}/export{1...32}
+# Use if you want to run MinIO on a custom port.
+MINIO_OPTS=&quot;--address :9199&quot;
+# Access Key of the server.
+MINIO_ACCESS_KEY=Server-Access-Key
+# Secret key of the server.
+MINIO_SECRET_KEY=Server-Secret-Key
+   
+EOT
+</code></pre>
+</li>
+<li>
+<p>下载 service 文件 <a href="https://raw.githubusercontent.com/minio/minio-service/master/linux-systemd/distributed/minio.service">https://raw.githubusercontent.com/minio/minio-service/master/linux-systemd/distributed/minio.service</a> 到 /etc/systemd/system/，<strong>并替换里面的用户和组</strong></p>
+<pre><code>[Unit]
+Description=MinIO
+Documentation=https://docs.min.io
+Wants=network-online.target
+After=network-online.target
+AssertFileIsExecutable=/usr/local/bin/minio
+   
+[Service]
+WorkingDirectory=/usr/local
+   
+User=minio-user
+Group=minio-user
+   
+EnvironmentFile=-/etc/default/minio
+ExecStartPre=/bin/bash -c &quot;if [ -z \&quot;${MINIO_VOLUMES}\&quot; ]; then echo \&quot;Variable MINIO_VOLUMES not set in /etc/default/minio\&quot;; exit 1; fi&quot;
+ExecStartPre=/bin/bash -c &quot;if [ -z \&quot;${MINIO_ACCESS_KEY}\&quot; ]; then echo \&quot;Variable MINIO_ACCESS_KEY not set in /etc/default/minio\&quot;; exit 1; fi&quot;
+ExecStartPre=/bin/bash -c &quot;if [ -z \&quot;${MINIO_SECRET_KEY}\&quot; ]; then echo \&quot;Variable MINIO_SECRET_KEY not set in /etc/default/minio\&quot;; exit 1; fi&quot;
+   
+ExecStart=/usr/local/bin/minio server $MINIO_OPTS $MINIO_VOLUMES
+   
+# Let systemd restart this service always
+Restart=always
+   
+# Specifies the maximum file descriptor number that can be opened by this process
+LimitNOFILE=65536
+   
+# Disable timeout logic and wait until process is stopped
+TimeoutStopSec=infinity
+SendSIGKILL=no
+   
+[Install]
+WantedBy=multi-user.target
+   
+# Built for ${project.name}-${project.version} (${project.name})
+</code></pre>
+</li>
+<li>
+<p>启动</p>
+<pre><code>systemctl daemon-reload
+systemctl start minio
+systemctl enable minio
+</code></pre>
+</li>
+</ol>
+<h4 id="客户端">客户端</h4>
+<h5 id="安装-1">安装</h5>
+<pre><code>wget https://dl.min.io/client/mc/release/linux-amd64/mc -O /usr/local/bin/mc
+chmod +x /usr/local/bin/mc
+</code></pre>
+<h5 id="常用命令">常用命令</h5>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ls</td>
+<td>list buckets and objects</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="挂载minio为本地路径">挂载minio为本地路径</h4>
+<ol>
+<li>
+<p>安装goofys</p>
+<pre><code>yum install -y fuse
+wget https://github.com/kahing/goofys/releases/latest/download/goofys -P /usr/local/bin/
+chmod +x /usr/local/bin/goofys
+</code></pre>
+</li>
+<li>
+<p>配置认证信息</p>
+<pre><code>$ mkdir ~/.aws
+$ cat &lt;&lt;EOT &gt; ~/.aws/credentials
+[default]
+aws_access_key_id=Server-Access-Key
+aws_secret_access_key=Server-Secret-Key
+EOT
+</code></pre>
+</li>
+<li>
+<p>挂载</p>
+<pre><code>goofys &lt;bucket&gt; &lt;mountpoint&gt;
+goofys &lt;bucket:prefix&gt; &lt;mountpoint&gt; # if you only want to mount objects under a prefix
+   
+# 示例
+goofys --endpoint http://10.111.54.230:9000 test /minio-local-data
+</code></pre>
+</li>
+<li>
+<p>开机自动挂载</p>
+<pre><code># 修改 /etc/fstab, 添加如下内容
+goofys#bucket /mnt/mountpoint fuse _netdev,allow_other,--file-mode=0666,--dir-mode=0777 0 0
+</code></pre>
+</li>
+</ol>
+<h5 id="卸载">卸载</h5>
+<pre><code>fusermount -u /path/to/mountpoint
 </code></pre>
 
     </div>
@@ -682,7 +857,7 @@ volumes:
       
       
       <li>
-        <a href="https://twitter.com/intent/tweet?url=/posts/docker/&amp;text=Docker" target="_blank" rel="noopener" class="share-btn-twitter">
+        <a href="https://twitter.com/intent/tweet?url=/posts/minio/&amp;text=MinIO%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -695,7 +870,7 @@ volumes:
       
       
       <li>
-        <a href="https://www.facebook.com/sharer.php?u=/posts/docker/&amp;t=Docker" target="_blank" rel="noopener" class="share-btn-facebook">
+        <a href="https://www.facebook.com/sharer.php?u=/posts/minio/&amp;t=MinIO%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-facebook">
           <i class="fab fa-facebook"></i>
         </a>
       </li>
@@ -708,7 +883,7 @@ volumes:
       
       
       <li>
-        <a href="mailto:?subject=Docker&amp;body=/posts/docker/" target="_blank" rel="noopener" class="share-btn-email">
+        <a href="mailto:?subject=MinIO%e5%ae%89%e8%a3%85&amp;body=/posts/minio/" target="_blank" rel="noopener" class="share-btn-email">
           <i class="fas fa-envelope"></i>
         </a>
       </li>
@@ -721,7 +896,7 @@ volumes:
       
       
       <li>
-        <a href="https://www.linkedin.com/shareArticle?url=/posts/docker/&amp;title=Docker" target="_blank" rel="noopener" class="share-btn-linkedin">
+        <a href="https://www.linkedin.com/shareArticle?url=/posts/minio/&amp;title=MinIO%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-linkedin">
           <i class="fab fa-linkedin-in"></i>
         </a>
       </li>
@@ -734,7 +909,7 @@ volumes:
       
       
       <li>
-        <a href="https://web.whatsapp.com/send?text=Docker%20/posts/docker/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+        <a href="https://web.whatsapp.com/send?text=MinIO%e5%ae%89%e8%a3%85%20/posts/minio/" target="_blank" rel="noopener" class="share-btn-whatsapp">
           <i class="fab fa-whatsapp"></i>
         </a>
       </li>
@@ -747,7 +922,7 @@ volumes:
       
       
       <li>
-        <a href="https://service.weibo.com/share/share.php?url=/posts/docker/&amp;title=Docker" target="_blank" rel="noopener" class="share-btn-weibo">
+        <a href="https://service.weibo.com/share/share.php?url=/posts/minio/&amp;title=MinIO%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-weibo">
           <i class="fab fa-weibo"></i>
         </a>
       </li>
