@@ -945,6 +945,10 @@ lscpu | grep 'CPU(s):' | head -1 | awk '{print $2}'
 <pre><code>## /etc/profile
 export http_proxy=&quot;http://proxy_username:proxy_password@proxy_ip:proxy_port&quot;
 </code></pre>
+<h4 id="查看pid进程详情">查看PID进程详情</h4>
+<pre><code>1. cat /proc/PID/cmdline | tr '\000' ' '
+2. cat /proc/PID/cmdline | xargs -0 echo
+</code></pre>
 
     </div>
 

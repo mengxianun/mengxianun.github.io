@@ -27,10 +27,10 @@
   
     
   
-  <meta name="description" content="Docker(CentOS) 安装(开发环境) ## 1 更新Yum sudo yum update ## 2 添加docker仓">
+  <meta name="description" content="Redis Cluster 注：建议6个节点。在没有6个节点的情况下，每个节点可以创">
 
   
-  <link rel="alternate" hreflang="en-us" href="/posts/docker/">
+  <link rel="alternate" hreflang="en-us" href="/posts/redis/">
 
   
 
@@ -217,7 +217,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="/posts/docker/">
+  <link rel="canonical" href="/posts/redis/">
 
   
   
@@ -233,15 +233,15 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Academic">
-  <meta property="og:url" content="/posts/docker/">
-  <meta property="og:title" content="Docker | Academic">
-  <meta property="og:description" content="Docker(CentOS) 安装(开发环境) ## 1 更新Yum sudo yum update ## 2 添加docker仓"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="og:url" content="/posts/redis/">
+  <meta property="og:title" content="Redis安装 | Academic">
+  <meta property="og:description" content="Redis Cluster 注：建议6个节点。在没有6个节点的情况下，每个节点可以创"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
-      <meta property="article:published_time" content="2020-05-13T17:56:03&#43;08:00">
+      <meta property="article:published_time" content="2020-09-01T17:11:11&#43;08:00">
     
-    <meta property="article:modified_time" content="2020-05-13T17:56:03&#43;08:00">
+    <meta property="article:modified_time" content="2020-09-01T17:11:11&#43;08:00">
   
 
   
@@ -260,7 +260,7 @@
 
 
 
-  <title>Docker | Academic</title>
+  <title>Redis安装 | Academic</title>
 
 </head>
 
@@ -535,7 +535,7 @@
   
   
 <div class="article-container pt-3">
-  <h1>Docker</h1>
+  <h1>Redis安装</h1>
 
   
 
@@ -554,7 +554,7 @@
     
       
     
-    May 13, 2020
+    Sep 1, 2020
   </span>
   
 
@@ -594,72 +594,67 @@
   <div class="article-container">
 
     <div class="article-style">
-      <h3 id="dockercentos">Docker(CentOS)</h3>
-<h4 id="安装开发环境">安装(开发环境)</h4>
-<pre><code>## 1 更新Yum
-sudo yum update
-## 2 添加docker仓库并安装docker
-curl -fsSL https://get.docker.com/ | sh
-## 3 启动docker
-sudo systemctl start docker
-sudo systemctl enable docker
+      <h4 id="redis-cluster">Redis Cluster</h4>
+<p><strong>注：建议6个节点。在没有6个节点的情况下，每个节点可以创建2个实例</strong></p>
+<ol>
+<li>
+<p>下载安装包</p>
+<pre><code>wget http://download.redis.io/releases/redis-5.0.5.tar.gz
 </code></pre>
-<p>参考：</p>
-<p><a href="https://geekflare.com/docker-installation-guide/">https://geekflare.com/docker-installation-guide/</a></p>
-<h4 id="卸载">卸载</h4>
-<pre><code>sudo yum remove -y docker-ce docker-ce-cli
+</li>
+<li>
+<p>解压</p>
+<pre><code>tar zxf redis-5.0.5.tar.gz -C /opt/
 </code></pre>
-<h4 id="修改存储位置">修改存储位置</h4>
-<pre><code>## 1 创建文件 /etc/docker/daemon.json, 内容如下
-{
-  &quot;data-root&quot;: &quot;/mnt/newlocation&quot;
-}
-## 2 重启docker
-sudo systemctl restart docker
+</li>
+<li>
+<p>安装</p>
+<pre><code>yum -y install gcc-c++
+cd /opt/redis-5.0.5/ &amp;&amp; make MALLOC=libc
+./utils/install_server.sh
+# 1 Please select the redis port for this instance: [6379] -- 
+# 2 Please select the redis config file name [/etc/redis/6379.conf] --
+# 3 Please select the redis log file name [/var/log/redis_6379.log] --
+# 4 Please select the data directory for this instance [/var/lib/redis/6379] --
+# 5 Please select the redis executable path [] -- /opt/redis-5.0.5/src/redis-server
 </code></pre>
-<h4 id="删除冗余数据">删除冗余数据</h4>
-<pre><code>docker system prune -a
+</li>
+<li>
+<p>修改配置 /etc/redis/6379.conf</p>
+<pre><code># 绑定地址
+bind 0.0.0.0
+# 端口
+port 6379
+# 安全密码
+requirepass foobared
+## =========集群相关=========
+cluster-enabled yes
+cluster-config-file nodes-6379.conf
+cluster-node-timeout 15000
+appendonly yes
 </code></pre>
-<h4 id="删除所有none镜像">删除所有none镜像</h4>
-<pre><code>docker rmi $(docker images | awk '/^&lt;none&gt;/ { print $3 }')
+</li>
+<li>
+<p>启动</p>
+<pre><code>systemctl restart redis_6379
 </code></pre>
-<h4 id="删除所有容器">删除所有容器</h4>
-<pre><code>docker stop $(docker ps -q) &amp; docker rm $(docker ps -aq)
+</li>
+<li>
+<p>创建集群</p>
+<pre><code># 3个主节点, 3个副本节点
+redis-cli --cluster create 192.168.201.101:6379 192.168.201.101:6380 192.168.201.102:6379 192.168.201.102:6380 192.168.201.103:6379 192.168.201.103:6380 -a foobared --cluster-replicas 1
 </code></pre>
-<h3 id="dockerfile">Dockerfile</h3>
-<h4 id="时区">时区</h4>
-<pre><code>FROM alpine:3.6
-RUN apk add --no-cache tzdata
-ENV TZ Asia/Shanghai
+</li>
+<li>
+<p>创建别名</p>
+<pre><code># 修改 ~/.bashrc，添加如下内容
+alias redis-cli=/opt/redis-5.0.5/src/redis-cli
+alias redis-server=/opt/redis-5.0.5/src/redis-server
+# 生效
+source ~/.bashrc
 </code></pre>
-<h4 id="examples">examples</h4>
-<h5 id="spring-boot">Spring Boot</h5>
-<pre><code>FROM openjdk:8-jre-alpine
-RUN apk add --no-cache tzdata
-ENV TZ Asia/Shanghai
-WORKDIR /app
-COPY springboot.jar /app
-ENTRYPOINT [&quot;java&quot;, &quot;-jar&quot;, &quot;springboot.jar&quot;]
-</code></pre>
-<h3 id="docker-compose">Docker Compose</h3>
-<h4 id="mysql">MySQL</h4>
-<pre><code>version: '3.3'
-services:
-
-  db:
-    image: mysql:5.7
-    restart: always
-    ports:
-      - '3306:3306'
-    environment:
-      MYSQL_ROOT_PASSWORD: 1qazXSW@
-    volumes:
-      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - db-data:/var/lib/mysql
-
-volumes:
-  db-data:
-</code></pre>
+</li>
+</ol>
 
     </div>
 
@@ -682,7 +677,7 @@ volumes:
       
       
       <li>
-        <a href="https://twitter.com/intent/tweet?url=/posts/docker/&amp;text=Docker" target="_blank" rel="noopener" class="share-btn-twitter">
+        <a href="https://twitter.com/intent/tweet?url=/posts/redis/&amp;text=Redis%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -695,7 +690,7 @@ volumes:
       
       
       <li>
-        <a href="https://www.facebook.com/sharer.php?u=/posts/docker/&amp;t=Docker" target="_blank" rel="noopener" class="share-btn-facebook">
+        <a href="https://www.facebook.com/sharer.php?u=/posts/redis/&amp;t=Redis%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-facebook">
           <i class="fab fa-facebook"></i>
         </a>
       </li>
@@ -708,7 +703,7 @@ volumes:
       
       
       <li>
-        <a href="mailto:?subject=Docker&amp;body=/posts/docker/" target="_blank" rel="noopener" class="share-btn-email">
+        <a href="mailto:?subject=Redis%e5%ae%89%e8%a3%85&amp;body=/posts/redis/" target="_blank" rel="noopener" class="share-btn-email">
           <i class="fas fa-envelope"></i>
         </a>
       </li>
@@ -721,7 +716,7 @@ volumes:
       
       
       <li>
-        <a href="https://www.linkedin.com/shareArticle?url=/posts/docker/&amp;title=Docker" target="_blank" rel="noopener" class="share-btn-linkedin">
+        <a href="https://www.linkedin.com/shareArticle?url=/posts/redis/&amp;title=Redis%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-linkedin">
           <i class="fab fa-linkedin-in"></i>
         </a>
       </li>
@@ -734,7 +729,7 @@ volumes:
       
       
       <li>
-        <a href="https://web.whatsapp.com/send?text=Docker%20/posts/docker/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+        <a href="https://web.whatsapp.com/send?text=Redis%e5%ae%89%e8%a3%85%20/posts/redis/" target="_blank" rel="noopener" class="share-btn-whatsapp">
           <i class="fab fa-whatsapp"></i>
         </a>
       </li>
@@ -747,7 +742,7 @@ volumes:
       
       
       <li>
-        <a href="https://service.weibo.com/share/share.php?url=/posts/docker/&amp;title=Docker" target="_blank" rel="noopener" class="share-btn-weibo">
+        <a href="https://service.weibo.com/share/share.php?url=/posts/redis/&amp;title=Redis%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-weibo">
           <i class="fab fa-weibo"></i>
         </a>
       </li>
