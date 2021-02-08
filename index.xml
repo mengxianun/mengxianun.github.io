@@ -19,6 +19,7 @@
       <guid>/posts/idea/</guid>
       <description>&lt;p&gt;IDEA&lt;/p&gt;
 &lt;h3 id=&#34;配置&#34;&gt;配置&lt;/h3&gt;
+&lt;p&gt;&amp;hellip;&lt;/p&gt;
 &lt;h3 id=&#34;问题&#34;&gt;问题&lt;/h3&gt;
 &lt;h4 id=&#34;控制台乱码&#34;&gt;控制台乱码&lt;/h4&gt;
 &lt;p&gt;Help-&amp;gt;Edit Custom VM Options&amp;hellip;，添加-Dfile.encoding=UTF-8&lt;/p&gt;
