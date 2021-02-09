@@ -5,12 +5,31 @@
     <link>/posts/</link>
       <atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Mon, 08 Feb 2021 17:15:34 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 09 Feb 2021 13:32:56 +0800</lastBuildDate>
     <image>
       <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Posts</title>
       <link>/posts/</link>
     </image>
+    
+    <item>
+      <title>Kafka</title>
+      <link>/posts/kafka/</link>
+      <pubDate>Tue, 09 Feb 2021 13:32:56 +0800</pubDate>
+      <guid>/posts/kafka/</guid>
+      <description>&lt;p&gt;Kafka&lt;/p&gt;
+&lt;h3 id=&#34;维护&#34;&gt;维护&lt;/h3&gt;
+&lt;h4 id=&#34;查看所有consumer&#34;&gt;查看所有consumer&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;kafka-consumer-groups.sh  --list --bootstrap-server localhost:9092
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;查看offset&#34;&gt;查看offset&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;kafka-consumer-offset-checker.sh --group SampleConsumer --topic topicName  --zookeeper localhost:2181
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;重置offset&#34;&gt;重置offset&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group SampleConsumer --reset-offsets --to-earliest --topic topicName --execute
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>IDEA</title>
@@ -781,7 +800,7 @@ export http_proxy=&amp;quot;http://proxy_username:proxy_password@proxy_ip:proxy_
     </item>
     
     <item>
-      <title>Redis安装</title>
+      <title>Redis</title>
       <link>/posts/redis/</link>
       <pubDate>Tue, 01 Sep 2020 17:11:11 +0800</pubDate>
       <guid>/posts/redis/</guid>
