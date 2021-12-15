@@ -27,10 +27,10 @@
   
     
   
-  <meta name="description" content="Linux - CentOS 查看系统版本 cat /etc/redhat-release hostname 设置 hostname sudo hostnamectl set-hostname newname 修改 /etc/hosts cat &gt;&gt; /etc/hosts &lt;&lt; EOF 192.168.1.100 domain1 192.168.1.101">
+  <meta name="description" content="Linux 安装minikube 1 安装docker $ curl -fsSL https://get.docker.com/ | sh $ sudo systemctl start">
 
   
-  <link rel="alternate" hreflang="en-us" href="/posts/linux/">
+  <link rel="alternate" hreflang="en-us" href="/posts/minikube/">
 
   
 
@@ -217,7 +217,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="/posts/linux/">
+  <link rel="canonical" href="/posts/minikube/">
 
   
   
@@ -233,15 +233,15 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Academic">
-  <meta property="og:url" content="/posts/linux/">
-  <meta property="og:title" content="Linux | Academic">
-  <meta property="og:description" content="Linux - CentOS 查看系统版本 cat /etc/redhat-release hostname 设置 hostname sudo hostnamectl set-hostname newname 修改 /etc/hosts cat &gt;&gt; /etc/hosts &lt;&lt; EOF 192.168.1.100 domain1 192.168.1.101"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="og:url" content="/posts/minikube/">
+  <meta property="og:title" content="Minikube安装 | Academic">
+  <meta property="og:description" content="Linux 安装minikube 1 安装docker $ curl -fsSL https://get.docker.com/ | sh $ sudo systemctl start"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
-      <meta property="article:published_time" content="2020-09-23T16:08:58&#43;08:00">
+      <meta property="article:published_time" content="2020-06-08T17:52:45&#43;08:00">
     
-    <meta property="article:modified_time" content="2020-09-23T16:08:58&#43;08:00">
+    <meta property="article:modified_time" content="2020-06-08T17:52:45&#43;08:00">
   
 
   
@@ -260,7 +260,7 @@
 
 
 
-  <title>Linux | Academic</title>
+  <title>Minikube安装 | Academic</title>
 
 </head>
 
@@ -535,7 +535,7 @@
   
   
 <div class="article-container pt-3">
-  <h1>Linux</h1>
+  <h1>Minikube安装</h1>
 
   
 
@@ -554,7 +554,7 @@
     
       
     
-    Sep 23, 2020
+    Jun 8, 2020
   </span>
   
 
@@ -594,387 +594,49 @@
   <div class="article-container">
 
     <div class="article-style">
-      <p>Linux - CentOS</p>
-<h4 id="查看系统版本">查看系统版本</h4>
-<pre><code>cat /etc/redhat-release
+      <p>Linux 安装minikube</p>
+<h4 id="1-安装docker">1 安装docker</h4>
+<pre><code>$ curl -fsSL https://get.docker.com/ | sh
+$ sudo systemctl start docker
+$ sudo systemctl enable docker
 </code></pre>
-<h4 id="hostname">hostname</h4>
-<ol>
-<li>
-<p>设置 hostname</p>
-<pre><code>sudo hostnamectl set-hostname newname
+<h4 id="2-创建用户">2 创建用户</h4>
+<p>minikube 需要非root用户运行</p>
+<pre><code>adduser developer
+passwd developer
+usermod -aG sudo developer
+# 如果上面命令出现 usermod: group 'sudo' does not exist, 运行以下命令
+usermod -aG wheel developer
+su - developer
+sudo usermod -aG docker $USER
+- 重新登录
 </code></pre>
-</li>
-<li>
-<p>修改 /etc/hosts</p>
-<pre><code>cat &gt;&gt; /etc/hosts &lt;&lt; EOF
-192.168.1.100    domain1
-192.168.1.101    domain2
-EOF
+<h4 id="3-安装kubectl">3 安装kubectl</h4>
+<pre><code>$ curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+$ chmod +x ./kubectl
+$ sudo mv ./kubectl /usr/local/bin/kubectl
+$ kubectl version --client
 </code></pre>
-</li>
-<li>
-<p>重启networking</p>
-<pre><code>sudo systemctl restart network
+<h4 id="4-安装minikube">4 安装minikube</h4>
+<pre><code>$ curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
+  &amp;&amp; chmod +x minikube
+$ sudo mkdir -p /usr/local/bin/
+$ sudo install minikube /usr/local/bin/
 </code></pre>
-</li>
-</ol>
-<h4 id="跟踪脚本">跟踪脚本</h4>
-<pre><code>bash -x *.sh
+<h4 id="5-启动minikube">5 启动minikube</h4>
+<pre><code># 需要翻墙
+minikube start --driver=docker
 </code></pre>
-<h4 id="挂载光盘为本地源">挂载光盘为本地源</h4>
-<ol>
-<li>
-<p>挂载光盘</p>
-<pre><code>mount /dev/cdrom /mnt/cdrom
+<h4 id="6-验证安装">6 验证安装</h4>
+<pre><code>minikube status
 </code></pre>
-</li>
-<li>
-<p>配置本地源文件CentOS-Media.repo</p>
-<pre><code>baseurl修改第二个路径为上步的挂载点(/mnt/cdrom)
-enabled=1
-</code></pre>
-</li>
-<li>
-<p>禁用默认的yum网络源</p>
-<pre><code>将yum 网络源配置文件改名为CentOS-Base.repo.bak,否则会先在网络源中寻找适合的包,改名之后直接从本地源读取.
-</code></pre>
-</li>
-</ol>
-<h4 id="硬盘挂载及扩容">硬盘挂载及扩容</h4>
-<h5 id="新硬盘挂载">新硬盘挂载</h5>
-<p><em>参考：http://www.linuxidc.com/Linux/2012-07/65294.htm</em></p>
-<ol>
-<li>
-<p>查看硬盘分区情况</p>
-<pre><code>sudo fdisk -l
-</code></pre>
-</li>
-<li>
-<p>新硬盘分区</p>
-<pre><code>sudo fdisk /dev/sda
-Command (m for help)
-n：增加新分区
-e：扩展分区
-Partition number(1-4)：默认1,只分一个区
-cylinder：默认
-分区大小：默认
-p：显示分区表
-w：保存分区表
-</code></pre>
-</li>
-<li>
-<p>查看分区</p>
-</li>
-<li>
-<p>格式化</p>
-<pre><code>sudo mkfs -t ext4 /dev/sda
-</code></pre>
-</li>
-<li>
-<p>挂载目录</p>
-<pre><code>sudo mount -t ext4 /dev/sda /mnt/sda
-</code></pre>
-</li>
-<li>
-<p>查看</p>
-<pre><code>df -h
-</code></pre>
-</li>
-<li>
-<p>开机自动挂载(编辑/etc/fstab)</p>
-<pre><code>在最后一行加入
-/dev/sda1 /mnt/sda1 ext4 defaults 1 2
-或者
-UUID=37eaa526-5d96-4237-8468-603df5216ce9 /mnt/sda ext4 defaults 0 3
-**UUID可以通过使用blkid命令来查看(sudo blkid /dev/sda)
-**０表示不备份；１表示要将整个&lt;file system&gt;中的内容备份。此处建议设置为０。
-**０表示不检查；挂载点为分区／（根分区）必须设置为１，其他的挂载点不能设置为１
-分区      挂载目录 文件格式
-</code></pre>
-</li>
-</ol>
-<h5 id="新硬盘扩容根节点">新硬盘扩容根节点</h5>
-<ol>
-<li>
-<p>查看硬盘分区情况</p>
-<pre><code>sudo fdisk -l
-</code></pre>
-</li>
-<li>
-<p>创建物理卷</p>
-<pre><code>pvcreate /dev/sda
-</code></pre>
-</li>
-<li>
-<p>查看创建好的物理卷</p>
-<pre><code>pvdisplay /dev/sda
-</code></pre>
-</li>
-<li>
-<p>卷组扩容</p>
-<pre><code>vgextend gafis70-vg /dev/sda
-</code></pre>
-</li>
-<li>
-<p>查看扩容之后的卷组信息</p>
-<pre><code>vgdisplay
-</code></pre>
-</li>
-<li>
-<p>逻辑卷扩容</p>
-<pre><code># 指定大小
-lvextend -l +8G /dev/gafis-vg/root
-# 全部
-lvextend -l +100%free /dev/gafis-vg/root
-</code></pre>
-</li>
-<li>
-<p>查看扩容之后的逻辑卷</p>
-<pre><code>lvdisplay /dev/gafis-vg/root
-</code></pre>
-</li>
-<li>
-<p>文件系统扩容</p>
-<pre><code>resize2fs /dev/mapper/gafis--vg-root
-</code></pre>
-</li>
-<li>
-<p>查看</p>
-<pre><code>df -h
-</code></pre>
-</li>
-</ol>
-<h4 id="ssh">ssh</h4>
-<h5 id="免密">免密</h5>
-<ol>
-<li>
-<p>生成密钥</p>
-<pre><code>ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
-</code></pre>
-</li>
-<li>
-<p>将公钥追加到认证文件中(本机免密)</p>
-<pre><code>cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys
-</code></pre>
-</li>
-<li>
-<p>将公钥追加到其他机器</p>
-<pre><code>ssh-copy-id root@remote_ip
-</code></pre>
-</li>
-</ol>
-<h5 id="免密2">免密2</h5>
-<ol>
-<li>
-<p>生成密钥</p>
-<pre><code>ssh-keygen -t rsa -C &quot;pass&quot;
-文件名: 回车
-密码: pass
-</code></pre>
-</li>
-<li>
-<p>将公钥追加到其他机器</p>
-<pre><code>ssh-copy-id root@remote_ip
-</code></pre>
-</li>
-<li>
-<p>ssh-agent</p>
-<pre><code>ssh-agent bash
-ssh-add .ssh/id_rsa
-输入密码
-</code></pre>
-</li>
-</ol>
-<h4 id="防火墙">防火墙</h4>
-<p>&ndash; firewalld默认开放ssh服务, 默认规则都添加到zone=public
-参数
-&ndash;zone #作用域
-&ndash;add-port=80/tcp #添加端口，格式为：端口/通讯协议
-&ndash;permanent #永久生效，没有此参数重启后失效</p>
-<ul>
-<li>
-<p>开放http(80)服务</p>
-<pre><code>firewall-cmd --add-service=http
-</code></pre>
-</li>
-<li>
-<p>永久开放http服务</p>
-<pre><code>firewall-cmd --add-service=http --permanent
-</code></pre>
-</li>
-<li>
-<p>永久关闭</p>
-<pre><code>firewall-cmd --remove-service=http --permanent
-</code></pre>
-</li>
-<li>
-<p>重启防火墙生效</p>
-<pre><code>firewall-cmd --reload
-</code></pre>
-</li>
-<li>
-<p>查看</p>
-<pre><code># 所有
-firewall-cmd --list-all
-# 端口
-firewall-cmd --list-ports
-# 服务
-firewall-cmd --list-services
-</code></pre>
-</li>
-<li>
-<p>查询服务启用状态</p>
-<pre><code>firewall-cmd --query-service http
-</code></pre>
-</li>
-<li>
-<p>永久开放端口</p>
-<pre><code>firewall-cmd --add-port=3128/tcp --permanent
-</code></pre>
-</li>
-</ul>
-<h4 id="ulimit最大进程数和最大文件打开数">ulimit（最大进程数和最大文件打开数)</h4>
-<ol>
-<li>
-<p>查看</p>
-<pre><code># 最大文件打开数
-ulimit -n
-# 最大进程数
-ulimit -u
-</code></pre>
-</li>
-<li>
-<p>临时修改（重启后失效）</p>
-<pre><code>ulimit -n 204800
-ulimit -u 204800
-</code></pre>
-</li>
-<li>
-<p>永久修改，修改 /etc/security/limits.conf 文件，在文件末尾添加</p>
-<pre><code>* soft nofile 204800
-* hard nofile 204800
-* soft nproc 204800
-* hard nproc 204800
-    
-*          代表针对所有用户 
-noproc     是代表最大进程数 
-nofile     是代表最大文件打开数
-</code></pre>
-</li>
-<li>
-<p>简化</p>
-<pre><code>echo &quot;*   soft    nofile  65535&quot; &gt;&gt; /etc/security/limits.conf
-echo &quot;*   hard    nofile  65535&quot; &gt;&gt; /etc/security/limits.conf
-echo &quot;*   soft    nproc  65535&quot; &gt;&gt; /etc/security/limits.conf
-echo &quot;*   hard    nproc  65535&quot; &gt;&gt; /etc/security/limits.conf
-</code></pre>
-</li>
-</ol>
-<h4 id="vmmax_map_count">vm.max_map_count</h4>
-<ol>
-<li>
-<p>查看</p>
-<pre><code>sysctl -a | grep vm.max_map_count
-</code></pre>
-</li>
-<li>
-<p>临时修改（重启后失效）</p>
-<pre><code>sysctl -w vm.max_map_count=262144
-</code></pre>
-</li>
-<li>
-<p>永久修改，修改 /etc/sysctl.conf 文件，在文件末尾添加</p>
-<pre><code>vm.max_map_count=262144
-</code></pre>
-</li>
-<li>
-<p>永久生效</p>
-<pre><code>sysctl -p
-</code></pre>
-</li>
-</ol>
-<h4 id="后台守护进程">后台守护进程</h4>
-<pre><code>setsid myscript.sh &gt;/dev/null 2&gt;&amp;1 &amp;
-# 输出到日志文件
-setsid myscript.sh &gt;/path/to/logfile 2&gt;&amp;1 &amp;
-</code></pre>
-<h4 id="swap">swap</h4>
-<h5 id="添加swap分区">添加swap分区</h5>
-<pre><code># 添加8G的swap分区
-dd if=/dev/zero of=/home/swap bs=1024 count=8388608
-mkswap /home/swap
-swapon /home/swap
-</code></pre>
-<h5 id="禁用swap">禁用swap</h5>
-<pre><code>sudo swapoff -a
-sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
-</code></pre>
-<h4 id="禁用selinux">禁用SELinux</h4>
-<ol>
-<li>
-<p>查看状态</p>
-<pre><code>sestatus
-</code></pre>
-</li>
-<li>
-<p>临时关闭</p>
-<pre><code>sudo setenforce 0
-</code></pre>
-</li>
-<li>
-<p>永久关闭</p>
-<pre><code>sed -i 's/enforcing/disabled/g' /etc/selinux/config /etc/selinux/config
-</code></pre>
-</li>
-</ol>
-<h4 id="监控文件夹">监控文件夹</h4>
-<pre><code>watch -n 0.1 ls &lt;your_folder&gt;
-</code></pre>
-<h4 id="查看cpu个数">查看CPU个数</h4>
-<pre><code>## 方法1
-grep -c ^processor /proc/cpuinfo
-## 方法2
-nproc
-## 方法3
-getconf _NPROCESSORS_ONLN
-## 方法4
-lscpu | grep 'CPU(s):' | head -1 | awk '{print $2}'
-</code></pre>
-<h4 id="代理上网">代理上网</h4>
-<pre><code>## /etc/profile
-export http_proxy=&quot;http://proxy_username:proxy_password@proxy_ip:proxy_port&quot;
-</code></pre>
-<p>&laquo;&laquo;&laquo;&lt; HEAD</p>
-<h4 id="目录结构查看">目录结构查看</h4>
-<pre><code>## 目录
-ls -R | grep &quot;:$&quot; | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
-## 文件
-find . | sed -e &quot;s/[^-][^\/]*\//  |/g&quot; -e &quot;s/|\([^ ]\)/|-\1/&quot;
-=======
-#### 查看PID进程详情
-
-</code></pre>
-<ol>
-<li>cat /proc/PID/cmdline | tr &lsquo;\000&rsquo; ' '</li>
-<li>cat /proc/PID/cmdline | xargs -0 echo</li>
-</ol>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>a7ccb4a03d0b7eceeed9fc13f3c0ac57061f88ad</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-<pre><code>
+<p>显示如下</p>
+<pre><code>minikube
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
 </code></pre>
 
     </div>
@@ -998,7 +660,7 @@ find . | sed -e &quot;s/[^-][^\/]*\//  |/g&quot; -e &quot;s/|\([^ ]\)/|-\1/&quot
       
       
       <li>
-        <a href="https://twitter.com/intent/tweet?url=/posts/linux/&amp;text=Linux" target="_blank" rel="noopener" class="share-btn-twitter">
+        <a href="https://twitter.com/intent/tweet?url=/posts/minikube/&amp;text=Minikube%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -1011,7 +673,7 @@ find . | sed -e &quot;s/[^-][^\/]*\//  |/g&quot; -e &quot;s/|\([^ ]\)/|-\1/&quot
       
       
       <li>
-        <a href="https://www.facebook.com/sharer.php?u=/posts/linux/&amp;t=Linux" target="_blank" rel="noopener" class="share-btn-facebook">
+        <a href="https://www.facebook.com/sharer.php?u=/posts/minikube/&amp;t=Minikube%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-facebook">
           <i class="fab fa-facebook"></i>
         </a>
       </li>
@@ -1024,7 +686,7 @@ find . | sed -e &quot;s/[^-][^\/]*\//  |/g&quot; -e &quot;s/|\([^ ]\)/|-\1/&quot
       
       
       <li>
-        <a href="mailto:?subject=Linux&amp;body=/posts/linux/" target="_blank" rel="noopener" class="share-btn-email">
+        <a href="mailto:?subject=Minikube%e5%ae%89%e8%a3%85&amp;body=/posts/minikube/" target="_blank" rel="noopener" class="share-btn-email">
           <i class="fas fa-envelope"></i>
         </a>
       </li>
@@ -1037,7 +699,7 @@ find . | sed -e &quot;s/[^-][^\/]*\//  |/g&quot; -e &quot;s/|\([^ ]\)/|-\1/&quot
       
       
       <li>
-        <a href="https://www.linkedin.com/shareArticle?url=/posts/linux/&amp;title=Linux" target="_blank" rel="noopener" class="share-btn-linkedin">
+        <a href="https://www.linkedin.com/shareArticle?url=/posts/minikube/&amp;title=Minikube%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-linkedin">
           <i class="fab fa-linkedin-in"></i>
         </a>
       </li>
@@ -1050,7 +712,7 @@ find . | sed -e &quot;s/[^-][^\/]*\//  |/g&quot; -e &quot;s/|\([^ ]\)/|-\1/&quot
       
       
       <li>
-        <a href="https://web.whatsapp.com/send?text=Linux%20/posts/linux/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+        <a href="https://web.whatsapp.com/send?text=Minikube%e5%ae%89%e8%a3%85%20/posts/minikube/" target="_blank" rel="noopener" class="share-btn-whatsapp">
           <i class="fab fa-whatsapp"></i>
         </a>
       </li>
@@ -1063,7 +725,7 @@ find . | sed -e &quot;s/[^-][^\/]*\//  |/g&quot; -e &quot;s/|\([^ ]\)/|-\1/&quot
       
       
       <li>
-        <a href="https://service.weibo.com/share/share.php?url=/posts/linux/&amp;title=Linux" target="_blank" rel="noopener" class="share-btn-weibo">
+        <a href="https://service.weibo.com/share/share.php?url=/posts/minikube/&amp;title=Minikube%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-weibo">
           <i class="fab fa-weibo"></i>
         </a>
       </li>

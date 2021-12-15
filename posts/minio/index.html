@@ -27,10 +27,10 @@
   
     
   
-  <meta name="description" content="Linux - CentOS 查看系统版本 cat /etc/redhat-release hostname 设置 hostname sudo hostnamectl set-hostname newname 修改 /etc/hosts cat &gt;&gt; /etc/hosts &lt;&lt; EOF 192.168.1.100 domain1 192.168.1.101">
+  <meta name="description" content="MinIO 安装 wget https://dl.min.io/server/minio/release/linux-amd64/minio -O /usr/local/bin/minio chmod &#43;x /usr/local/bin/minio 环境变量 export MINIO_ACCESS_KEY=&lt;ACCESS_KEY&gt; export MINIO_SECRET_KEY=&lt;SECRET_KEY&gt; 单节点 minio server /data 分布式 单节点">
 
   
-  <link rel="alternate" hreflang="en-us" href="/posts/linux/">
+  <link rel="alternate" hreflang="en-us" href="/posts/minio/">
 
   
 
@@ -217,7 +217,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="/posts/linux/">
+  <link rel="canonical" href="/posts/minio/">
 
   
   
@@ -233,15 +233,15 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Academic">
-  <meta property="og:url" content="/posts/linux/">
-  <meta property="og:title" content="Linux | Academic">
-  <meta property="og:description" content="Linux - CentOS 查看系统版本 cat /etc/redhat-release hostname 设置 hostname sudo hostnamectl set-hostname newname 修改 /etc/hosts cat &gt;&gt; /etc/hosts &lt;&lt; EOF 192.168.1.100 domain1 192.168.1.101"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="og:url" content="/posts/minio/">
+  <meta property="og:title" content="MinIO安装 | Academic">
+  <meta property="og:description" content="MinIO 安装 wget https://dl.min.io/server/minio/release/linux-amd64/minio -O /usr/local/bin/minio chmod &#43;x /usr/local/bin/minio 环境变量 export MINIO_ACCESS_KEY=&lt;ACCESS_KEY&gt; export MINIO_SECRET_KEY=&lt;SECRET_KEY&gt; 单节点 minio server /data 分布式 单节点"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
-      <meta property="article:published_time" content="2020-09-23T16:08:58&#43;08:00">
+      <meta property="article:published_time" content="2020-09-25T11:08:58&#43;08:00">
     
-    <meta property="article:modified_time" content="2020-09-23T16:08:58&#43;08:00">
+    <meta property="article:modified_time" content="2020-09-25T11:08:58&#43;08:00">
   
 
   
@@ -260,7 +260,7 @@
 
 
 
-  <title>Linux | Academic</title>
+  <title>MinIO安装 | Academic</title>
 
 </head>
 
@@ -535,7 +535,7 @@
   
   
 <div class="article-container pt-3">
-  <h1>Linux</h1>
+  <h1>MinIO安装</h1>
 
   
 
@@ -554,7 +554,7 @@
     
       
     
-    Sep 23, 2020
+    Sep 25, 2020
   </span>
   
 
@@ -594,387 +594,253 @@
   <div class="article-container">
 
     <div class="article-style">
-      <p>Linux - CentOS</p>
-<h4 id="查看系统版本">查看系统版本</h4>
-<pre><code>cat /etc/redhat-release
+      <p>MinIO</p>
+<h4 id="安装">安装</h4>
+<pre><code>wget https://dl.min.io/server/minio/release/linux-amd64/minio -O /usr/local/bin/minio
+chmod +x /usr/local/bin/minio
 </code></pre>
-<h4 id="hostname">hostname</h4>
-<ol>
-<li>
-<p>设置 hostname</p>
-<pre><code>sudo hostnamectl set-hostname newname
+<h4 id="环境变量">环境变量</h4>
+<pre><code>export MINIO_ACCESS_KEY=&lt;ACCESS_KEY&gt;
+export MINIO_SECRET_KEY=&lt;SECRET_KEY&gt;
 </code></pre>
-</li>
-<li>
-<p>修改 /etc/hosts</p>
-<pre><code>cat &gt;&gt; /etc/hosts &lt;&lt; EOF
-192.168.1.100    domain1
-192.168.1.101    domain2
-EOF
+<h4 id="单节点">单节点</h4>
+<pre><code>minio server /data
 </code></pre>
-</li>
-<li>
-<p>重启networking</p>
-<pre><code>sudo systemctl restart network
-</code></pre>
-</li>
-</ol>
-<h4 id="跟踪脚本">跟踪脚本</h4>
-<pre><code>bash -x *.sh
-</code></pre>
-<h4 id="挂载光盘为本地源">挂载光盘为本地源</h4>
-<ol>
-<li>
-<p>挂载光盘</p>
-<pre><code>mount /dev/cdrom /mnt/cdrom
-</code></pre>
-</li>
-<li>
-<p>配置本地源文件CentOS-Media.repo</p>
-<pre><code>baseurl修改第二个路径为上步的挂载点(/mnt/cdrom)
-enabled=1
-</code></pre>
-</li>
-<li>
-<p>禁用默认的yum网络源</p>
-<pre><code>将yum 网络源配置文件改名为CentOS-Base.repo.bak,否则会先在网络源中寻找适合的包,改名之后直接从本地源读取.
-</code></pre>
-</li>
-</ol>
-<h4 id="硬盘挂载及扩容">硬盘挂载及扩容</h4>
-<h5 id="新硬盘挂载">新硬盘挂载</h5>
-<p><em>参考：http://www.linuxidc.com/Linux/2012-07/65294.htm</em></p>
-<ol>
-<li>
-<p>查看硬盘分区情况</p>
-<pre><code>sudo fdisk -l
-</code></pre>
-</li>
-<li>
-<p>新硬盘分区</p>
-<pre><code>sudo fdisk /dev/sda
-Command (m for help)
-n：增加新分区
-e：扩展分区
-Partition number(1-4)：默认1,只分一个区
-cylinder：默认
-分区大小：默认
-p：显示分区表
-w：保存分区表
-</code></pre>
-</li>
-<li>
-<p>查看分区</p>
-</li>
-<li>
-<p>格式化</p>
-<pre><code>sudo mkfs -t ext4 /dev/sda
-</code></pre>
-</li>
-<li>
-<p>挂载目录</p>
-<pre><code>sudo mount -t ext4 /dev/sda /mnt/sda
-</code></pre>
-</li>
-<li>
-<p>查看</p>
-<pre><code>df -h
-</code></pre>
-</li>
-<li>
-<p>开机自动挂载(编辑/etc/fstab)</p>
-<pre><code>在最后一行加入
-/dev/sda1 /mnt/sda1 ext4 defaults 1 2
-或者
-UUID=37eaa526-5d96-4237-8468-603df5216ce9 /mnt/sda ext4 defaults 0 3
-**UUID可以通过使用blkid命令来查看(sudo blkid /dev/sda)
-**０表示不备份；１表示要将整个&lt;file system&gt;中的内容备份。此处建议设置为０。
-**０表示不检查；挂载点为分区／（根分区）必须设置为１，其他的挂载点不能设置为１
-分区      挂载目录 文件格式
-</code></pre>
-</li>
-</ol>
-<h5 id="新硬盘扩容根节点">新硬盘扩容根节点</h5>
-<ol>
-<li>
-<p>查看硬盘分区情况</p>
-<pre><code>sudo fdisk -l
-</code></pre>
-</li>
-<li>
-<p>创建物理卷</p>
-<pre><code>pvcreate /dev/sda
-</code></pre>
-</li>
-<li>
-<p>查看创建好的物理卷</p>
-<pre><code>pvdisplay /dev/sda
-</code></pre>
-</li>
-<li>
-<p>卷组扩容</p>
-<pre><code>vgextend gafis70-vg /dev/sda
-</code></pre>
-</li>
-<li>
-<p>查看扩容之后的卷组信息</p>
-<pre><code>vgdisplay
-</code></pre>
-</li>
-<li>
-<p>逻辑卷扩容</p>
-<pre><code># 指定大小
-lvextend -l +8G /dev/gafis-vg/root
-# 全部
-lvextend -l +100%free /dev/gafis-vg/root
-</code></pre>
-</li>
-<li>
-<p>查看扩容之后的逻辑卷</p>
-<pre><code>lvdisplay /dev/gafis-vg/root
-</code></pre>
-</li>
-<li>
-<p>文件系统扩容</p>
-<pre><code>resize2fs /dev/mapper/gafis--vg-root
-</code></pre>
-</li>
-<li>
-<p>查看</p>
-<pre><code>df -h
-</code></pre>
-</li>
-</ol>
-<h4 id="ssh">ssh</h4>
-<h5 id="免密">免密</h5>
-<ol>
-<li>
-<p>生成密钥</p>
-<pre><code>ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
-</code></pre>
-</li>
-<li>
-<p>将公钥追加到认证文件中(本机免密)</p>
-<pre><code>cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys
-</code></pre>
-</li>
-<li>
-<p>将公钥追加到其他机器</p>
-<pre><code>ssh-copy-id root@remote_ip
-</code></pre>
-</li>
-</ol>
-<h5 id="免密2">免密2</h5>
-<ol>
-<li>
-<p>生成密钥</p>
-<pre><code>ssh-keygen -t rsa -C &quot;pass&quot;
-文件名: 回车
-密码: pass
-</code></pre>
-</li>
-<li>
-<p>将公钥追加到其他机器</p>
-<pre><code>ssh-copy-id root@remote_ip
-</code></pre>
-</li>
-<li>
-<p>ssh-agent</p>
-<pre><code>ssh-agent bash
-ssh-add .ssh/id_rsa
-输入密码
-</code></pre>
-</li>
-</ol>
-<h4 id="防火墙">防火墙</h4>
-<p>&ndash; firewalld默认开放ssh服务, 默认规则都添加到zone=public
-参数
-&ndash;zone #作用域
-&ndash;add-port=80/tcp #添加端口，格式为：端口/通讯协议
-&ndash;permanent #永久生效，没有此参数重启后失效</p>
-<ul>
-<li>
-<p>开放http(80)服务</p>
-<pre><code>firewall-cmd --add-service=http
-</code></pre>
-</li>
-<li>
-<p>永久开放http服务</p>
-<pre><code>firewall-cmd --add-service=http --permanent
-</code></pre>
-</li>
-<li>
-<p>永久关闭</p>
-<pre><code>firewall-cmd --remove-service=http --permanent
-</code></pre>
-</li>
-<li>
-<p>重启防火墙生效</p>
-<pre><code>firewall-cmd --reload
-</code></pre>
-</li>
-<li>
-<p>查看</p>
-<pre><code># 所有
-firewall-cmd --list-all
-# 端口
-firewall-cmd --list-ports
-# 服务
-firewall-cmd --list-services
-</code></pre>
-</li>
-<li>
-<p>查询服务启用状态</p>
-<pre><code>firewall-cmd --query-service http
-</code></pre>
-</li>
-<li>
-<p>永久开放端口</p>
-<pre><code>firewall-cmd --add-port=3128/tcp --permanent
-</code></pre>
-</li>
-</ul>
-<h4 id="ulimit最大进程数和最大文件打开数">ulimit（最大进程数和最大文件打开数)</h4>
-<ol>
-<li>
-<p>查看</p>
-<pre><code># 最大文件打开数
-ulimit -n
-# 最大进程数
-ulimit -u
-</code></pre>
-</li>
-<li>
-<p>临时修改（重启后失效）</p>
-<pre><code>ulimit -n 204800
-ulimit -u 204800
-</code></pre>
-</li>
-<li>
-<p>永久修改，修改 /etc/security/limits.conf 文件，在文件末尾添加</p>
-<pre><code>* soft nofile 204800
-* hard nofile 204800
-* soft nproc 204800
-* hard nproc 204800
-    
-*          代表针对所有用户 
-noproc     是代表最大进程数 
-nofile     是代表最大文件打开数
-</code></pre>
-</li>
-<li>
-<p>简化</p>
-<pre><code>echo &quot;*   soft    nofile  65535&quot; &gt;&gt; /etc/security/limits.conf
-echo &quot;*   hard    nofile  65535&quot; &gt;&gt; /etc/security/limits.conf
-echo &quot;*   soft    nproc  65535&quot; &gt;&gt; /etc/security/limits.conf
-echo &quot;*   hard    nproc  65535&quot; &gt;&gt; /etc/security/limits.conf
-</code></pre>
-</li>
-</ol>
-<h4 id="vmmax_map_count">vm.max_map_count</h4>
-<ol>
-<li>
-<p>查看</p>
-<pre><code>sysctl -a | grep vm.max_map_count
-</code></pre>
-</li>
-<li>
-<p>临时修改（重启后失效）</p>
-<pre><code>sysctl -w vm.max_map_count=262144
-</code></pre>
-</li>
-<li>
-<p>永久修改，修改 /etc/sysctl.conf 文件，在文件末尾添加</p>
-<pre><code>vm.max_map_count=262144
-</code></pre>
-</li>
-<li>
-<p>永久生效</p>
-<pre><code>sysctl -p
-</code></pre>
-</li>
-</ol>
-<h4 id="后台守护进程">后台守护进程</h4>
-<pre><code>setsid myscript.sh &gt;/dev/null 2&gt;&amp;1 &amp;
-# 输出到日志文件
-setsid myscript.sh &gt;/path/to/logfile 2&gt;&amp;1 &amp;
-</code></pre>
-<h4 id="swap">swap</h4>
-<h5 id="添加swap分区">添加swap分区</h5>
-<pre><code># 添加8G的swap分区
-dd if=/dev/zero of=/home/swap bs=1024 count=8388608
-mkswap /home/swap
-swapon /home/swap
-</code></pre>
-<h5 id="禁用swap">禁用swap</h5>
-<pre><code>sudo swapoff -a
-sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
-</code></pre>
-<h4 id="禁用selinux">禁用SELinux</h4>
-<ol>
-<li>
-<p>查看状态</p>
-<pre><code>sestatus
-</code></pre>
-</li>
-<li>
-<p>临时关闭</p>
-<pre><code>sudo setenforce 0
-</code></pre>
-</li>
-<li>
-<p>永久关闭</p>
-<pre><code>sed -i 's/enforcing/disabled/g' /etc/selinux/config /etc/selinux/config
-</code></pre>
-</li>
-</ol>
-<h4 id="监控文件夹">监控文件夹</h4>
-<pre><code>watch -n 0.1 ls &lt;your_folder&gt;
-</code></pre>
-<h4 id="查看cpu个数">查看CPU个数</h4>
-<pre><code>## 方法1
-grep -c ^processor /proc/cpuinfo
-## 方法2
-nproc
-## 方法3
-getconf _NPROCESSORS_ONLN
-## 方法4
-lscpu | grep 'CPU(s):' | head -1 | awk '{print $2}'
-</code></pre>
-<h4 id="代理上网">代理上网</h4>
-<pre><code>## /etc/profile
-export http_proxy=&quot;http://proxy_username:proxy_password@proxy_ip:proxy_port&quot;
-</code></pre>
-<p>&laquo;&laquo;&laquo;&lt; HEAD</p>
-<h4 id="目录结构查看">目录结构查看</h4>
-<pre><code>## 目录
-ls -R | grep &quot;:$&quot; | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
-## 文件
-find . | sed -e &quot;s/[^-][^\/]*\//  |/g&quot; -e &quot;s/|\([^ ]\)/|-\1/&quot;
-=======
-#### 查看PID进程详情
+<h4 id="分布式">分布式</h4>
+<h5 id="单节点多磁盘">单节点多磁盘</h5>
+<pre><code>minio server /data{1...4}
+or
+minio server /data1 /data2 /data3 /data4
 
+# 后台运行
+setsid minio server /home/minio/data &gt;/home/minio/data/minio.log 2&gt;&amp;1 &lt; /dev/null &amp;
 </code></pre>
+<h5 id="多节点多磁盘">多节点多磁盘</h5>
+<pre><code>minio server http://host{1...n}/export{1...m}
+or
+minio server http://host1/export1 http://host1/export2 http://host2/export1 http://host2/export2 ...
+</code></pre>
+<p>注：</p>
+<ul>
+<li>所有运行分布式 MinIO 的节点需要具有相同的访问密钥和秘密密钥才能连接。为了实现这一点，建议在执行 MINIO 服务器命令之前，将所有节点上的访问密钥和秘密密钥作为环境变量 MINIO _ access _ key 和 MINIO _ secret _ key 导出。</li>
+<li>分布式 Minio 使用的磁盘里必须是干净的，里面没有数据。</li>
+<li>MinIO 创建每组4到16个驱动器的擦除编码集。您提供的驱动器总数必须是这些数字之一的倍数。</li>
+<li>_ MinIO 选择最大的 EC 设置大小，将其划分为驱动器的总数或给定的节点的总数——确保保持均匀分布，即每个节点参与每个设置的驱动器数相等。</li>
+<li>建议所有运行分布式 MinIO 设置的节点都是同构的，即相同的操作系统、相同数量的磁盘和相同的网络互连。</li>
+<li>运行分布式 MinIO 实例的服务器时间差不应超过15分钟。</li>
+</ul>
+<h4 id="服务">服务</h4>
+<h5 id="单节点-1">单节点</h5>
 <ol>
-<li>cat /proc/PID/cmdline | tr &lsquo;\000&rsquo; ' '</li>
-<li>cat /proc/PID/cmdline | xargs -0 echo</li>
+<li>
+<p>创建用户</p>
+<pre><code>useradd minio
+passwd minio
+</code></pre>
+</li>
+<li>
+<p>创建默认配置文件</p>
+<pre><code>$ cat &lt;&lt;EOT &gt;&gt; /etc/default/minio
+# Volume to be used for MinIO server.
+MINIO_VOLUMES=&quot;/tmp/minio/&quot;
+# Use if you want to run MinIO on a custom port.
+MINIO_OPTS=&quot;--address :9199&quot;
+# Access Key of the server.
+MINIO_ACCESS_KEY=Server-Access-Key
+# Secret key of the server.
+MINIO_SECRET_KEY=Server-Secret-Key
+   
+EOT
+</code></pre>
+</li>
+<li>
+<p>下载 service 文件 <a href="https://raw.githubusercontent.com/minio/minio-service/master/linux-systemd/minio.service">https://raw.githubusercontent.com/minio/minio-service/master/linux-systemd/minio.service</a> 到 /etc/systemd/system/，<strong>并替换里面的用户和组</strong></p>
+<pre><code>[Unit]
+Description=MinIO
+Documentation=https://docs.min.io
+Wants=network-online.target
+After=network-online.target
+AssertFileIsExecutable=/usr/local/bin/minio
+   
+[Service]
+WorkingDirectory=/usr/local/
+   
+User=minio-user
+Group=minio-user
+   
+EnvironmentFile=/etc/default/minio
+ExecStartPre=/bin/bash -c &quot;if [ -z \&quot;${MINIO_VOLUMES}\&quot; ]; then echo \&quot;Variable MINIO_VOLUMES not set in /etc/default/minio\&quot;; exit 1; fi&quot;
+   
+ExecStart=/usr/local/bin/minio server $MINIO_OPTS $MINIO_VOLUMES
+   
+# Let systemd restart this service always
+Restart=always
+   
+# Specifies the maximum file descriptor number that can be opened by this process
+LimitNOFILE=65536
+   
+# Disable timeout logic and wait until process is stopped
+TimeoutStopSec=infinity
+SendSIGKILL=no
+   
+[Install]
+WantedBy=multi-user.target
+   
+# Built for ${project.name}-${project.version} (${project.name})
+</code></pre>
+</li>
+<li>
+<p>启动</p>
+<pre><code>systemctl daemon-reload
+systemctl start minio
+systemctl enable minio
+</code></pre>
+</li>
 </ol>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>a7ccb4a03d0b7eceeed9fc13f3c0ac57061f88ad</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-<pre><code>
+<h5 id="分布式-1">分布式</h5>
+<ol>
+<li>
+<p>创建用户</p>
+<pre><code>useradd minio
+passwd minio
+</code></pre>
+</li>
+<li>
+<p>创建存储目录</p>
+<pre><code>mkdir /export
+sudo chown -R minio /export &amp;&amp; sudo chmod u+rxw /export
+</code></pre>
+</li>
+<li>
+<p>创建默认配置文件</p>
+<pre><code>$ cat &lt;&lt;EOT &gt;&gt; /etc/default/minio
+# Remote volumes to be used for MinIO server.
+MINIO_VOLUMES=http://node{1...6}/export{1...32}
+# Use if you want to run MinIO on a custom port.
+MINIO_OPTS=&quot;--address :9199&quot;
+# Access Key of the server.
+MINIO_ACCESS_KEY=Server-Access-Key
+# Secret key of the server.
+MINIO_SECRET_KEY=Server-Secret-Key
+   
+EOT
+</code></pre>
+</li>
+<li>
+<p>下载 service 文件 <a href="https://raw.githubusercontent.com/minio/minio-service/master/linux-systemd/distributed/minio.service">https://raw.githubusercontent.com/minio/minio-service/master/linux-systemd/distributed/minio.service</a> 到 /etc/systemd/system/，<strong>并替换里面的用户和组</strong></p>
+<pre><code>[Unit]
+Description=MinIO
+Documentation=https://docs.min.io
+Wants=network-online.target
+After=network-online.target
+AssertFileIsExecutable=/usr/local/bin/minio
+   
+[Service]
+WorkingDirectory=/usr/local
+   
+User=minio-user
+Group=minio-user
+   
+EnvironmentFile=-/etc/default/minio
+ExecStartPre=/bin/bash -c &quot;if [ -z \&quot;${MINIO_VOLUMES}\&quot; ]; then echo \&quot;Variable MINIO_VOLUMES not set in /etc/default/minio\&quot;; exit 1; fi&quot;
+ExecStartPre=/bin/bash -c &quot;if [ -z \&quot;${MINIO_ACCESS_KEY}\&quot; ]; then echo \&quot;Variable MINIO_ACCESS_KEY not set in /etc/default/minio\&quot;; exit 1; fi&quot;
+ExecStartPre=/bin/bash -c &quot;if [ -z \&quot;${MINIO_SECRET_KEY}\&quot; ]; then echo \&quot;Variable MINIO_SECRET_KEY not set in /etc/default/minio\&quot;; exit 1; fi&quot;
+   
+ExecStart=/usr/local/bin/minio server $MINIO_OPTS $MINIO_VOLUMES
+   
+# Let systemd restart this service always
+Restart=always
+   
+# Specifies the maximum file descriptor number that can be opened by this process
+LimitNOFILE=65536
+   
+# Disable timeout logic and wait until process is stopped
+TimeoutStopSec=infinity
+SendSIGKILL=no
+   
+[Install]
+WantedBy=multi-user.target
+   
+# Built for ${project.name}-${project.version} (${project.name})
+</code></pre>
+</li>
+<li>
+<p>启动</p>
+<pre><code>systemctl daemon-reload
+systemctl start minio
+systemctl enable minio
+</code></pre>
+</li>
+</ol>
+<h4 id="客户端">客户端</h4>
+<h5 id="安装-1">安装</h5>
+<pre><code>wget https://dl.min.io/client/mc/release/linux-amd64/mc -O /usr/local/bin/mc
+chmod +x /usr/local/bin/mc
+</code></pre>
+<h5 id="常用命令">常用命令</h5>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ls</td>
+<td>list buckets and objects</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="挂载minio为本地路径">挂载minio为本地路径</h4>
+<ol>
+<li>
+<p>安装goofys</p>
+<pre><code>yum install -y fuse
+wget https://github.com/kahing/goofys/releases/latest/download/goofys -P /usr/local/bin/
+chmod +x /usr/local/bin/goofys
+</code></pre>
+</li>
+<li>
+<p>配置认证信息</p>
+<pre><code>$ mkdir ~/.aws
+$ cat &lt;&lt;EOT &gt; ~/.aws/credentials
+[default]
+aws_access_key_id=Server-Access-Key
+aws_secret_access_key=Server-Secret-Key
+EOT
+</code></pre>
+</li>
+<li>
+<p>挂载</p>
+<pre><code>goofys &lt;bucket&gt; &lt;mountpoint&gt;
+goofys &lt;bucket:prefix&gt; &lt;mountpoint&gt; # if you only want to mount objects under a prefix
+   
+# 示例
+goofys --endpoint http://10.111.54.230:9000 test /minio-local-data
+</code></pre>
+</li>
+<li>
+<p>开机自动挂载</p>
+<pre><code># 修改 /etc/fstab, 添加如下内容
+goofys#bucket /mnt/mountpoint fuse _netdev,allow_other,--file-mode=0666,--dir-mode=0777 0 0
+</code></pre>
+</li>
+</ol>
+<h5 id="卸载">卸载</h5>
+<pre><code>fusermount -u /path/to/mountpoint
+</code></pre>
+<h4 id="定时删除文件">定时删除文件</h4>
+<pre><code>## 每天2点，删除30天前的文件
+0 2 * * * /root/minio-binaries/mc rm --recursive --dangerous --force --older-than 30d local
 </code></pre>
 
     </div>
@@ -998,7 +864,7 @@ find . | sed -e &quot;s/[^-][^\/]*\//  |/g&quot; -e &quot;s/|\([^ ]\)/|-\1/&quot
       
       
       <li>
-        <a href="https://twitter.com/intent/tweet?url=/posts/linux/&amp;text=Linux" target="_blank" rel="noopener" class="share-btn-twitter">
+        <a href="https://twitter.com/intent/tweet?url=/posts/minio/&amp;text=MinIO%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -1011,7 +877,7 @@ find . | sed -e &quot;s/[^-][^\/]*\//  |/g&quot; -e &quot;s/|\([^ ]\)/|-\1/&quot
       
       
       <li>
-        <a href="https://www.facebook.com/sharer.php?u=/posts/linux/&amp;t=Linux" target="_blank" rel="noopener" class="share-btn-facebook">
+        <a href="https://www.facebook.com/sharer.php?u=/posts/minio/&amp;t=MinIO%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-facebook">
           <i class="fab fa-facebook"></i>
         </a>
       </li>
@@ -1024,7 +890,7 @@ find . | sed -e &quot;s/[^-][^\/]*\//  |/g&quot; -e &quot;s/|\([^ ]\)/|-\1/&quot
       
       
       <li>
-        <a href="mailto:?subject=Linux&amp;body=/posts/linux/" target="_blank" rel="noopener" class="share-btn-email">
+        <a href="mailto:?subject=MinIO%e5%ae%89%e8%a3%85&amp;body=/posts/minio/" target="_blank" rel="noopener" class="share-btn-email">
           <i class="fas fa-envelope"></i>
         </a>
       </li>
@@ -1037,7 +903,7 @@ find . | sed -e &quot;s/[^-][^\/]*\//  |/g&quot; -e &quot;s/|\([^ ]\)/|-\1/&quot
       
       
       <li>
-        <a href="https://www.linkedin.com/shareArticle?url=/posts/linux/&amp;title=Linux" target="_blank" rel="noopener" class="share-btn-linkedin">
+        <a href="https://www.linkedin.com/shareArticle?url=/posts/minio/&amp;title=MinIO%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-linkedin">
           <i class="fab fa-linkedin-in"></i>
         </a>
       </li>
@@ -1050,7 +916,7 @@ find . | sed -e &quot;s/[^-][^\/]*\//  |/g&quot; -e &quot;s/|\([^ ]\)/|-\1/&quot
       
       
       <li>
-        <a href="https://web.whatsapp.com/send?text=Linux%20/posts/linux/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+        <a href="https://web.whatsapp.com/send?text=MinIO%e5%ae%89%e8%a3%85%20/posts/minio/" target="_blank" rel="noopener" class="share-btn-whatsapp">
           <i class="fab fa-whatsapp"></i>
         </a>
       </li>
@@ -1063,7 +929,7 @@ find . | sed -e &quot;s/[^-][^\/]*\//  |/g&quot; -e &quot;s/|\([^ ]\)/|-\1/&quot
       
       
       <li>
-        <a href="https://service.weibo.com/share/share.php?url=/posts/linux/&amp;title=Linux" target="_blank" rel="noopener" class="share-btn-weibo">
+        <a href="https://service.weibo.com/share/share.php?url=/posts/minio/&amp;title=MinIO%e5%ae%89%e8%a3%85" target="_blank" rel="noopener" class="share-btn-weibo">
           <i class="fab fa-weibo"></i>
         </a>
       </li>
