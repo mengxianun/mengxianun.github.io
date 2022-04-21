@@ -27,10 +27,10 @@
   
     
   
-  <meta name="description" content="Professor of Artificial Intelligence">
+  <meta name="description" content="使用GitLab管理项目 为什么是 GitLab？ GitLab 不仅可以托管">
 
   
-  <link rel="alternate" hreflang="en-us" href="/404.html">
+  <link rel="alternate" hreflang="en-us" href="/posts/issue%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/">
 
   
 
@@ -217,7 +217,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="/404.html">
+  <link rel="canonical" href="/posts/issue%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/">
 
   
   
@@ -233,11 +233,12 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Academic">
-  <meta property="og:url" content="/404.html">
-  <meta property="og:title" content="404 Page not found | Academic">
-  <meta property="og:description" content="Professor of Artificial Intelligence"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="og:url" content="/posts/issue%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/">
+  <meta property="og:title" content=" | Academic">
+  <meta property="og:description" content="使用GitLab管理项目 为什么是 GitLab？ GitLab 不仅可以托管"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
+    
     
   
 
@@ -245,17 +246,19 @@
 
 
 
-
   
 
 
   
 
 
+  
 
 
 
-  <title>404 Page not found | Academic</title>
+
+
+  <title> | Academic</title>
 
 </head>
 
@@ -376,7 +379,7 @@
         
 
         <li class="nav-item">
-          <a class="nav-link " href="/posts"><span>Posts</span></a>
+          <a class="nav-link  active" href="/posts"><span>Posts</span></a>
         </li>
 
         
@@ -509,51 +512,533 @@
 </nav>
 
 
-  <div class="universal-wrapper pt-3">
-
-  <h1>Page not found</h1>
-
-  
-  
-  <form class="d-flex align-items-center mb-3">
-    <input name="q" type="search" class="form-control" placeholder="Search..." autocomplete="off">
-  </form>
-  
+  <article class="article">
 
   
 
-  <p>Perhaps you were looking for one of these?</p>
+
+
+
+
+
+
+
+
+
+
+
+  
 
   
   
   
-  <h2>Latest</h2>
-  <ul>
+<div class="article-container pt-3">
+  <h1></h1>
+
+  
+
+  
     
-      <li><a href="/posts/mongo/">Mongo</a></li>
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
     
-      <li><a href="/posts/rabbit/">Rabbit</a></li>
     
-      <li><a href="/posts/kafka/">Kafka</a></li>
+      
     
-      <li><a href="/posts/idea/">IDEA</a></li>
-    
-      <li><a href="/posts/elk/">ELK</a></li>
-    
-      <li><a href="/posts/minio/">MinIO安装</a></li>
-    
-      <li><a href="/posts/linux/">Linux</a></li>
-    
-      <li><a href="/posts/redis/">Redis</a></li>
-    
-      <li><a href="/posts/minio/goofys%E6%8C%82%E8%BD%BDminio%E4%B8%BA%E6%9C%AC%E5%9C%B0%E8%B7%AF%E5%BE%84/">Goofys挂载minio为本地路径</a></li>
-    
-      <li><a href="/posts/minio/kubernetes%E5%AE%89%E8%A3%85minio/">Kubernetes安装minio</a></li>
-    
-  </ul>
+    Jan 1, 0001
+  </span>
+  
+
+  
+
+  
+
+  
+  
+  
+
+  
   
 
 </div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <h1 id="使用gitlab管理项目">使用GitLab管理项目</h1>
+<h2 id="为什么是-gitlab">为什么是 GitLab？</h2>
+<p>GitLab 不仅可以托管代码，它还支持敏捷项目管理。无论是从非常简单的问题跟踪到看板和 Scrum 风格的敏捷交付。在 GitLab 上，您可以像使用专门的项目管理应用程序一样有效地管理问题、可视化整个项目的工作状态并跟踪工作量和解决优先级。相比于其他过于复杂而无法有效使用的应用程序更适合开发人员。</p>
+<h4 id="实现">实现</h4>
+<ol>
+<li>每组通过独立项目统一管理issue，在<strong>Readme</strong>中描述使用方式及定义</li>
+<li>通过<strong>milestone</strong>管理项目版本，对齐目标。节奏很重要</li>
+<li>通过<strong>label</strong>管理优先级(<code>P0</code>|<code>P1</code>|<code>P2</code>)、类型(<code>bug</code>|<code>feature</code>)</li>
+<li>通过<strong>board</strong>查看<strong>issue</strong>进度状态，配合<code>To Do</code>、<code>Doing</code>、<code>Verify</code>等<strong>label</strong>，定义<strong>issue生命周期</strong></li>
+<li>通过模板定义<strong>author</strong>需要提供的信息</li>
+</ol>
+<h2 id="milestone">Milestone</h2>
+<p>通过 <strong>milestone</strong> 管理项目版本，对齐目标。</p>
+<h4 id="短期里程碑">短期里程碑</h4>
+<p>短期内需要达到的一个目标。</p>
+<h4 id="季度里程碑">季度里程碑</h4>
+<p>每个季度发布软件的多个版本。</p>
+<h4 id="发布版本里程碑">发布版本里程碑</h4>
+<p>一个可发布的版本，项目所有需求都已开发完成并测试通过，可交付给客户。</p>
+<h2 id="issue">Issue</h2>
+<p>为问题添加一些标签以快速识别涉及应用程序的哪个组件以及它是什么类型的问题（错误、功能请求等）非常重要。GitLab issue boards具有强大的过滤功能，通过过滤 Label 确定优先级并使团队与业务需求保持一致。</p>
+<h4 id="标签示例">标签示例</h4>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>Label</th>
+<th>简化版Label</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>类型（type）</td>
+<td>🟥type: bug</td>
+<td>🟥bug</td>
+<td>一个bug</td>
+</tr>
+<tr>
+<td></td>
+<td>🟦type: feature</td>
+<td>🟦feature</td>
+<td>新增功能的需求</td>
+</tr>
+<tr>
+<td></td>
+<td>🟩type: enhancement</td>
+<td>🟩enhancement</td>
+<td>增强</td>
+</tr>
+<tr>
+<td></td>
+<td>🟪type: discussion</td>
+<td>🟪discussion</td>
+<td>问题讨论会议</td>
+</tr>
+<tr>
+<td></td>
+<td>🟨type: docs</td>
+<td>🟨documentation</td>
+<td>文档相关的问题</td>
+</tr>
+<tr>
+<td></td>
+<td>🟥type: security</td>
+<td>🟥security</td>
+<td>安全性相关的问题</td>
+</tr>
+<tr>
+<td></td>
+<td>🟨type: test</td>
+<td>🟨test</td>
+<td>测试相关的问题</td>
+</tr>
+<tr>
+<td>优先级（priority）</td>
+<td>🟥priority: critical</td>
+<td>🟥P0</td>
+<td>放下正在做的任何事情并处理它</td>
+</tr>
+<tr>
+<td></td>
+<td>🟧priority: high</td>
+<td>🟧P1</td>
+<td>需要尽快处理</td>
+</tr>
+<tr>
+<td></td>
+<td>🟨priority: medium</td>
+<td>🟨P2</td>
+<td>按计划进行</td>
+</tr>
+<tr>
+<td></td>
+<td>⬜priority: low</td>
+<td>⬜P3</td>
+<td>当无事可做时处理</td>
+</tr>
+<tr>
+<td>状态(state)</td>
+<td>🟩state: approved</td>
+<td>🟩approved</td>
+<td>问题已接收但未处理</td>
+</tr>
+<tr>
+<td></td>
+<td>🟥state: blocked</td>
+<td>🟥blocked</td>
+<td>问题由于其他事情阻塞无法进行</td>
+</tr>
+<tr>
+<td></td>
+<td>🟨state: in progress</td>
+<td>🟨in progress</td>
+<td>正在处理中</td>
+</tr>
+<tr>
+<td></td>
+<td>🟦state: completed</td>
+<td>🟦completed</td>
+<td>已完成</td>
+</tr>
+<tr>
+<td></td>
+<td>⬜state: inactive</td>
+<td>⬜inactive</td>
+<td>问题已结束</td>
+</tr>
+<tr>
+<td>组件（component ）</td>
+<td>🟩component: frontend</td>
+<td>🟩frontend</td>
+<td>前端</td>
+</tr>
+<tr>
+<td></td>
+<td>🟦component: backend</td>
+<td>🟦backend</td>
+<td>后端</td>
+</tr>
+<tr>
+<td>项目（project）</td>
+<td>🟧计划</td>
+<td>🟧计划</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>🟩开发中</td>
+<td>🟩开发中</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>⬜已完成</td>
+<td>⬜已完成</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="issue-template">Issue template</h2>
+<h5 id="bugmd">Bug.md</h5>
+<pre><code>## 概述
+
+## Bug行为
+
+## 期望行为
+
+## 重现步骤
+
+## 附件
+&lt;!-- URL/相关信息-id 号/截图 --&gt;
+
+</code></pre>
+<h5 id="featuremd">Feature.md</h5>
+<pre><code>## 背景
+&lt;!-- 为何要做，不做会有怎样的问题，做了会有怎样的收益 --&gt;
+
+## 需求说明
+
+## 方案
+&lt;!-- 思路或模型 --&gt;
+
+## 验证
+&lt;!-- 如何验证，预期的标准是什么 --&gt;
+
+</code></pre>
+<h2 id="提交约定">提交约定</h2>
+<p>建议应用此提交消息格式：</p>
+<pre><code>&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;
+</code></pre>
+<p><strong>type</strong>可以在哪里：</p>
+<ul>
+<li><strong>feat</strong> （新特性）</li>
+<li><strong>fix</strong> （bug修复）</li>
+<li><strong>docs</strong> （文档改动）</li>
+<li><strong>style</strong> （格式化, 缺失分号等; 不包括生产代码变动）</li>
+<li><strong>refactor</strong> （重构代码）</li>
+<li><strong>test</strong> （添加缺失的测试, 重构测试, 不包括生产代码变动）</li>
+<li><strong>chore</strong> （更新grunt任务等; 不包括生产代码变动）</li>
+</ul>
+<p><strong>scope</strong> 可能：</p>
+<ul>
+<li><strong>api</strong></li>
+<li><strong>front</strong></li>
+<li><strong>internal</strong> 等等。</li>
+</ul>
+<p>并且<strong>subject</strong>必须使用命令式，现在时。</p>
+<pre><code>feat(api): add users profile endpoint
+</code></pre>
+<p>完整提交消息示例：</p>
+<pre><code class="language-bash">&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;
+
+&lt;body&gt;
+
+&lt;footer&gt;
+</code></pre>
+<pre><code>fix(middleware): ensure Range headers adhere more closely to RFC 2616
+
+Add one new dependency, use `range-parser` (Express dependency) to compute
+range. It is more well-tested in the wild.
+
+Fixes #2310
+</code></pre>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/posts/issue%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/&amp;text=" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/posts/issue%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/&amp;t=" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=&amp;body=/posts/issue%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/posts/issue%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/&amp;title=" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=%20/posts/issue%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/posts/issue%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/&amp;title=" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+  
+    
+    
+    
+      
+    
+    
+    
+    <div class="media author-card content-widget-hr">
+      
+        
+        <img class="avatar mr-3 avatar-circle" src="/author/nelson-bighetti/avatar_hu52a603635ecebd45650b162dadabb4e5_12861_270x270_fill_q90_lanczos_center.jpg" alt="Nelson Bighetti">
+      
+
+      <div class="media-body">
+        <h5 class="card-title"><a href="/">Nelson Bighetti</a></h5>
+        <h6 class="card-subtitle">Professor of Artificial Intelligence</h6>
+        <p class="card-text">My research interests include distributed robotics, mobile computing and programmable matter.</p>
+        <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/GeorgeCushen" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/gcushen" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+      </div>
+    </div>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
 
       
 

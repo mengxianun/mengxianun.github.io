@@ -5,12 +5,143 @@
     <link>/posts/</link>
       <atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 09 Feb 2021 13:32:56 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Thu, 21 Apr 2022 11:18:16 +0800</lastBuildDate>
     <image>
       <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Posts</title>
       <link>/posts/</link>
     </image>
+    
+    <item>
+      <title>Mongo</title>
+      <link>/posts/mongo/</link>
+      <pubDate>Thu, 21 Apr 2022 11:18:16 +0800</pubDate>
+      <guid>/posts/mongo/</guid>
+      <description>&lt;h3 id=&#34;安装&#34;&gt;安装&lt;/h3&gt;
+&lt;h4 id=&#34;docker&#34;&gt;docker&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;docker run -d -p 27017:27017 --name metasearch-mongo -e MONGO_INITDB_DATABASE=db_name -e MONGO_INITDB_ROOT_USERNAME=username -e MONGO_INITDB_ROOT_PASSWORD=password -v /data/mongo:/data/db mongo
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Rabbit</title>
+      <link>/posts/rabbit/</link>
+      <pubDate>Tue, 29 Mar 2022 10:36:47 +0800</pubDate>
+      <guid>/posts/rabbit/</guid>
+      <description>&lt;h4 id=&#34;安装red-hat-7-centos-7&#34;&gt;安装（Red Hat 7, CentOS 7）&lt;/h4&gt;
+&lt;h5 id=&#34;导入签名密钥&#34;&gt;导入签名密钥&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;## primary RabbitMQ signing key
+rpm --import https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc
+## modern Erlang repository
+rpm --import https://packagecloud.io/rabbitmq/erlang/gpgkey
+## RabbitMQ server repository
+rpm --import https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;添加-yum-存储库&#34;&gt;添加 Yum 存储库&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;# In /etc/yum.repos.d/rabbitmq.repo
+
+##
+## Zero dependency Erlang
+##
+
+[rabbitmq_erlang]
+name=rabbitmq_erlang
+baseurl=https://packagecloud.io/rabbitmq/erlang/el/7/$basearch
+repo_gpgcheck=1
+gpgcheck=1
+enabled=1
+# PackageCloud&#39;s repository key and RabbitMQ package signing key
+gpgkey=https://packagecloud.io/rabbitmq/erlang/gpgkey
+       https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+metadata_expire=300
+
+[rabbitmq_erlang-source]
+name=rabbitmq_erlang-source
+baseurl=https://packagecloud.io/rabbitmq/erlang/el/7/SRPMS
+repo_gpgcheck=1
+gpgcheck=0
+enabled=1
+gpgkey=https://packagecloud.io/rabbitmq/erlang/gpgkey
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+metadata_expire=300
+
+##
+## RabbitMQ server
+##
+
+[rabbitmq_server]
+name=rabbitmq_server
+baseurl=https://packagecloud.io/rabbitmq/rabbitmq-server/el/7/$basearch
+repo_gpgcheck=1
+gpgcheck=1
+enabled=1
+# PackageCloud&#39;s repository key and RabbitMQ package signing key
+gpgkey=https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey
+       https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+metadata_expire=300
+
+[rabbitmq_server-source]
+name=rabbitmq_server-source
+baseurl=https://packagecloud.io/rabbitmq/rabbitmq-server/el/7/SRPMS
+repo_gpgcheck=1
+gpgcheck=0
+enabled=1
+gpgkey=https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey
+sslverify=1
+sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+metadata_expire=300
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;安装&#34;&gt;安装&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;## Update Yum package metadata
+yum update -y
+
+## install the packages
+## install these dependencies from standard OS repositories
+yum install socat logrotate -y
+
+yum install erlang rabbitmq-server -y
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;启动服务&#34;&gt;启动服务&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;## 所有节点
+systemctl enable rabbitmq-server.service
+systemctl start rabbitmq-server.service
+
+## 主节点
+拷贝 /var/lib/rabbitmq/.erlang.cookie 到副本节点
+
+## 副本节点
+rabbitmqctl stop_app # =&amp;gt; 停止节点 rabbit@rabbit2 ...完成。
+rabbitmqctl reset # =&amp;gt; 重置节点 rabbit@rabbit2 ... 
+rabbitmqctl join_cluster rabbit@rabbit1 # =&amp;gt; 使用 [rabbit@rabbit1] 聚类节点 rabbit@rabbit2 ...完成。
+rabbitmqctl start_app # =&amp;gt; 开始节点 rabbit@rabbit2 ...完成。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;操作&#34;&gt;操作&lt;/h4&gt;
+&lt;h5 id=&#34;创建vhost&#34;&gt;创建vhost&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;rabbitmqctl add_vhost qa1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;创建用户&#34;&gt;创建用户&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;rabbitmqctl add_user &amp;quot;username&amp;quot; &amp;quot;password&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;用户授权&#34;&gt;用户授权&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;rabbitmqctl set_permissions -p &amp;quot;qa1&amp;quot; &amp;quot;iie&amp;quot; &amp;quot;.*&amp;quot; &amp;quot;.*&amp;quot; &amp;quot;.*&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;启用ui&#34;&gt;启用UI&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;## Enable
+rabbitmq-plugins enable rabbitmq_management
+
+## tag the user with &amp;quot;administrator&amp;quot; for full management UI and HTTP API access
+rabbitmqctl set_user_tags full_access administrator
+
+## Access http://{node-hostname}:15672/
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>Kafka</title>
@@ -1990,6 +2121,238 @@ git push origin master
 &lt;p&gt;参考：&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://georgecushen.com/create-your-website-with-hugo/&#34;&gt;https://georgecushen.com/create-your-website-with-hugo/&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://sourcethemes.com/academic/docs/deployment/&#34;&gt;https://sourcethemes.com/academic/docs/deployment/&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/posts/issue%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>/posts/issue%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/</guid>
+      <description>&lt;h1 id=&#34;使用gitlab管理项目&#34;&gt;使用GitLab管理项目&lt;/h1&gt;
+&lt;h2 id=&#34;为什么是-gitlab&#34;&gt;为什么是 GitLab？&lt;/h2&gt;
+&lt;p&gt;GitLab 不仅可以托管代码，它还支持敏捷项目管理。无论是从非常简单的问题跟踪到看板和 Scrum 风格的敏捷交付。在 GitLab 上，您可以像使用专门的项目管理应用程序一样有效地管理问题、可视化整个项目的工作状态并跟踪工作量和解决优先级。相比于其他过于复杂而无法有效使用的应用程序更适合开发人员。&lt;/p&gt;
+&lt;h4 id=&#34;实现&#34;&gt;实现&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;每组通过独立项目统一管理issue，在&lt;strong&gt;Readme&lt;/strong&gt;中描述使用方式及定义&lt;/li&gt;
+&lt;li&gt;通过&lt;strong&gt;milestone&lt;/strong&gt;管理项目版本，对齐目标。节奏很重要&lt;/li&gt;
+&lt;li&gt;通过&lt;strong&gt;label&lt;/strong&gt;管理优先级(&lt;code&gt;P0&lt;/code&gt;|&lt;code&gt;P1&lt;/code&gt;|&lt;code&gt;P2&lt;/code&gt;)、类型(&lt;code&gt;bug&lt;/code&gt;|&lt;code&gt;feature&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;通过&lt;strong&gt;board&lt;/strong&gt;查看&lt;strong&gt;issue&lt;/strong&gt;进度状态，配合&lt;code&gt;To Do&lt;/code&gt;、&lt;code&gt;Doing&lt;/code&gt;、&lt;code&gt;Verify&lt;/code&gt;等&lt;strong&gt;label&lt;/strong&gt;，定义&lt;strong&gt;issue生命周期&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;通过模板定义&lt;strong&gt;author&lt;/strong&gt;需要提供的信息&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;milestone&#34;&gt;Milestone&lt;/h2&gt;
+&lt;p&gt;通过 &lt;strong&gt;milestone&lt;/strong&gt; 管理项目版本，对齐目标。&lt;/p&gt;
+&lt;h4 id=&#34;短期里程碑&#34;&gt;短期里程碑&lt;/h4&gt;
+&lt;p&gt;短期内需要达到的一个目标。&lt;/p&gt;
+&lt;h4 id=&#34;季度里程碑&#34;&gt;季度里程碑&lt;/h4&gt;
+&lt;p&gt;每个季度发布软件的多个版本。&lt;/p&gt;
+&lt;h4 id=&#34;发布版本里程碑&#34;&gt;发布版本里程碑&lt;/h4&gt;
+&lt;p&gt;一个可发布的版本，项目所有需求都已开发完成并测试通过，可交付给客户。&lt;/p&gt;
+&lt;h2 id=&#34;issue&#34;&gt;Issue&lt;/h2&gt;
+&lt;p&gt;为问题添加一些标签以快速识别涉及应用程序的哪个组件以及它是什么类型的问题（错误、功能请求等）非常重要。GitLab issue boards具有强大的过滤功能，通过过滤 Label 确定优先级并使团队与业务需求保持一致。&lt;/p&gt;
+&lt;h4 id=&#34;标签示例&#34;&gt;标签示例&lt;/h4&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;分类&lt;/th&gt;
+&lt;th&gt;Label&lt;/th&gt;
+&lt;th&gt;简化版Label&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;类型（type）&lt;/td&gt;
+&lt;td&gt;🟥type: bug&lt;/td&gt;
+&lt;td&gt;🟥bug&lt;/td&gt;
+&lt;td&gt;一个bug&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;🟦type: feature&lt;/td&gt;
+&lt;td&gt;🟦feature&lt;/td&gt;
+&lt;td&gt;新增功能的需求&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;🟩type: enhancement&lt;/td&gt;
+&lt;td&gt;🟩enhancement&lt;/td&gt;
+&lt;td&gt;增强&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;🟪type: discussion&lt;/td&gt;
+&lt;td&gt;🟪discussion&lt;/td&gt;
+&lt;td&gt;问题讨论会议&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;🟨type: docs&lt;/td&gt;
+&lt;td&gt;🟨documentation&lt;/td&gt;
+&lt;td&gt;文档相关的问题&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;🟥type: security&lt;/td&gt;
+&lt;td&gt;🟥security&lt;/td&gt;
+&lt;td&gt;安全性相关的问题&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;🟨type: test&lt;/td&gt;
+&lt;td&gt;🟨test&lt;/td&gt;
+&lt;td&gt;测试相关的问题&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;优先级（priority）&lt;/td&gt;
+&lt;td&gt;🟥priority: critical&lt;/td&gt;
+&lt;td&gt;🟥P0&lt;/td&gt;
+&lt;td&gt;放下正在做的任何事情并处理它&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;🟧priority: high&lt;/td&gt;
+&lt;td&gt;🟧P1&lt;/td&gt;
+&lt;td&gt;需要尽快处理&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;🟨priority: medium&lt;/td&gt;
+&lt;td&gt;🟨P2&lt;/td&gt;
+&lt;td&gt;按计划进行&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;⬜priority: low&lt;/td&gt;
+&lt;td&gt;⬜P3&lt;/td&gt;
+&lt;td&gt;当无事可做时处理&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;状态(state)&lt;/td&gt;
+&lt;td&gt;🟩state: approved&lt;/td&gt;
+&lt;td&gt;🟩approved&lt;/td&gt;
+&lt;td&gt;问题已接收但未处理&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;🟥state: blocked&lt;/td&gt;
+&lt;td&gt;🟥blocked&lt;/td&gt;
+&lt;td&gt;问题由于其他事情阻塞无法进行&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;🟨state: in progress&lt;/td&gt;
+&lt;td&gt;🟨in progress&lt;/td&gt;
+&lt;td&gt;正在处理中&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;🟦state: completed&lt;/td&gt;
+&lt;td&gt;🟦completed&lt;/td&gt;
+&lt;td&gt;已完成&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;⬜state: inactive&lt;/td&gt;
+&lt;td&gt;⬜inactive&lt;/td&gt;
+&lt;td&gt;问题已结束&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;组件（component ）&lt;/td&gt;
+&lt;td&gt;🟩component: frontend&lt;/td&gt;
+&lt;td&gt;🟩frontend&lt;/td&gt;
+&lt;td&gt;前端&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;🟦component: backend&lt;/td&gt;
+&lt;td&gt;🟦backend&lt;/td&gt;
+&lt;td&gt;后端&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;项目（project）&lt;/td&gt;
+&lt;td&gt;🟧计划&lt;/td&gt;
+&lt;td&gt;🟧计划&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;🟩开发中&lt;/td&gt;
+&lt;td&gt;🟩开发中&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;⬜已完成&lt;/td&gt;
+&lt;td&gt;⬜已完成&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;issue-template&#34;&gt;Issue template&lt;/h2&gt;
+&lt;h5 id=&#34;bugmd&#34;&gt;Bug.md&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;## 概述
+
+## Bug行为
+
+## 期望行为
+
+## 重现步骤
+
+## 附件
+&amp;lt;!-- URL/相关信息-id 号/截图 --&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h5 id=&#34;featuremd&#34;&gt;Feature.md&lt;/h5&gt;
+&lt;pre&gt;&lt;code&gt;## 背景
+&amp;lt;!-- 为何要做，不做会有怎样的问题，做了会有怎样的收益 --&amp;gt;
+
+## 需求说明
+
+## 方案
+&amp;lt;!-- 思路或模型 --&amp;gt;
+
+## 验证
+&amp;lt;!-- 如何验证，预期的标准是什么 --&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;提交约定&#34;&gt;提交约定&lt;/h2&gt;
+&lt;p&gt;建议应用此提交消息格式：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;type&amp;gt;(&amp;lt;scope&amp;gt;): &amp;lt;subject&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;type&lt;/strong&gt;可以在哪里：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;feat&lt;/strong&gt; （新特性）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;fix&lt;/strong&gt; （bug修复）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;docs&lt;/strong&gt; （文档改动）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;style&lt;/strong&gt; （格式化, 缺失分号等; 不包括生产代码变动）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;refactor&lt;/strong&gt; （重构代码）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;test&lt;/strong&gt; （添加缺失的测试, 重构测试, 不包括生产代码变动）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;chore&lt;/strong&gt; （更新grunt任务等; 不包括生产代码变动）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;scope&lt;/strong&gt; 可能：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;api&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;front&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;internal&lt;/strong&gt; 等等。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;并且&lt;strong&gt;subject&lt;/strong&gt;必须使用命令式，现在时。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;feat(api): add users profile endpoint
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;完整提交消息示例：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;&amp;lt;type&amp;gt;(&amp;lt;scope&amp;gt;): &amp;lt;subject&amp;gt;
+
+&amp;lt;body&amp;gt;
+
+&amp;lt;footer&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;fix(middleware): ensure Range headers adhere more closely to RFC 2616
+
+Add one new dependency, use `range-parser` (Express dependency) to compute
+range. It is more well-tested in the wild.
+
+Fixes #2310
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
