@@ -4,16 +4,26 @@
   
   <url>
     <loc>/</loc>
+<<<<<<< HEAD
     <lastmod>2022-04-24T10:02:10+08:00</lastmod>
   </url>
   
   <url>
     <loc>/posts/frp/</loc>
     <lastmod>2022-04-24T10:02:10+08:00</lastmod>
+=======
+    <lastmod>2021-02-09T13:32:56+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/kafka/</loc>
+    <lastmod>2021-02-09T13:32:56+08:00</lastmod>
+>>>>>>> 04af5290ce63ea323fcd205683c5b00df07b8c49
   </url>
   
   <url>
     <loc>/posts/</loc>
+<<<<<<< HEAD
     <lastmod>2022-04-24T10:02:10+08:00</lastmod>
   </url>
   
@@ -29,6 +39,8 @@
   
   <url>
     <loc>/posts/kafka/</loc>
+=======
+>>>>>>> 04af5290ce63ea323fcd205683c5b00df07b8c49
     <lastmod>2021-02-09T13:32:56+08:00</lastmod>
   </url>
   

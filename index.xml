@@ -5,7 +5,11 @@
     <link>/</link>
       <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <description>Academic</description>
+<<<<<<< HEAD
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 24 Apr 2022 10:02:10 +0800</lastBuildDate>
+=======
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 09 Feb 2021 13:32:56 +0800</lastBuildDate>
+>>>>>>> 04af5290ce63ea323fcd205683c5b00df07b8c49
     <image>
       <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Academic</title>
@@ -13,6 +17,7 @@
     </image>
     
     <item>
+<<<<<<< HEAD
       <title>Frp</title>
       <link>/posts/frp/</link>
       <pubDate>Sun, 24 Apr 2022 10:02:10 +0800</pubDate>
@@ -175,6 +180,8 @@ rabbitmqctl set_user_tags full_access administrator
     </item>
     
     <item>
+=======
+>>>>>>> 04af5290ce63ea323fcd205683c5b00df07b8c49
       <title>Kafka</title>
       <link>/posts/kafka/</link>
       <pubDate>Tue, 09 Feb 2021 13:32:56 +0800</pubDate>
@@ -961,6 +968,7 @@ lscpu | grep &#39;CPU(s):&#39; | head -1 | awk &#39;{print $2}&#39;
 &lt;pre&gt;&lt;code&gt;## /etc/profile
 export http_proxy=&amp;quot;http://proxy_username:proxy_password@proxy_ip:proxy_port&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
+<<<<<<< HEAD
 &lt;p&gt;&amp;laquo;&amp;laquo;&amp;laquo;&amp;lt; HEAD&lt;/p&gt;
 &lt;h4 id=&#34;目录结构查看&#34;&gt;目录结构查看&lt;/h4&gt;
 &lt;pre&gt;&lt;code&gt;## 目录
@@ -991,6 +999,11 @@ find . | sed -e &amp;quot;s/[^-][^\/]*\//  |/g&amp;quot; -e &amp;quot;s/|\([^ ]\
 &lt;/blockquote&gt;
 &lt;/blockquote&gt;
 &lt;pre&gt;&lt;code&gt;
+=======
+&lt;h4 id=&#34;查看pid进程详情&#34;&gt;查看PID进程详情&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;1. cat /proc/PID/cmdline | tr &#39;\000&#39; &#39; &#39;
+2. cat /proc/PID/cmdline | xargs -0 echo
+>>>>>>> 04af5290ce63ea323fcd205683c5b00df07b8c49
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
@@ -1629,7 +1642,7 @@ kubectl get pods -n ns | grep Evicted | awk &#39;{print $1}&#39; | xargs kubectl
 &lt;pre&gt;&lt;code&gt;## 原因1
 服务器时间不对，重新同步下时间（data -s &amp;quot;&amp;quot;）
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h5 id=&#34;plugin-flannel-does-not-support-config-version-&#34;&gt;[plugin flannel does not support config version &amp;quot;&amp;rdquo;&lt;/h5&gt;
+&lt;h5 id=&#34;plugin-flannel-does-not-support-config-version-&#34;&gt;[plugin flannel does not support config version &amp;quot;&amp;quot;&lt;/h5&gt;
 &lt;pre&gt;&lt;code&gt;## /etc/cni/net.d/10-flannel.conflist, 添加如下内容
 {
   &amp;quot;cniVersion&amp;quot;: &amp;quot;0.3.1&amp;quot;,
