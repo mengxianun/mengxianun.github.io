@@ -650,7 +650,9 @@ SSLContext getSSLContext() {
 <pre><code>keytool -genkeypair -alias bc -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore bc.p12 -ext &quot;SAN:c=DNS:localhost,IP:127.0.0.1&quot; -validity 3650
 </code></pre>
 <h3 id="问题">问题</h3>
-<p>问题描述：availableProcessors is already set to [8], rejecting [8]</p>
+<ol>
+<li>问题描述：availableProcessors is already set to [8], rejecting [8]</li>
+</ol>
 <p>解决：https://blog.csdn.net/busishenren/article/details/90478928</p>
 
     </div>
