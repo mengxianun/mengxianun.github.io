@@ -5,12 +5,43 @@
     <link>/</link>
       <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <description>Academic</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Thu, 21 Apr 2022 11:18:16 +0800</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 24 Apr 2022 10:02:10 +0800</lastBuildDate>
     <image>
       <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Academic</title>
       <link>/</link>
     </image>
+    
+    <item>
+      <title>Frp</title>
+      <link>/posts/frp/</link>
+      <pubDate>Sun, 24 Apr 2022 10:02:10 +0800</pubDate>
+      <guid>/posts/frp/</guid>
+      <description>&lt;h3 id=&#34;服务端配置&#34;&gt;服务端配置&lt;/h3&gt;
+&lt;p&gt;/etc/frp/frps.ini&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[common]
+bind_port = 7000
+token = ***
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;客户端配置&#34;&gt;客户端配置&lt;/h3&gt;
+&lt;p&gt;/etc/frp/frpc.ini&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[common]
+server_addr = 服务端IP(公网)
+server_port = 7000
+token = ***
+
+[gitlab]
+type = tcp
+local_ip = 内网服务IP
+local_port = 内网服务端口
+remote_port = 公网服务端口
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;管理&#34;&gt;管理&lt;/h3&gt;
+&lt;h4 id=&#34;重启&#34;&gt;重启&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;systemctl restart frpc.service
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>Mongo</title>
@@ -1696,10 +1727,67 @@ goofys#bucket /mnt/mountpoint fuse _netdev,allow_other,--file-mode=0666,--dir-mo
     
     <item>
       <title>SpringBoot整合elasticsearch和redis的问题</title>
-      <link>/posts/springboot%E6%95%B4%E5%90%88elasticsearch%E5%92%8Credis%E7%9A%84%E9%97%AE%E9%A2%98/</link>
+      <link>/posts/springboot/</link>
       <pubDate>Fri, 22 May 2020 12:38:34 +0800</pubDate>
-      <guid>/posts/springboot%E6%95%B4%E5%90%88elasticsearch%E5%92%8Credis%E7%9A%84%E9%97%AE%E9%A2%98/</guid>
-      <description>&lt;p&gt;问题描述：availableProcessors is already set to [8], rejecting [8]&lt;/p&gt;
+      <guid>/posts/springboot/</guid>
+      <description>&lt;h2 id=&#34;spring-boot&#34;&gt;Spring Boot&lt;/h2&gt;
+&lt;h4 id=&#34;https&#34;&gt;HTTPS&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;生成证书&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;keytool -genkeypair -alias alias_name -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore alias_name.p12 -ext &amp;quot;SAN:c=DNS:localhost,IP:127.0.0.1&amp;quot; -validity 3650
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;将证书放到resources目录下&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;spring boot 配置&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-alias: alias_name
+    key-store-password: ******
+    key-store: classpath:alias_name.p12
+    key-store-type: PKCS12
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;客户端配置&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// 自定义 RestTemplate
+RestTemplate serverRestTemplateWith() {
+        SSLContext sslContext = getSSLContext();
+        SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext);
+        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(socketFactory).build();
+        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(httpClient);
+        factory.setConnectTimeout(30000);
+        factory.setReadTimeout(30000);
+        return new RestTemplate(factory);
+    }
+   
+// 构建 SSLContext
+SSLContext getSSLContext() {
+        try {
+            AppProperties appProperties = appContext.getAppProperties();
+            return SSLContexts.custom()
+                    .loadTrustMaterial(ResourceUtils.getFile(appProperties.getServerKeyStore()), appProperties.getServerKeyStorePassword().toCharArray())
+                    // 跳过证书检查
+//                    .loadTrustMaterial(null, (X509Certificate[] chain, String authType) -&amp;gt; true)
+                    .build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;生成证书&#34;&gt;生成证书&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;keytool -genkeypair -alias bc -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore bc.p12 -ext &amp;quot;SAN:c=DNS:localhost,IP:127.0.0.1&amp;quot; -validity 3650
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;问题&#34;&gt;问题&lt;/h3&gt;
+&lt;p&gt;问题描述：availableProcessors is already set to [8], rejecting [8]&lt;/p&gt;
 &lt;p&gt;解决：https://blog.csdn.net/busishenren/article/details/90478928&lt;/p&gt;
 </description>
     </item>
