@@ -1781,7 +1781,6 @@ SSLContext getSSLContext() {
     }
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h4 id=&#34;生成证书&#34;&gt;生成证书&lt;/h4&gt;
 &lt;pre&gt;&lt;code&gt;keytool -genkeypair -alias bc -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore bc.p12 -ext &amp;quot;SAN:c=DNS:localhost,IP:127.0.0.1&amp;quot; -validity 3650

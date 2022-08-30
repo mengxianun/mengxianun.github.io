@@ -645,7 +645,6 @@ SSLContext getSSLContext() {
     }
 </code></pre>
 </li>
-<li></li>
 </ol>
 <h4 id="生成证书">生成证书</h4>
 <pre><code>keytool -genkeypair -alias bc -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore bc.p12 -ext &quot;SAN:c=DNS:localhost,IP:127.0.0.1&quot; -validity 3650
