@@ -945,7 +945,6 @@ lscpu | grep 'CPU(s):' | head -1 | awk '{print $2}'
 <pre><code>## /etc/profile
 export http_proxy=&quot;http://proxy_username:proxy_password@proxy_ip:proxy_port&quot;
 </code></pre>
-<<<<<<< HEAD
 <p>&laquo;&laquo;&laquo;&lt; HEAD</p>
 <h4 id="目录结构查看">目录结构查看</h4>
 <pre><code>## 目录
@@ -976,11 +975,6 @@ find . | sed -e &quot;s/[^-][^\/]*\//  |/g&quot; -e &quot;s/|\([^ ]\)/|-\1/&quot
 </blockquote>
 </blockquote>
 <pre><code>
-=======
-<h4 id="查看pid进程详情">查看PID进程详情</h4>
-<pre><code>1. cat /proc/PID/cmdline | tr '\000' ' '
-2. cat /proc/PID/cmdline | xargs -0 echo
->>>>>>> 04af5290ce63ea323fcd205683c5b00df07b8c49
 </code></pre>
 
     </div>

@@ -27,10 +27,10 @@
   
     
   
-  <meta name="description" content="Professor of Artificial Intelligence">
+  <meta name="description" content="SSL 生成证书 openssl openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout 23.key -out 23.crt -config localhost.conf 查看证书 openssl x509 -in localhost.crt -noout -text">
 
   
-  <link rel="alternate" hreflang="en-us" href="/posts/">
+  <link rel="alternate" hreflang="en-us" href="/posts/nginx/">
 
   
 
@@ -212,14 +212,12 @@
   
 
   
-  <link rel="alternate" href="/posts/index.xml" type="application/rss+xml" title="Academic">
-  
 
   <link rel="manifest" href="/index.webmanifest">
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="/posts/">
+  <link rel="canonical" href="/posts/nginx/">
 
   
   
@@ -235,29 +233,34 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Academic">
-  <meta property="og:url" content="/posts/">
-  <meta property="og:title" content="Posts | Academic">
-  <meta property="og:description" content="Professor of Artificial Intelligence"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="og:url" content="/posts/nginx/">
+  <meta property="og:title" content="Nginx | Academic">
+  <meta property="og:description" content="SSL 生成证书 openssl openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout 23.key -out 23.crt -config localhost.conf 查看证书 openssl x509 -in localhost.crt -noout -text"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
-    <meta property="og:updated_time" content="2022-09-05T10:20:54&#43;08:00">
+    
+      <meta property="article:published_time" content="2022-09-05T10:20:54&#43;08:00">
+    
+    <meta property="article:modified_time" content="2022-09-05T10:20:54&#43;08:00">
   
 
   
 
 
 
-
   
 
 
   
 
 
+  
 
 
 
-  <title>Posts | Academic</title>
+
+
+  <title>Nginx | Academic</title>
 
 </head>
 
@@ -511,176 +514,509 @@
 </nav>
 
 
-  
-
-
-
-
-
-
-
-
-
-
-
+  <article class="article">
 
   
 
+
+
+
+
+
+
+
+
+
+
+
+  
+
   
   
+  
+<div class="article-container pt-3">
+  <h1>Nginx</h1>
+
+  
+
   
     
-  
-<div class="universal-wrapper pt-3">
-  <h1>Posts</h1>
+
+
+<div class="article-metadata">
 
   
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Sep 5, 2022
+  </span>
+  
+
+  
+
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
 </div>
 
 
 
-<div class="universal-wrapper">
-  
+  <div class="article-container">
 
-  
-  
-    
-    
-    
-    <div>
-      <h2><a href="/posts/minio/goofys%E6%8C%82%E8%BD%BDminio%E4%B8%BA%E6%9C%AC%E5%9C%B0%E8%B7%AF%E5%BE%84/" >Goofys挂载minio为本地路径</a></h2>
-      <div class="article-style">
-        
-          goofys 挂载 minio 为本地路径 goofys 安装 wget https://github.com/kahing/goofys/releases/latest/download/goofys -P /usr/local/bin/ chmod +x /usr/local/bin/goofys 配置认证信息 $ cat ~/.aws/credentials [default] aws_access_key_id
-        
-      </div>
-    </div>
-  
-    
-    
-    
-    <div>
-      <h2><a href="/posts/minio/kubernetes%E5%AE%89%E8%A3%85minio/" >Kubernetes安装minio</a></h2>
-      <div class="article-style">
-        
-          通过 helm 在 kubernetes 上安装 minio 前提 3台服务器，CentOS7 系统 已安装K
-        
-      </div>
-    </div>
-  
-    
-    
-    
-    <div>
-      <h2><a href="/posts/kubernetes/kubernetes/" >Kubernetes</a></h2>
-      <div class="article-style">
-        
-          kubernets 安装 准备工作 开启防火墙端口 需要开启的端口 Master node(s): TCP 6443* Kubernetes API Server TCP 2379-2380
-        
-      </div>
-    </div>
-  
-    
-    
-    
-    <div>
-      <h2><a href="/posts/minikube/" >Minikube安装</a></h2>
-      <div class="article-style">
-        
-          Linux 安装minikube 1 安装docker $ curl -fsSL https://get.docker.com/ | sh $ sudo systemctl start
-        
-      </div>
-    </div>
-  
-    
-    
-    
-    <div>
-      <h2><a href="/posts/goofys%E6%8C%82%E8%BD%BDminio%E4%B8%BA%E6%9C%AC%E5%9C%B0%E8%B7%AF%E5%BE%84/" >Goofys挂载minio为本地路径</a></h2>
-      <div class="article-style">
-        
-          goofys挂载minio为本地路径 1 安装fuse yum -y install fuse 2
-        
-      </div>
-    </div>
-  
-    
-    
-    
-    <div>
-      <h2><a href="/posts/springboot/" >SpringBoot整合elasticsearch和redis的问题</a></h2>
-      <div class="article-style">
-        
-          Spring Boot HTTPS 生成证书 keytool -genkeypair -alias alias_name -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore alias_name.p12 -ext &quot;SAN:c=DNS:localhost,IP:127.0.0.1&quot; -validity 3650 将证书放到re
-        
-      </div>
-    </div>
-  
-    
-    
-    
-    <div>
-      <h2><a href="/posts/helm%E5%AE%89%E8%A3%85kfaka/" >Helm安装Kfaka</a></h2>
-      <div class="article-style">
-        
-          本文介绍如何使用 helm 安装 Kafka，使用本地存储的方式。 1 配置
-        
-      </div>
-    </div>
-  
-    
-    
-    
-    <div>
-      <h2><a href="/posts/helm%E5%AE%89%E8%A3%85mysql/" >Helm安装MySQL</a></h2>
-      <div class="article-style">
-        
-          本文介绍如何使用 helm 安装 MySQL，使用本地存储的方式。 1 创建
-        
-      </div>
-    </div>
-  
-    
-    
-    
-    <div>
-      <h2><a href="/posts/docker/" >Docker</a></h2>
-      <div class="article-style">
-        
-          Docker(CentOS) 安装(开发环境) ## 1 更新Yum sudo yum update ## 2 添加docker仓
-        
-      </div>
-    </div>
-  
-    
-    
-    
-    <div>
-      <h2><a href="/posts/hugo-github-pages/" >Hugo Github Pages</a></h2>
-      <div class="article-style">
-        
-          安装 1 在github上创建仓库&lt;USERNAME&gt
-        
-      </div>
-    </div>
-  
+    <div class="article-style">
+      <p>SSL</p>
+<ol>
+<li>
+<p>生成证书</p>
+<ul>
+<li>
+<p>openssl</p>
+<pre><code>openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout 23.key -out 23.crt -config localhost.conf
+</code></pre>
+</li>
+<li>
+<p>查看证书</p>
+<pre><code>openssl x509 -in localhost.crt -noout -text
+</code></pre>
+</li>
+<li>
+<p>localhost.conf</p>
+<pre><code>[req]
+default_bits       = 2048
+default_keyfile    = localhost.key
+distinguished_name = req_distinguished_name
+req_extensions     = req_ext
+x509_extensions    = v3_ca
+     
+[req_distinguished_name]
+countryName                 = Country Name (2 letter code)
+countryName_default         = CN
+stateOrProvinceName         = State or Province Name (full name)
+stateOrProvinceName_default = Beijing
+localityName                = Locality Name (eg, city)
+localityName_default        = Beijing
+organizationName            = Organization Name (eg, company)
+organizationName_default    = localhost
+organizationalUnitName      = organizationalunit
+organizationalUnitName_default = Development
+commonName                  = Common Name (e.g. server FQDN or YOUR name)
+commonName_default          = localhost
+commonName_max              = 64
+     
+[req_ext]
+subjectAltName = @alt_names
+     
+[v3_ca]
+subjectAltName = @alt_names
+     
+[alt_names]
+DNS.1   = localhost
+DNS.2   = 127.0.0.1
+IP.1 = 192.168.1.1
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>配置nginx.conf</p>
+<pre><code>   
+#user  nobody;
+worker_processes  1;
+   
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+   
+#pid        logs/nginx.pid;
+   
+   
+events {
+    worker_connections  1024;
+}
+   
+   
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+   
+    #log_format  main  '$remote_addr - $remote_user [$time_local] &quot;$request&quot; '
+    #                  '$status $body_bytes_sent &quot;$http_referer&quot; '
+    #                  '&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;';
+   
+    #access_log  logs/access.log  main;
+   
+    sendfile        on;
+    #tcp_nopush     on;
+   
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+   
+    #gzip  on;
+   	
+ map $http_upgrade $connection_upgrade {
+     default upgrade;
+     '' close;
+ }
+   
+    server {
+        listen       80;
+        server_name  localhost;
+   
+        #charset koi8-r;
+   
+        #access_log  logs/host.access.log  main;
+   
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+   
+        #error_page  404              /404.html;
+   
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+   
+        # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+        #
+        #location ~ \.php$ {
+        #    proxy_pass   http://127.0.0.1;
+        #}
+   
+        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+        #
+        #location ~ \.php$ {
+        #    root           html;
+        #    fastcgi_pass   127.0.0.1:9000;
+        #    fastcgi_index  index.php;
+        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+        #    include        fastcgi_params;
+        #}
+   
+        # deny access to .htaccess files, if Apache's document root
+        # concurs with nginx's one
+        #
+        #location ~ /\.ht {
+        #    deny  all;
+        #}
+    }
+   
+   
+    # another virtual host using mix of IP-, name-, and port-based configuration
+    #
+    #server {
+    #    listen       8000;
+    #    listen       somename:8080;
+    #    server_name  somename  alias  another.alias;
+   
+    #    location / {
+    #        root   html;
+    #        index  index.html index.htm;
+    #    }
+    #}
+   
+   
+    # HTTPS server
+       
+    server {
+        listen       9443 ssl;
+        server_name  localhost;
+   
+        ssl_certificate      localhost.crt;
+        ssl_certificate_key  localhost.key;
+   
+        ssl_session_cache    shared:SSL:1m;
+        ssl_session_timeout  5m;
+   
+        ssl_ciphers  HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers  on;
+   
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+   		
+     location /api/ {
+         #proxy_pass http://api-server;
+         proxy_pass http://localhost:8080;
+         #proxy_connect_timeout 300s;
+         #client_max_body_size 100m;
+         #proxy_send_timeout 300s;
+         #proxy_read_timeout 300s;
+         proxy_http_version 1.1;
+         #proxy_set_header X-Real-IP           $remote_addr;
+         proxy_set_header Upgrade             $http_upgrade;
+         proxy_set_header Connection          $connection_upgrade;
+         #proxy_set_header Connection          &quot;upgrade&quot;;
+         #proxy_set_header Origin              &quot;&quot;;
+         #proxy_set_header Host                $host:$server_port;
+         #proxy_set_header X-Forwarded-For     $proxy_add_x_forwarded_for;
+         #proxy_set_header X-Forwarded-Proto   $scheme;
+         #proxy_set_header X-Forwarded-Port    $server_port; 
+     }
+   
+}
+   
+</code></pre>
+</li>
+<li></li>
+</ol>
 
-  
-<nav>
-  <ul class="pagination justify-content-center">
+    </div>
+
     
-    <li class="page-item"><a class="page-link" href="/posts/">&laquo;</a></li>
+
+
+
+
+
+
+
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
     
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/posts/nginx/&amp;text=Nginx" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
     
-    <li class="page-item"><a class="page-link" href="/posts/page/3/">&raquo;</a></li>
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/posts/nginx/&amp;t=Nginx" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Nginx&amp;body=/posts/nginx/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/posts/nginx/&amp;title=Nginx" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Nginx%20/posts/nginx/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/posts/nginx/&amp;title=Nginx" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
     
   </ul>
-</nav>
-
-
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+  
+    
+    
+    
+      
+    
+    
+    
+    <div class="media author-card content-widget-hr">
+      
+        
+        <img class="avatar mr-3 avatar-circle" src="/author/nelson-bighetti/avatar_hu52a603635ecebd45650b162dadabb4e5_12861_270x270_fill_q90_lanczos_center.jpg" alt="Nelson Bighetti">
+      
+
+      <div class="media-body">
+        <h5 class="card-title"><a href="/">Nelson Bighetti</a></h5>
+        <h6 class="card-subtitle">Professor of Artificial Intelligence</h6>
+        <p class="card-text">My research interests include distributed robotics, mobile computing and programmable matter.</p>
+        <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/GeorgeCushen" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/gcushen" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+      </div>
+    </div>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  </div>
+</article>
 
       
 

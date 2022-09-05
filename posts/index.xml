@@ -5,11 +5,7 @@
     <link>/posts/</link>
       <atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-<<<<<<< HEAD
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 24 Apr 2022 10:02:10 +0800</lastBuildDate>
-=======
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 09 Feb 2021 13:32:56 +0800</lastBuildDate>
->>>>>>> 04af5290ce63ea323fcd205683c5b00df07b8c49
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Mon, 05 Sep 2022 10:20:54 +0800</lastBuildDate>
     <image>
       <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Posts</title>
@@ -17,7 +13,214 @@
     </image>
     
     <item>
-<<<<<<< HEAD
+      <title>Nginx</title>
+      <link>/posts/nginx/</link>
+      <pubDate>Mon, 05 Sep 2022 10:20:54 +0800</pubDate>
+      <guid>/posts/nginx/</guid>
+      <description>&lt;p&gt;SSL&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;生成证书&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;openssl&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout 23.key -out 23.crt -config localhost.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;查看证书&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;openssl x509 -in localhost.crt -noout -text
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;localhost.conf&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[req]
+default_bits       = 2048
+default_keyfile    = localhost.key
+distinguished_name = req_distinguished_name
+req_extensions     = req_ext
+x509_extensions    = v3_ca
+     
+[req_distinguished_name]
+countryName                 = Country Name (2 letter code)
+countryName_default         = CN
+stateOrProvinceName         = State or Province Name (full name)
+stateOrProvinceName_default = Beijing
+localityName                = Locality Name (eg, city)
+localityName_default        = Beijing
+organizationName            = Organization Name (eg, company)
+organizationName_default    = localhost
+organizationalUnitName      = organizationalunit
+organizationalUnitName_default = Development
+commonName                  = Common Name (e.g. server FQDN or YOUR name)
+commonName_default          = localhost
+commonName_max              = 64
+     
+[req_ext]
+subjectAltName = @alt_names
+     
+[v3_ca]
+subjectAltName = @alt_names
+     
+[alt_names]
+DNS.1   = localhost
+DNS.2   = 127.0.0.1
+IP.1 = 192.168.1.1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;配置nginx.conf&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;   
+#user  nobody;
+worker_processes  1;
+   
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+   
+#pid        logs/nginx.pid;
+   
+   
+events {
+    worker_connections  1024;
+}
+   
+   
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+   
+    #log_format  main  &#39;$remote_addr - $remote_user [$time_local] &amp;quot;$request&amp;quot; &#39;
+    #                  &#39;$status $body_bytes_sent &amp;quot;$http_referer&amp;quot; &#39;
+    #                  &#39;&amp;quot;$http_user_agent&amp;quot; &amp;quot;$http_x_forwarded_for&amp;quot;&#39;;
+   
+    #access_log  logs/access.log  main;
+   
+    sendfile        on;
+    #tcp_nopush     on;
+   
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+   
+    #gzip  on;
+   	
+ map $http_upgrade $connection_upgrade {
+     default upgrade;
+     &#39;&#39; close;
+ }
+   
+    server {
+        listen       80;
+        server_name  localhost;
+   
+        #charset koi8-r;
+   
+        #access_log  logs/host.access.log  main;
+   
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+   
+        #error_page  404              /404.html;
+   
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+   
+        # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+        #
+        #location ~ \.php$ {
+        #    proxy_pass   http://127.0.0.1;
+        #}
+   
+        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+        #
+        #location ~ \.php$ {
+        #    root           html;
+        #    fastcgi_pass   127.0.0.1:9000;
+        #    fastcgi_index  index.php;
+        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+        #    include        fastcgi_params;
+        #}
+   
+        # deny access to .htaccess files, if Apache&#39;s document root
+        # concurs with nginx&#39;s one
+        #
+        #location ~ /\.ht {
+        #    deny  all;
+        #}
+    }
+   
+   
+    # another virtual host using mix of IP-, name-, and port-based configuration
+    #
+    #server {
+    #    listen       8000;
+    #    listen       somename:8080;
+    #    server_name  somename  alias  another.alias;
+   
+    #    location / {
+    #        root   html;
+    #        index  index.html index.htm;
+    #    }
+    #}
+   
+   
+    # HTTPS server
+       
+    server {
+        listen       9443 ssl;
+        server_name  localhost;
+   
+        ssl_certificate      localhost.crt;
+        ssl_certificate_key  localhost.key;
+   
+        ssl_session_cache    shared:SSL:1m;
+        ssl_session_timeout  5m;
+   
+        ssl_ciphers  HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers  on;
+   
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+   		
+     location /api/ {
+         #proxy_pass http://api-server;
+         proxy_pass http://localhost:8080;
+         #proxy_connect_timeout 300s;
+         #client_max_body_size 100m;
+         #proxy_send_timeout 300s;
+         #proxy_read_timeout 300s;
+         proxy_http_version 1.1;
+         #proxy_set_header X-Real-IP           $remote_addr;
+         proxy_set_header Upgrade             $http_upgrade;
+         proxy_set_header Connection          $connection_upgrade;
+         #proxy_set_header Connection          &amp;quot;upgrade&amp;quot;;
+         #proxy_set_header Origin              &amp;quot;&amp;quot;;
+         #proxy_set_header Host                $host:$server_port;
+         #proxy_set_header X-Forwarded-For     $proxy_add_x_forwarded_for;
+         #proxy_set_header X-Forwarded-Proto   $scheme;
+         #proxy_set_header X-Forwarded-Port    $server_port; 
+     }
+   
+}
+   
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Frp</title>
       <link>/posts/frp/</link>
       <pubDate>Sun, 24 Apr 2022 10:02:10 +0800</pubDate>
@@ -180,8 +383,6 @@ rabbitmqctl set_user_tags full_access administrator
     </item>
     
     <item>
-=======
->>>>>>> 04af5290ce63ea323fcd205683c5b00df07b8c49
       <title>Kafka</title>
       <link>/posts/kafka/</link>
       <pubDate>Tue, 09 Feb 2021 13:32:56 +0800</pubDate>
@@ -968,7 +1169,6 @@ lscpu | grep &#39;CPU(s):&#39; | head -1 | awk &#39;{print $2}&#39;
 &lt;pre&gt;&lt;code&gt;## /etc/profile
 export http_proxy=&amp;quot;http://proxy_username:proxy_password@proxy_ip:proxy_port&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
-<<<<<<< HEAD
 &lt;p&gt;&amp;laquo;&amp;laquo;&amp;laquo;&amp;lt; HEAD&lt;/p&gt;
 &lt;h4 id=&#34;目录结构查看&#34;&gt;目录结构查看&lt;/h4&gt;
 &lt;pre&gt;&lt;code&gt;## 目录
@@ -999,11 +1199,6 @@ find . | sed -e &amp;quot;s/[^-][^\/]*\//  |/g&amp;quot; -e &amp;quot;s/|\([^ ]\
 &lt;/blockquote&gt;
 &lt;/blockquote&gt;
 &lt;pre&gt;&lt;code&gt;
-=======
-&lt;h4 id=&#34;查看pid进程详情&#34;&gt;查看PID进程详情&lt;/h4&gt;
-&lt;pre&gt;&lt;code&gt;1. cat /proc/PID/cmdline | tr &#39;\000&#39; &#39; &#39;
-2. cat /proc/PID/cmdline | xargs -0 echo
->>>>>>> 04af5290ce63ea323fcd205683c5b00df07b8c49
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
@@ -1642,7 +1837,7 @@ kubectl get pods -n ns | grep Evicted | awk &#39;{print $1}&#39; | xargs kubectl
 &lt;pre&gt;&lt;code&gt;## 原因1
 服务器时间不对，重新同步下时间（data -s &amp;quot;&amp;quot;）
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h5 id=&#34;plugin-flannel-does-not-support-config-version-&#34;&gt;[plugin flannel does not support config version &amp;quot;&amp;quot;&lt;/h5&gt;
+&lt;h5 id=&#34;plugin-flannel-does-not-support-config-version-&#34;&gt;[plugin flannel does not support config version &amp;quot;&amp;rdquo;&lt;/h5&gt;
 &lt;pre&gt;&lt;code&gt;## /etc/cni/net.d/10-flannel.conflist, 添加如下内容
 {
   &amp;quot;cniVersion&amp;quot;: &amp;quot;0.3.1&amp;quot;,
